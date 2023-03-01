@@ -1,0 +1,11 @@
+$result1 = print_r($array, true);
+$result2 = var_export($array, true);
+
+$startTime=hrtime(true);
+  writeInFile('category start ' . date("Y-m-d H:i:s") . ' :: ' . (hrtime(true)-$startTime)); //****************** */
+
+
+update start 2023-02-24 08:45:41 :: 84600
+get parameters 2023-02-24 08:45:41 :: 19232500
+update user 2023-02-24 08:45:42 :: 672785800
+get session user 2023-02-24 08:45:42 :: 683601000

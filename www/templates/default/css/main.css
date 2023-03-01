@@ -1,0 +1,474 @@
+:root {
+  /* 
+
+  Variable of color :
+
+    --color0: #CCE3EE;   light  
+    --color1: #95b3d7;   A5D0E1 95b3d7 
+    --color2: #366092;
+ */   
+     --color0: #d89bb0;
+     --color1: #d5dea4;  /*848A66  707554 61664A*/
+     --color2: #aee4d1;
+     --color3: #c0b9e9;
+     --color4: #61664A; 
+
+     --graylight1: #f8f9fa; 
+     --graylight2: #d3d3d3; 
+     --graydark:   #464646;
+
+    --bg-all           :#D1D7E0 ; /* общий фон */
+
+/*    --bg-nav           : #f8f9fa; /* фон верхней линейки */
+/*    --bg-nav-btn       : #d3d3d3; /* фон кнопок на верхней линейке */
+/*    --bg-nav-btn-hover : #61664A; /* фон конпок на верхней линейке при наведении */
+/*    --bg-nav-btn-active: #a2c915; /* фон конпок на верхней линейке при нажатии */ 
+/*    --col-nav          : #61664A; /* цвет шрифта надписей на верхней линейке */ 
+/*    --col-nav-hover    : #cc3643; /* цвет шрифта надписей при наведении на верхней линейке */ 
+/*    --col-nav-active   : #140b6b; /* цвет шрифта надписей при нажатии на верхней линейке */ 
+/*    --col-nav-btn-brd  : #61664A; /* цвет рамки кнопок верхней линейке */ 
+
+    --bg-nav           :  #DDE3ED; /*D1D7E0 фон верхней линейки */
+    --bg-nav-btn       :  #C2C8D1; /*CAD0D9 фон кнопок на верхней линейке */
+    --bg-nav-btn-hover :  #B9BFC7; /* фон конпок на верхней линейке при наведении */
+    --bg-nav-btn-active:  #ADB2BA; /* фон конпок на верхней линейке при нажатии */ 
+    --col-nav          :  #2D283E; /* цвет шрифта надписей на верхней линейке */ 
+    --col-nav-hover    :  #4C495D; /* цвет шрифта надписей при наведении на верхней линейке */ 
+    --col-nav-active   : #140b6b; /* цвет шрифта надписей при нажатии на верхней линейке */ 
+    --col-nav-btn-brd  :  #B9BFC7; /* цвет рамки кнопок верхней линейке */ 
+
+  /*  #5680E9 - #84CEEB - #5AB9EA - #C1C8E4 - #8860D0 
+      #182628 - #65CCB8 - #57BA98 - #3B945E - #F2F2F2
+      #1F2605 - #1F6521 - #53900F - #A4A71E - #D6CE15
+      #802BB1 - #2D283E - #564F6F - #4C495D - #D1D7E0
+  */
+}
+
+/* define color */
+.col-nav {
+    color: var(--col-nav);
+}
+.col-nav-hover {
+    color: var(--col-nav-hover);
+}
+.col-nav-active {
+    color: var(--col-nav-active);
+}
+.col-nav-btn-brd {
+    color: var(--col-nav-btn-brd);
+}
+.col-nav-opposite {
+    color: var(--bg-nav);
+}
+.bg-nav {
+    background-color: var(--bg-nav);
+}
+.bg-nav-btn {
+    background-color: var(--bg-nav-btn);
+}
+.bg-nav-btn-hover {
+    background-color: var(--bg-nav-btn-hover);
+}
+.bg-nav-btn-active {
+    background-color: var(--bg-nav-btn-active);
+}
+.bg-nav-opposite {
+    background-color: var(--col-nav-hover);
+}
+
+/* end */
+
+/* font for navbar */
+.nv-navbar{
+    font-size: small !important;
+}
+/* end */
+
+/* action for hover */
+.nv-hover {
+    --bs-link-color: var(--col-nav);
+    --bs-link-hover-color: var(--col-nav-hover);
+}
+.nv-hover:hover {
+    color: var(--col-nav-hover);
+    
+}
+.nv-hover:hover + .nv-hover {
+    color: var(--col-nav-hover) !important;
+}
+.nv-hover:hover ~ .nv-hover {
+    color: var(--col-nav-hover) !important;
+}
+.nv-hover:hover > .nv-hover {
+    color: var(--col-nav-hover) !important;
+}
+.btn:hover > #account > #account-name {
+    color: var(--col-nav-hover);
+}
+.btn:hover {
+    background-color: var(--bg-nav-btn-hover);
+    color: var(--col-nav-hover); 
+}
+.btn:hover ~  .nv-add {
+    background-color: var(--bg-nav-btn-hover);
+    color: var(--col-nav-hover); 
+}
+.dropdown-menu {
+--bs-dropdown-link-active-bg:var(--bg-nav-btn-hover); 
+}
+#nv-li:hover { 
+    background-color: var(--bg-nav-btn);
+}
+
+/*--bs-link-hover-color*/
+/* end */
+/*
+@media (min-width: 767px) {
+  #body1 {
+    height: 100vh;
+  };
+    }
+*/
+/* button */
+/*
+.btn {
+    border-color: var(--bg-nav-btn-hover);
+}
+*/
+.btn {
+    --bs-btn-active-bg:var(--bg-nav-btn-active);
+    --bs-btn-active-color:white;
+    --bs-btn-color:white;
+}
+/* end */
+
+
+
+/* form check */
+.form-check-input:checked {
+    /*background-color: var(--bg-nav-btn);*/
+    background-color: var(--bg-nav-btn-active);
+    border-color: var(--bg-nav-btn-hover);
+}
+.form-check-input:focus {
+    /*border-color: var(--bg-nav-btn);*/
+    border-color: var(--bg-nav-btn-active);
+    color: var(--bg-nav-btn);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.02%29'/%3e%3c/svg%3e") !important;
+    outline: 0;                                                                                                                          /*%28 R, G, B, a   rgba%280, 0, 0, 0.35%29'/%3e%3c/svg%3e*/
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px  rgba(200,200,200,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(200,200,200,.6);
+}
+/* end */
+
+/* form control */
+.form-control:focus {
+    border-color: var(--bg-nav-btn-active);
+    outline: 0;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px  rgba(200,200,200,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(200,200,200,.6);
+}
+.form-select:focus {
+    border-color: var(--bg-nav-btn-active);
+    outline: 0;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px  rgba(200,200,200,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(200,200,200,.6);
+}
+
+
+
+/* end */
+
+/* svg color */
+.head-svg {
+    fill:  var(--col-nav);
+    /*stroke fill: red;*/
+}
+.head-svg:hover {
+    fill:  var(--col-nav-hover);
+}
+
+body {
+    background-color: var(--bg-all) ;
+    --bs-link-hover-color:var(--bg-nav) !important; /*color of triangle in menu hover child*/
+}
+.pagination {
+    --bs-pagination-color:        var(--col-nav);
+
+    --bs-pagination-active-color:    var(--bg-nav);
+    --bs-pagination-active-bg: var(--col-nav-hover);
+    --bs-pagination-active-border-color:   var(--col-nav);
+
+    --bs-pagination-hover-color:  var(--col-nav-hover);
+    --bs-pagination-hover-bg:     var(--bg-nav-btn-hover);
+    --bs-pagination-hover-border-color: var(--bg-nav-btn-hover);
+
+    --bs-pagination-focus-color:     var(--col-nav-hover);
+    --bs-pagination-focus-box-shadow:    0 0 0 0.25rem rgba(0, 0, 0, 0.25);
+/*
+$pagination-color:                  $link-color;
+$pagination-bg:                     $white;
+$pagination-border-width:           $border-width;
+$pagination-border-radius:          $border-radius;
+$pagination-margin-start:           -$pagination-border-width;
+$pagination-border-color:           $gray-300;
+
+$pagination-focus-color:            $link-hover-color;
+$pagination-focus-bg:               $gray-200;
+$pagination-focus-box-shadow:       $input-btn-focus-box-shadow;
+$pagination-focus-outline:          0;
+
+$pagination-disabled-color:         $gray-600;
+$pagination-disabled-bg:            $white;
+$pagination-disabled-border-color:  $gray-300;
+*/
+}
+
+.border-col{
+    border-color: var(--bg-nav);
+}
+
+/*
+body,html {
+    height:100%;
+}
+.container {
+    min-height:100%;
+}
+.footer {
+    height:40px;
+    margin-top:-40px;
+}
+*/
+/*
+.heading span{
+    position: relative;
+  }
+.heading span::after {
+   position: absolute;
+   top: 50%;
+   left: 100%;
+   right: -200px;
+   content: '';
+   border-bottom: solid 2px rgba(0, 0, 0, 0.25);
+}
+*/
+#vn-line {
+    border-bottom: solid 2px rgba(0, 0, 0, 0.25);  
+}
+.nv-hr {
+    margin-top: 0.5rem !important;
+    /*margin-bottom: 0.5rem !important; */
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+}
+/* Цвет */
+.graylight {
+    color: var(--graylight2);
+}
+.graydark {
+    color: var(--graydark);
+}
+
+
+.color0 {
+    color: var(--color0);
+}
+.color1 {
+    color: var(--color1);
+}
+.color2 {
+    color: var(--color2);
+}
+.color3 {
+    color: var(--color3);
+}
+.color4 {
+    color: var(--color4);
+}
+.color5 {
+    color:black ;
+}
+.bg0 {
+    background-color: var(--color0);
+}
+.bg1 {
+    background-color: var(--color1);
+}
+.bg2 {
+    background-color: var(--color2);
+}
+.bg3 {
+    background-color: var(--color3);
+}
+.bg4 {
+    background-color: var(--color4);
+}
+.bggraydark {
+    background-color: var(--graydark);
+}
+.bggraylight {
+    background-color: var(--graylight2);
+}
+
+
+
+.nv-head, #footer {
+    background: var(--bg-nav);
+    background: -moz-linear-gradient(left, var(--bg-nav) 0%, var(--col-nav-hover) 100%);
+    background: -webkit-linear-gradient(left, var(--bg-nav) 0%, var(--col-nav-hover ) 100%);
+    background: linear-gradient(to right, var(--bg-nav) 0%, var(--col-nav-hover ) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--bg-nav), endColorstr=var(--col-nav-hover ), GradientType=1);
+    background-size: contain;
+}
+
+.card-footer {
+  /*background: var(--color1);*/
+  padding: 0;
+}
+
+
+.category:hover {
+    color: black;
+}
+
+#centerColumn{
+  background-color:  var(--color0);
+}    
+
+.itd_im {
+    border-radius: 50%;  
+}
+
+.nv-a {
+    font-size: 17px;
+}
+.nv-a2 {
+    text-decoration: none;
+}
+
+.nv-a3:active {
+    border-color: var(--bg-nav-btn);
+    outline: 0;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px  rgba(200,200,200,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(200,200,200,.6);
+}
+
+/*
+a:hover {}
+a:link {}
+a:visited {}
+a:active {}
+*/
+
+/*
+.nv-head {
+    background:var(--color1);
+}*/
+body{
+    padding: 0;
+    display: block;
+}
+
+.hideme{
+    display: none;
+    /*visibility: hidden;*/
+}
+
+#header{
+    height: 60px ;
+    text-align: center;
+}
+/*
+#leftColumn{
+    width: 200px; 
+    float: left;    
+}
+
+#leftMenu, #loginBox, #registerBox{
+    padding-bottom: 20px;
+}
+
+#centerColumn{
+    width: 600px;
+    float: left;
+    padding-left: 90px;
+}
+*/
+#footer{
+    clear: both;
+}
+/*
+.menuCaption{
+    padding: 3px;
+    font-weight: bold;
+}
+*/
+.cartBox{
+    padding: 5px 0px 5px 0px;
+}
+
+.showHidden{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+#registerBoxHidden{
+    display: none;  
+}
+
+.image-one {
+  fill: white;
+}
+
+/*
+$tooltip-font-size:                 $font-size-sm;
+$tooltip-max-width:                 200px;
+$tooltip-color:                     $white;
+$tooltip-bg:                        $black;
+$tooltip-border-radius:             $border-radius;
+$tooltip-opacity:                   .9;
+$tooltip-padding-y:                 $spacer / 4;
+$tooltip-padding-x:                 $spacer / 2;
+$tooltip-margin:                    0;
+
+$tooltip-arrow-width:               .8rem;
+$tooltip-arrow-height:              .4rem;
+$tooltip-arrow-color:               $tooltip-bg;
+*/
+.custom-tooltip {
+    --bs-tooltip-bg: var(--col-nav-hover);
+    --bs-tooltip-color: var(--bg-nav-btn);
+    --bs-tooltip-opacity: .9;
+  }
+/*
+.tooltip-inner {
+    box-shadow: 0px 0px 4px black;
+}*/
+
+.placeholder-transparent::placeholder {
+    opacity: 0.5 !important;
+    /*color: #ff0505 !important;*/
+}
+.placeholder-transparent:focus::placeholder {
+    color: transparent !important;
+  }
+
+/*
+input::placeholder {
+    color: rgb(26, 223, 141) !important;
+  }
+  input:focus::placeholder {
+    color: transparent !important;
+  }
+  textarea::placeholder {
+    color: #333 !important;
+  }
+  textarea:focus::placeholder {
+    color: transparent !important;
+  }
+
+
+
+/*.in-put::-moz-placeholder {color: #dc1c1c;opacity: 1;}

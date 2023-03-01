@@ -1,0 +1,260 @@
+:root {
+  /* 
+
+  Variable of color :
+
+    --color0: #CCE3EE;   light  
+    --color1: #95b3d7;   A5D0E1 95b3d7 
+    --color2: #366092;
+ */   
+     --color0: #d89bb0;
+     --color1: #d5dea4;  /*848A66  707554 61664A*/
+     --color2: #aee4d1;
+     --color3: #c0b9e9;
+     --color4: #61664A; 
+
+     --graylight1: #f8f9fa; 
+     --graylight2: #d3d3d3; 
+     --graydark:   #464646;
+
+    --bg-all           : #7f9cb9; /* общий фон */
+
+    --bg-nav           : #d3d3d3; /* фон верхней линейки */
+    --bg-nav-btn       : #f8f9fa; /* фон кнопок на верхней линейке */
+    --bg-nav-btn-hover : #61664A; /* фон конпок на верхней линейке при наведении */
+    --bg-nav-btn-active: #202219; /* фон конпок на верхней линейке при наведении */ 
+    --col-nav          : #61664A; /* цвет шрифта надписей на верхней линейке */ 
+    --col-nav-hover    : #cc3643; /* цвет шрифта надписей при наведении на верхней линейке */ 
+    --col-nav-btn-brd  : #61664A; /* цвет рамки кнопок верхней линейке */ 
+}
+
+.col-nav {
+    color: var(--col-nav);
+}
+.col-nav-hover {
+    color: var(--col-nav-hover);
+}
+.col-nav-btn-brd {
+    color: var(--col-nav-btn-brd);
+}
+.bg-nav {
+    background-color: var(--bg-nav);
+}
+.bg-nav-btn {
+    background-color: var(--bg-nav-btn);
+}
+.bg-nav-btn-hover {
+    background-color: var(--bg-nav-btn-hover);
+}
+
+.nv-navbar{
+    font-size: small !important;
+}
+
+.nv-hover:hover {
+    color: var(--col-nav-hover);
+}
+.nv-hover:hover + .nv-hover {
+    color: var(--col-nav-hover);
+}
+.btn:hover > #account > #account-name {
+    color: var(--col-nav-hover);
+}
+
+.btn {
+    border-color: var(--bg-nav-btn-hover);
+}
+
+.btn:hover {
+    background-color: var(--bg-nav-btn-hover);
+    color: var(--col-nav-hover); 
+}
+
+.btn:hover ~  .nv-add {
+    background-color: var(--bg-nav-btn-hover);
+    color: var(--col-nav-hover); 
+}
+
+.btn-primary {
+    --bs-btn-active-bg:var(--bg-nav-btn-active);
+    --bs-btn-active-color:white;
+    --bs-btn-color:white;
+}
+
+.form-check-input:checked {
+    background-color: var(--bg-nav-btn);
+    border-color: var(--bg-nav-btn-hover);
+    color:  var(--bg-nav); 
+}
+
+.form-check-input:focus {
+    border-color: var(--bg-nav-btn);
+    color: var(--bg-nav-btn);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px  rgba(200,200,200,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(200,200,200,.6);
+
+}
+
+body {
+    background-color: var(--bg-all) ;
+   }
+
+/* Цвет */
+.graylight {
+    color: var(--graylight2);
+}
+.graydark {
+    color: var(--graydark);
+}
+
+
+.color0 {
+    color: var(--color0);
+}
+.color1 {
+    color: var(--color1);
+}
+.color2 {
+    color: var(--color2);
+}
+.color3 {
+    color: var(--color3);
+}
+.color4 {
+    color: var(--color4);
+}
+.color5 {
+    color:black ;
+}
+.bg0 {
+    background-color: var(--color0);
+}
+.bg1 {
+    background-color: var(--color1);
+}
+.bg2 {
+    background-color: var(--color2);
+}
+.bg3 {
+    background-color: var(--color3);
+}
+.bg4 {
+    background-color: var(--color4);
+}
+.bggraydark {
+    background-color: var(--graydark);
+}
+.bggraylight {
+    background-color: var(--graylight2);
+}
+
+
+
+.nv-head, #footer {
+    background: var(--color1);
+    background: -moz-linear-gradient(left, var(--color1) 0%, var(--color2) 100%);
+    background: -webkit-linear-gradient(left, var(--color1) 0%, var(--color2) 100%);
+    background: linear-gradient(to right, var(--color1) 0%, var(--color2) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=var(--color1), endColorstr=var(--color2), GradientType=1);
+    background-size: contain;
+}
+
+.card-footer {
+  background: var(--color1);
+  padding: 0;
+}
+
+
+.form-control:focus {
+    border-color: var(--color2);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+}
+
+.category:hover {
+    color: black;
+}
+
+#centerColumn{
+  background-color:  var(--color0);
+}    
+
+.itd_im {
+    border-radius: 50%;  
+}
+
+.nv-a {
+    font-size: 17px;
+
+}
+
+
+/*
+a:hover {}
+a:link {}
+a:visited {}
+a:active {}
+*/
+
+/*
+.nv-head {
+    background:var(--color1);
+}*/
+body{
+    padding: 0;
+    display: block;
+}
+
+.hideme{
+    display: none;
+}
+
+#header{
+    height: 60px ;
+    text-align: center;
+}
+/*
+#leftColumn{
+    width: 200px; 
+    float: left;    
+}
+
+#leftMenu, #loginBox, #registerBox{
+    padding-bottom: 20px;
+}
+
+#centerColumn{
+    width: 600px;
+    float: left;
+    padding-left: 90px;
+}
+*/
+#footer{
+    clear: both;
+}
+/*
+.menuCaption{
+    padding: 3px;
+    font-weight: bold;
+}
+*/
+.cartBox{
+    padding: 5px 0px 5px 0px;
+}
+
+.showHidden{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
+}
+
+#registerBoxHidden{
+    display: none;  
+}
+
+.image-one {
+  fill: white;
+}
+
