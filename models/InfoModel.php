@@ -9,9 +9,9 @@ include_once '../models/UsersModel.php';
  */
 function getInfoHeadByUserGroup($userGroup = -1)
 {
-    global $db;
+    global $db; 
 
-    $userGroup = getCheckUserGroup(2, $userGroup);
+    $userGroup = getCheckUserGroup(2, $userGroup); 
  
     $sql = "SELECT `phone`, `email` " .
            "FROM `bt_info_head` WHERE `user_group` = $userGroup";
