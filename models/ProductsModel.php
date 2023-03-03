@@ -271,7 +271,7 @@ function updateProducts($requests, $nameField, $sqlStart, $sqlEnd = '')
  *                          ['close']         boolean - true if last step seccessful
  */
 function updateProductsFromFilesByStep($fileNum, $iterationNum,
-    $step = DEFOLT_STEP, $successful, $updateEverything = 'N') {
+    $step = DEFOLT_STEP, $successful = 1, $updateEverything = 'N') {
     $result = array();
     $totalQuantity = 0;
     $rs = true;
