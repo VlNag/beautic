@@ -65,7 +65,7 @@
                 <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
 
                     <div class="input-group-text">
-                        {if $arUser['user_group']<>4}
+                        {if $arUser['user_group'] != 4}
                             <input class="form-check-input mt-0" type="radio" value="1" checked aria-label="Радиокнопка"
                                 name="currency">
                         {else}
