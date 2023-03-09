@@ -6,15 +6,15 @@
  */
 
 //> константы для обращения к контроллеру
-define('PATH_PREFIX', '../controllers/');
-define('PATH_POSTFIX', 'Controller.php');
+const PATH_PREFIX = '../controllers/';
+const PATH_POSTFIX = 'Controller.php';
 
-define('QUANTITY_PER_PAGE', 10);
-define('QUANTITY_PAGINATOR', 5);
+const QUANTITY_PER_PAGE = 10;
+const QUANTITY_PAGINATOR = 5;
 //<
 
-define('DEFOLT_STEP', 1000);
-define('REST_KEY', '12345');
+const DEFOLT_STEP = 1000;
+const REST_KEY = '12345';
 
 $userGroupSt = array('1', '4');
 $userGroupMd = array('1', '2', '4');
@@ -34,18 +34,18 @@ $mailAdmin = 'bob_140@ngs.ru';
 
 //> используемые шаблоны
 $template = 'default';
-//$template = 'texturia';
+//$template = 'texture';
 $templateAdmin = 'admin';
 
 // пути к файлам шаблонов (*.tpl)
-define('TEMPLATE_PREFIX', "../views/{$template}/");
-define('TEMPLATE_ADMIN_PREFIX', "../views/{$templateAdmin}/");
+define('TEMPLATE_PREFIX', "../views/$template/");
+define('TEMPLATE_ADMIN_PREFIX', "../views/$templateAdmin/");
 
-define('TEMPLATE_POSTFIX', '.tpl');
+const TEMPLATE_POSTFIX = '.tpl';
 
 // пути к файлам шаблонов в вебпространстве
-define('TEMPLATE_WEB_PATH', "/templates/{$template}/");
-define('TEMPLATE_ADMIN_WEB_PATH', "/templates/{$templateAdmin}/");
+define('TEMPLATE_WEB_PATH', "/templates/$template/");
+define('TEMPLATE_ADMIN_WEB_PATH', "/templates/$templateAdmin/");
 //<
 
 //> инициализация шаблона смарти
@@ -53,9 +53,9 @@ define('TEMPLATE_ADMIN_WEB_PATH', "/templates/{$templateAdmin}/");
 require '../library/smarty/libs/Smarty.class.php';
 $smarty = new Smarty();
 
-$smarty->setTemplateDir(TEMPLATE_PREFIX);
-$smarty->setCompileDir('../tmp/smarty/templates_c');
-$smarty->setCacheDir('../tmp/smarty/cashe');
-$smarty->setConfigDir('../library/Smarty/config');
+$smarty->setTemplateDir(template_dir: TEMPLATE_PREFIX);
+$smarty->setCompileDir(compile_dir: '../tmp/smarty/templates_c');
+$smarty->setCacheDir(cache_dir: '../tmp/smarty/cashe');
+$smarty->setConfigDir(config_dir: '../library/Smarty/config');
 
-$smarty->assign('templateWebPath', TEMPLATE_WEB_PATH);
+$smarty->assign(tpl_var: 'templateWebPath', value: TEMPLATE_WEB_PATH);
