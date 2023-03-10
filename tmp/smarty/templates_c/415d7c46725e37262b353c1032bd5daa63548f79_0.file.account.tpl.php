@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.2.1, created on 2023-02-09 05:24:58
+/* Smarty version 4.2.1, created on 2023-03-10 04:28:53
   from 'D:\xampp\htdocs\beautic.local\views\default\account.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.2.1',
-  'unifunc' => 'content_63e4759add8928_38808837',
+  'unifunc' => 'content_640aa3f5cff865_22883249',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '415d7c46725e37262b353c1032bd5daa63548f79' => 
     array (
       0 => 'D:\\xampp\\htdocs\\beautic.local\\views\\default\\account.tpl',
-      1 => 1675916654,
+      1 => 1678378627,
       2 => 'file',
     ),
   ),
@@ -21,7 +21,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:userlink.tpl' => 1,
   ),
 ),false)) {
-function content_63e4759add8928_38808837 (Smarty_Internal_Template $_smarty_tpl) {
+function content_640aa3f5cff865_22883249 (Smarty_Internal_Template $_smarty_tpl) {
 ?><div class="container my-auto px-0 bg-nav h-100 mb-1">
     <nav aria-label="breadcrumb" class="ms-2">
         <ol class="breadcrumb mb-1 mb-sm-2 mb-lg-3">
@@ -93,7 +93,7 @@ function content_63e4759add8928_38808837 (Smarty_Internal_Template $_smarty_tpl)
                 <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
 
                     <div class="input-group-text">
-                        <?php if ($_smarty_tpl->tpl_vars['arUser']->value['user_group'] <> 4) {?>
+                        <?php if ($_smarty_tpl->tpl_vars['arUser']->value['user_group'] != 4) {?>
                             <input class="form-check-input mt-0" type="radio" value="1" checked aria-label="Радиокнопка"
                                 name="currency">
                         <?php } else { ?>
