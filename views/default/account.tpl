@@ -26,8 +26,8 @@
         <div class=" flex-fill me-2" id="vn-line"> </div>
     </h3>
 
-    <div class="row ">
-        <div class="col-lg-6 col-md-8 col-sm-12">
+    <div class="row me-0">
+        <div class="col-lg-6 col-md-8 col-sm-12 pe-0">
 
             <form method="post" action="/restuser/updatein/">
                 <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
@@ -94,7 +94,7 @@
             </form>
 
         </div>
-        <div class="col-lg-6 col-md-4 col-sm-0">
+        <div class="col-lg-6 col-md-4 col-sm-0 pe-0">
             <div class="row ms-0 ms-md-2 me-0 d-none d-md-block">
                 {include file='userlink.tpl'}
             </div>

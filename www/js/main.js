@@ -96,7 +96,7 @@ function strip_tags(str) {
 /**
  * Загрузка количества товаров на странице 
  * 
- * @param {integer} perPage количество товаров на странице 
+ * @param {int} perPage количество товаров на странице
  */
 function changeperpage(perPage) {
 	var postData = {
@@ -188,9 +188,9 @@ function changelayout(theme) {
 /**
  * Добавить/Удалить в избранное
  * 
- * @param {integer} productId Id продукта  
+ * @param {int} productId Id продукта
  * @param {string} link       Ссылка на продукт
- * @param {integer 1/0} add   Добавить/удалить в избранное
+ * @param {int} add   Добавить/удалить 1/0 в избранное
  */
 function addToBookmark(productId, link, add) {
 
@@ -199,12 +199,12 @@ function addToBookmark(productId, link, add) {
 	var objWish = "#wishlist_" + productId;
 	var userWishlist = "#userWishlist";
 
-	if (!$('#userWishlistFull').is(":visible")) {
-		var wishlistCount = 0;
-	} else {
+	//if (!$('#userWishlistFull').is(":visible")) {
+	//	var wishlistCount = 0;
+	//} else {
 		var wishlistCount = Number(($(userWishlist).text())); 		
 		//var wishlistCount = Number(($(userWishlist).text()).split('\n')[1]); 	
-	}
+	//}
 	
 	if (add) {
 		var postData = {

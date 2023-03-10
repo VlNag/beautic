@@ -25,8 +25,8 @@
         <span class="pe-2">{$pageTitle}</span>
         <div class=" flex-fill me-2" id="vn-line"> </div>
     </h3>
-    <div class="row ">
-    <div class="col-lg-6 col-md-8 col-sm-12">
+    <div class="row me-0">
+    <div class="col-lg-6 col-md-8 col-sm-12 pe-0">
     <p class="ms-2">
         Введите адрес электронной почты Вашей учетной записи. Нажмите кнопку отправить, чтобы получить ссылку для обновления пароля по электронной почте.
     </p> 
@@ -57,7 +57,7 @@
         </div>
     </form>
     </div>
-    <div class="col-lg-6 col-md-4 col-sm-0">
+    <div class="col-lg-6 col-md-4 col-sm-0 pe-0">
         <div class="row ms-0 ms-md-2 me-0 d-none d-md-block">
             {include file='userlink.tpl'}
         </div>
