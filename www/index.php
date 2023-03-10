@@ -39,6 +39,7 @@ if (isset($_SESSION['user'])) {
                     }
                     updateSession($user_id, session_id(), $_SERVER["HTTP_USER_AGENT"], time(), 1, getIp());
                 }
+                /** @var object $smarty */
                 $smarty->assign('arUser', $_SESSION['user']);
             } else {
                 session_destroy();
