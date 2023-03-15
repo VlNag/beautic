@@ -1,6 +1,0 @@
-$result1 = print_r($array, true);
-$result2 = var_export($array, true);
-
-$startTime=hrtime(true);
-  writeInFile('category start ' . date("Y-m-d H:i:s") . ' :: ' . (hrtime(true)-$startTime)); //****************** */
-
