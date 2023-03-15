@@ -154,27 +154,43 @@
                             <br/>
                     </p>
                     
-                    <div class="d-flex flex-row ">
+                    <div class="d-flex flex-row align-items-center">
                     <a id="addwishlist_{$rsProduct['productId']}" href="#" 
                         onClick='addToBookmark({$rsProduct['productId']},"/product/{$hrefCur}/{$rsProduct['productId']}/",0);return false; '; 
                         alt='Удалить из закладок' 
                         class="me-1 me-sm-2 me-lg-3 me-xl-4  ms-1 nav-link {if ! $rsProduct['bookmarks']} hideme"{else}"{/if}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Удалить из закладок" data-bs-custom-class="custom-tooltip"
-                            class="bi bi-heart-fill" viewBox="0 0 16 16">
+                            
+                            class="bi bi-heart-fill d-block d-sm-none" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                         </svg>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Удалить из закладок" data-bs-custom-class="custom-tooltip"
+                            class="bi bi-heart-fill d-none d-sm-block" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                        </svg>
+
                     </a>
                     <a id="removewishlist_{$rsProduct['productId']}" href="#" 
                         onClick='addToBookmark({$rsProduct['productId']},"/product/{$hrefCur}/{$rsProduct['productId']}/",1);return false; ';
                         alt='Добавить в закладки' 
                         class="me-1 me-sm-2  me-lg-3 me-xl-4  ms-1 nav-link {if  $rsProduct['bookmarks']} hideme"{else}"{/if} >
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Добавить в закладки" data-bs-custom-class="custom-tooltip"
-                            class="bi bi-heart" viewBox="0 0 16 16">
+                            
+                            class="bi bi-heart d-block d-sm-none" viewBox="0 0 16 16">
                             <path
                                 d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                         </svg>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Добавить в закладки" data-bs-custom-class="custom-tooltip"
+                            class="bi bi-heart d-none d-sm-block" viewBox="0 0 16 16">
+                            <path
+                                d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                        </svg>
+
+
                     </a>
 
                     <a id="addcart_{$rsProduct['productId']}" href="#"

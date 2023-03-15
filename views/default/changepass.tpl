@@ -28,7 +28,7 @@
 
     <div class="row me-0">
         <div class="col-lg-6 col-md-8 col-sm-12 pe-0">
-            <form method="post" action="/restuser/changepass/">
+            <form method="post" action="/restuser/changepass/" class="me-1">
                 <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
                     <span class="input-group-text col-12 col-sm-4 col-md-5 col-lg-5 col-xl-4" id="basic-addon1">
                         Текущий пароль

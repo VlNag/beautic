@@ -51,7 +51,11 @@ $(window).on('load', function () {
 		$(arrChkBox).hide();
 	}
 	if ($(window).width() < 992){
-        
+		//document.addEventListener('touchend', (event) => {
+			//$('.tooltip').tooltip('hide');
+			//$('.tooltip').removeClass('show');
+			//console.log('Прикосновение закончено')
+		//  })
 	    $('#addressShow').removeClass('show');
 	    $('#emailShow').removeClass('show');
 	    $('#phoneShow').removeClass('show');
@@ -202,7 +206,7 @@ function addToBookmark(productId, link, add) {
 	//if (!$('#userWishlistFull').is(":visible")) {
 	//	var wishlistCount = 0;
 	//} else {
-		var wishlistCount = Number(($(userWishlist).text())); 		
+	var wishlistCount = Number(($(userWishlist).text())); 		
 		//var wishlistCount = Number(($(userWishlist).text()).split('\n')[1]); 	
 	//}
 	
@@ -217,6 +221,7 @@ function addToBookmark(productId, link, add) {
 		//	nomailing: 1
 		//};
 		$(objNameRem).hide();
+		$('.tooltip').tooltip('hide');
 		$(objNameAdd).show();
         if (wishlistCount == 0) {
 			$("#userWishlistEmpty").hide();
@@ -246,9 +251,10 @@ function addToBookmark(productId, link, add) {
 		var postDataDel = {
 			productId: productId
 		};
-		$(objNameRem).show();
+		
 		$(objNameAdd).hide();
 		$(".toltip").tooltip("hide");
+		$(objNameRem).show();
 		$(objWish).remove();
         if (wishlistCount <= 1) {
 			$("#userWishlistFull").hide();

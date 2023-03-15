@@ -433,14 +433,14 @@
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-sm-6 d-flex justify-content-center">
+                            <div class="mb-1 col-sm-6 d-flex justify-content-center">
                                 {*<a href="#" class="nav-link">*}
                                 <button class="btn bg-nav-btn col-nav nv-navbar" type="button" onclick="window.location.href = '/user/forgotpass/';">
                                     <span class="mx-3"> Забыли пароль </span>
                                 </button>   
                                 {*</a>*}
                             </div>
-                            <div class="col-sm-6 d-flex justify-content-center">
+                            <div class="mb-1 col-sm-6 d-flex justify-content-center">
                                 {*<a class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal1">*}
                                 <button class="btn bg-nav-btn col-nav nv-navbar" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                     Зарегестрироваться

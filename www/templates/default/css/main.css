@@ -455,6 +455,7 @@ $tooltip-arrow-color:               $tooltip-bg;
     color: transparent !important;
   }
 
+/*  .tooltip { visibility: hidden }  */
 /*
 input::placeholder {
     color: rgb(26, 223, 141) !important;
