@@ -24,7 +24,8 @@
 <body {*class="d-flex flex-column h-100"*}>
     {if isset($message)}
         <!-- Modal3-->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-bs-labelledby="exampleModalLabel3" aria-hidden="false">
+        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-bs-labelledby="exampleModalLabel3"
+             aria-hidden="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -103,8 +104,10 @@
                         <div class='d-inline-flex nv-hover'>
                             <svg xmlns="http://www.w3.org/2000/svg" 
                                  width="16" height="16" fill="currentColor"
-                                 data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Вопросы и ответы" data-bs-custom-class="custom-tooltip"
-                                 class="bi bi-question-circle me-1 my-auto nv-hover head-svg" viewBox="0 0 16 16">
+                                 data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                 data-bs-title="Вопросы и ответы" data-bs-custom-class="custom-tooltip"
+                                 class="bi bi-question-circle me-1 my-auto nv-hover head-svg" 
+                                 viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                                 <path
                                     d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
@@ -119,7 +122,8 @@
                         <a href="/delivery/" class="nav-link">
                             <div class='d-inline-flex nv-hover'>
                                  <svg  width="16" height="16" viewBox="0 0 48 48" 
-                                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Доставка и оплата" data-bs-custom-class="custom-tooltip"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                    data-bs-title="Доставка и оплата" data-bs-custom-class="custom-tooltip"
                                     fill="currentColor" class="bi bi-person my-auto me-1 nv-hover head-svg" 
                                     xmlns="http://www.w3.org/2000/svg">
                                     <g id="Shipped">
@@ -140,8 +144,8 @@
                     {if isset($arUser)} 
                         <button class="btn bg-nav-btn col-nav me-2  
                             mb-sm-0 mb-1 nv-navbar tool"
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Личный кабинет: {$arUser['name']}"
-                            data-bs-custom-class="custom-tooltip"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                            title="Личный кабинет: {$arUser['name']}" data-bs-custom-class="custom-tooltip"
                             onclick="window.location.href = '/user/';"> 
                     {else}
                         <button class="btn bg-nav-btn col-nav me-2  
@@ -190,29 +194,35 @@
                     <div class="d-flex">
                         <button class="btn bg-nav-btn col-nav me-2  
                            mb-sm-0 mb-1 nv-navbar tool" 
-                           data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Выход" data-bs-custom-class="custom-tooltip"
+                           data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                           data-bs-title="Выход" data-bs-custom-class="custom-tooltip"
                            onclick="window.location.href = '/restuser/logout/';">
                             X
                         </button>
                         <button class="btn bg-nav-btn col-nav me-2   position-relative
                             mb-sm-0 mb-1 nv-navbar" 
-                            data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Закладки" data-bs-custom-class="custom-tooltip"
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                            data-bs-title="Закладки" data-bs-custom-class="custom-tooltip"
                             onclick="window.location.href = '/user/bookmarks/';">
-                            {assign var="wishlistNotNull" value=isset($arUser['user_wishlist'])&&!empty($arUser['user_wishlist'])}
+                            {assign var="wishlistNotNull" 
+                                  value=isset($arUser['user_wishlist'])&&!empty($arUser['user_wishlist'])}
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-heart-fill {if !$wishlistNotNull}hideme{/if}" viewBox="0 0 16 16" id="userWishlistFull">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+                                 fill="currentColor" class="bi bi-heart-fill {if !$wishlistNotNull}hideme{/if}" 
+                                 viewBox="0 0 16 16" id="userWishlistFull">
                                 <path fill-rule="evenodd"
-                                d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                      d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
                             </svg>
                             {*if $wishlistNotNull*}
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-light col-nav {if !$wishlistNotNull}hideme{/if}" id="userWishlist">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill 
+                                         bg-light col-nav {if !$wishlistNotNull}hideme{/if}" id="userWishlist">
                                 {count($arUser['user_wishlist'])}
                                 {*<span class="visually-hidden">в закладках</span>*}
                             </span>
                             {*/if*}
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-heart {if $wishlistNotNull}hideme{/if}" viewBox="0 0 16 16" id="userWishlistEmpty">
+                                class="bi bi-heart {if $wishlistNotNull}hideme{/if}" viewBox="0 0 16 16" 
+                                id="userWishlistEmpty">
                                 <path
                                     d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
                             </svg>
@@ -247,88 +257,91 @@
                             *} 
                             
                         </button>
+                        {*cart not realised*} 
                         <button class="btn bg-nav-btn col-nav me-2  
-                        mb-sm-0 mb-1 nv-navbar" 
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Корзина" data-bs-custom-class="custom-tooltip"
-                        onclick="window.location.href = '/user/bookmarks/';">
-                        {if isset($arUser['user_wishlist'])}
-                            {if !empty($arUser['user_wishlist'])}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                    class="bi bi-basket3-fill" viewBox="0 0 16 16">
-                                    <path 
-                                        d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
-                                </svg>
+                                     mb-sm-0 mb-1 nv-navbar" 
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                data-bs-title="Корзина" data-bs-custom-class="custom-tooltip"
+                                onclick="window.location.href = '/user/bookmarks/';">
+                            {if isset($arUser['user_wishlist'])}
+                                {if !empty($arUser['user_wishlist'])}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                                        class="bi bi-basket3-fill" viewBox="0 0 16 16">
+                                        <path 
+                                            d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
+                                    </svg>
+                                {else}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
+                                         class="bi bi-basket3" viewBox="0 0 16 16">
+                                        <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
+                                    </svg>
+                                {/if}
                             {else}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                    class="bi bi-basket3" viewBox="0 0 16 16">
+                                     class="bi bi-basket3" viewBox="0 0 16 16">
                                     <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
                                 </svg>
                             {/if}
-                        {else}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                class="bi bi-basket3" viewBox="0 0 16 16">
-                                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
-                            </svg>
-                        {/if}
-                      </button>
+                        </button>
 
 
                     </div>
                 {/if}
                 {if isset($arUser)}
-                 <div class="d-flex d-sm-none d-lg-block">
+                    <div class="d-flex d-sm-none d-lg-block">
 
                     <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Личный кабинет</button>
                             <button class="btn btn-outline-danger ms-3">Sign out</button> btn-outline-success-->
 
-                    <form action="" class="d-flex me-2">
-                        <input type="search" placeholder="Найти" 
-                               class="form-control me-1 nv-navbar">
-                        <button class="btn bg-nav-btn col-nav nv-navbar"
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                            {*<span class="d-none d-lg-block">Поиск</span>*}
-                            
-                        </button>
-                    </form>    
-                 </div>
+                        <form action="" class="d-flex me-2">
+                            <input type="search" placeholder="Найти" 
+                                class="form-control me-1 nv-navbar">
+                            <button class="btn bg-nav-btn col-nav nv-navbar"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                    data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+                                    fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                                {*<span class="d-none d-lg-block">Поиск</span>*}
+                            </button>
+                        </form>    
+                    </div>
                 
-                 <div class="d-flex d-none d-sm-block d-lg-none me-2">
-                    <button class="btn bg-nav-btn col-nav nv-navbar"
-                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                            class="bi bi-search" viewBox="0 0 16 16">
-                            <path
-                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-                        {*<span class="d-none d-lg-block">Поиск</span>*}
-                    </button>
-                 </div>
+                    <div class="d-flex d-none d-sm-block d-lg-none me-2">
+                        <button class="btn bg-nav-btn col-nav nv-navbar"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                            {*<span class="d-none d-lg-block">Поиск</span>*}
+                        </button>
+                    </div>
                 {else}
-                 <div class="d-flex">
+                    <div class="d-flex">
 
                     <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Личный кабинет</button>
                             <button class="btn btn-outline-danger ms-3">Sign out</button> btn-outline-success-->
 
-                    <form action="" class="d-flex me-2">
-                        <input type="search" placeholder="Найти" 
-                               class="form-control me-1 nv-navbar">
-                        <button class="btn bg-nav-btn col-nav nv-navbar"
-                        data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg>
-                            {*<span class="d-none d-lg-block">Поиск</span>*}
-                            
-                        </button>
-                    </form>    
-                 </div>
-
-
+                        <form action="" class="d-flex me-2">
+                            <input type="search" placeholder="Найти" 
+                                class="form-control me-1 nv-navbar" id="">
+                            <button class="btn bg-nav-btn col-nav nv-navbar"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" 
+                                    data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+                                     fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                                {*<span class="d-none d-lg-block">Поиск</span>*}
+                            </button>
+                        </form>    
+                    </div>
                 {/if}   
+
                 <div class="d-flex mt-1">
 
                  <div class="form-check form-switch nv-hover">
