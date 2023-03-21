@@ -213,4 +213,32 @@ function updatepassAction($smarty){
     loadTemplate($smarty, 'header');
     loadTemplate($smarty, 'updatepass');
     loadTemplate($smarty, 'footer');
-} 
+}
+
+function supportAction($smarty){
+    $token  = $_GET['token'] ?? null;
+    $dialog = getDialog($token);
+    if (!$dialog['success']) {
+        $dialog['status'] = 1;
+        $dialog['token'] = null;
+        $dialog['content'] = null;
+        $dialog['support_id'] = 0;
+        $dialog['name'] = '';
+        $dialog['email'] = '';
+        $dialog['user_id'] = 0;
+
+        $user = $_SESSION['user'] ?? null;
+        if ($user) {
+            $dialog['user_id'] = $user['user_id'] ?? 0;
+            $dialog['name'] = $user['user_name'] ?? $user['login'];
+            $emails = getContact($dialog['user_id'], 'email');
+            $dialog['email'] = $emails[0]['content'] ?? '';
+        }
+    }
+
+    $smarty->assign('dialog',$dialog);
+
+    loadTemplate($smarty, 'header');
+    loadTemplate($smarty, 'support');
+    loadTemplate($smarty, 'footer');
+}

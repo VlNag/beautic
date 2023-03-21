@@ -24,13 +24,13 @@
 <body {*class="d-flex flex-column h-100"*}>
     {if isset($message)}
         <!-- Modal3-->
-        <div class="modal fade" id="exampleModal3" tabindex="-1" aria-bs-labelledby="exampleModalLabel3"
+        <div class="modal fade" id="exampleModal3" tabindex="-1" {*aria-bs-labelledby="exampleModalLabel3*}"
              aria-hidden="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <span class="modal-title" id="exampleModalLabel">{$message}</span>
-                        <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="close">
+                        <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
                         </button>
                     </div>
                         {*
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        </div>
+        {*</div>*}
         <!-- /Modal3-->
     {/if}   
 
@@ -154,7 +154,7 @@
                         <div class='d-inline-flex nv-hover' id='account'>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
                             {if !isset($arUser)}
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Личный кабинет"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom" {*title="Личный кабинет"*}
                                 data-bs-custom-class="custom-tooltip"
                             {/if}    
                                  fill="currentColor" class="bi bi-person my-auto nv-hover" 
@@ -290,7 +290,8 @@
                 {if isset($arUser)}
                     <div class="d-flex d-sm-none d-lg-block">
 
-                    <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Личный кабинет</button>
+                    <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Личный кабинет</button>
                             <button class="btn btn-outline-danger ms-3">Sign out</button> btn-outline-success-->
 
                         <form action="" class="d-flex me-2">
@@ -323,13 +324,14 @@
                 {else}
                     <div class="d-flex">
 
-                    <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Личный кабинет</button>
+                    <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Личный кабинет</button>
                             <button class="btn btn-outline-danger ms-3">Sign out</button> btn-outline-success-->
 
-                        <form action="" class="d-flex me-2">
+                        <form method="post" action="/products/search/" class="d-flex me-2">
                             <input type="search" placeholder="Найти" 
-                                class="form-control me-1 nv-navbar" id="">
-                            <button class="btn bg-nav-btn col-nav nv-navbar"
+                                class="form-control me-1 nv-navbar" name="search0">
+                            <button type="submit" class="btn bg-nav-btn col-nav nv-navbar"
                                     data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                     data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
@@ -367,12 +369,13 @@
     </nav>
 
     <!-- Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-bs-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-hidden="true">
+               {*aria-bs-labelledby="exampleModalLabel"*}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Авторизация</h5>
-                    <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="close">
+                    <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -448,21 +451,21 @@
                         <div class="row mb-3">
                             <div class="mb-1 col-sm-6 d-flex justify-content-center">
                                 {*<a href="#" class="nav-link">*}
-                                <button class="btn bg-nav-btn col-nav nv-navbar" type="button" onclick="window.location.href = '/user/forgotpass/';">
+                                <button class="btn bg-nav-btn col-nav nv-navbar" type="button"
+                                        onclick="window.location.href = '/user/forgotpass/';">
                                     <span class="mx-3"> Забыли пароль </span>
                                 </button>   
                                 {*</a>*}
                             </div>
                             <div class="mb-1 col-sm-6 d-flex justify-content-center">
                                 {*<a class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal1">*}
-                                <button class="btn bg-nav-btn col-nav nv-navbar" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                                <button class="btn bg-nav-btn col-nav nv-navbar" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#exampleModal2">
                                     Зарегестрироваться
                                 </button>    
                                 {*</a>*}
                             </div>
                         </div>
-
-
                     </form>
                 </div>
             </div>
@@ -487,17 +490,18 @@
                 </div>
                 </div>*}
             </div>
-        </div>
+        {*</div>*}
     </div>
     <!-- /Modal-->
 
    <!-- Modal2-->
-   <div class="modal fade" id="exampleModal2" tabindex="-1" aria-bs-labelledby="exampleModalLabel2" aria-hidden="true">
+   <div class="modal fade" id="exampleModal2" tabindex="-1" aria-hidden="true">
+        {*aria-bs-labelledby="exampleModalLabel2"*}
        <div class="modal-dialog">
            <div class="modal-content">
                <div class="modal-header">
                    <h5 class="modal-title" id="exampleModalLabel2">Регистрация</h5>
-                   <button class="btn-close" data-bs-dismiss="modal" aria-bs-label="close">
+                   <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
                    </button>
                </div>
                <div class="modal-body">
@@ -546,7 +550,8 @@
 
                        <div class="row mb-3 d-flex justify-content-center">
 
-                       <button class="btn bg-nav-btn col-nav nv-navbar col-sm-11" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                       <button class="btn bg-nav-btn col-nav nv-navbar col-sm-11" type="button"
+                               data-bs-toggle="modal" data-bs-target="#exampleModal">
                        Авторизироваться
                     </button> 
                        </div>
@@ -575,7 +580,7 @@
            </div>
            </div>*}
        </div>
-   </div>
+   {*</div>*}
    </div>
 <!-- /Modal2-->
 

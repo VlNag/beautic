@@ -1450,3 +1450,56 @@ function getTimeSessionModification($user_id, $session_id = NULL)
            //d($date_update);
            return $date_update;
 }
+
+function getDialog($token){
+    global $db;
+    if ($token) {
+        $result['token'] = $token;
+        $sql = "SELECT * FROM `bt_support` WHERE `token` = ?";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, 's', $token);
+        $rs = mysqli_stmt_execute($stmt);
+        if ($rs) {
+            $res = mysqli_stmt_get_result($stmt);
+            $res = createSmartyRsArray($res);
+            if ($res) {
+                $result['success'] = true;
+                $res = $res[0];
+                $result['name'] = $res['name'];
+                $result['email'] = $res['email'];
+                $result['status'] = $res['status'];
+                $support_id = $res['support_id'];
+                $result['support_id'] = $support_id;
+                $result['user_id'] = $res['user_id'];
+                $sqlC = "SELECT * FROM `bt_support_content` WHERE `support_id` = ?";
+                $stmtC = mysqli_prepare($db, $sqlC);
+                mysqli_stmt_bind_param($stmtC, 's', $support_id);
+                $rsC = mysqli_stmt_execute($stmtC);
+                if ($rsC) {
+                    $resC = mysqli_stmt_get_result($stmtC);
+                    $result['content'] = createSmartyRsArray($resC);
+                } else {
+                    $result['success'] = false;
+                }
+            } else {
+                $result['success'] = false;
+            }
+        }
+    } else {
+        $result['success'] = false;
+    }
+    return $result;
+}
+
+function getContact($user_id, $type = null) {
+    global $db;
+    $sql = "SELECT `content` FROM `bt_user_contact` WHERE `user_id` = '$user_id'";
+    if ($type) $sql .= " AND `type_contact` = '$type'";
+    $rs = requestUser($sql);
+    if ($rs) {
+        $res = createSmartyRsArray($rs);
+    } else {
+        $res = null;
+    }
+    return $res;
+}

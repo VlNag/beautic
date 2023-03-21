@@ -45,7 +45,7 @@
                                 <option value={$optionPage['value']}>
                                     {$optionPage['value']}
                                 </option>
-                            {{/if}}
+                            {/if}
                         {/foreach}
                     </select>
 
@@ -299,7 +299,7 @@
                             {/if}
                         </ul>
                     </nav>
-                {{/if}}
+                {/if}
                 <p class="mb-2 col-nav text-center">
                     Показано с {$paginator['startPosition']} по {$paginator['endPosition']} из
                     {$paginator['quanProduct']} (всего {$paginator['quanPage']} {$paginator['pageStr']})

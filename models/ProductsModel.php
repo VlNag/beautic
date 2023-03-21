@@ -953,7 +953,7 @@ function addProduct($fieldRequest)
 function getSqlForDelete($table, $productId)
 {
     $sql = "DELETE FROM `$table` WHERE `product_id` = '$productId'";
-    return $sql; 
+    return $sql;
 }
 
 function deleteProduct($productId)
@@ -1220,3 +1220,19 @@ function updateProduct($fieldRequest)
     }
     return $resData;
 }
+
+function getProductsSearch($words){
+    if ($words) {
+        $sql = 'SELECT `product_id`, `name`, `description` FROM `bt_product_description` WHERE ';
+        foreach ($words as $word) {
+            $sql .= "`name` LIKE '%$word%' OR";
+        }
+        $sql = commaDel($sql, 'R');
+        $sql = commaDel($sql, 'O');
+        $rs = request($sql);
+        $res = createSmartyRsArray($rs);
+    } else {
+        $res = false;
+    }
+    return $res;
+ }

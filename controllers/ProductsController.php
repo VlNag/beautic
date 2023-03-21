@@ -197,3 +197,24 @@ function updateperpageAction()
 
   echo json_encode($resData); 
 }
+
+function searchAction($smarty){
+    if (isset($_POST['search0'])) {
+        if (!empty($_POST['search0'])) {
+            $words = array_filter(explode(" ", $_POST['search0']));
+        } else {
+            $words = null;
+        }
+        $rsProductsPage = getProductsSearch($words);
+        $smarty->assign('rsProductsPage',$rsProductsPage);
+        $smarty->assign('currency','');
+        //d($rsProductsPage);
+        loadTemplate($smarty, 'header');
+        loadTemplate($smarty, 'productssearch');
+        loadTemplate($smarty, 'footer');
+
+    } elseif (isset($_POST['search1'])) {
+
+    }
+
+}
