@@ -725,3 +725,16 @@ function updatefromcAction()
     }
     echo json_encode($resData);
 }
+
+function addquestionAction(): void
+{
+    $support_id = $_GET['support_id'] ?? 0;
+    $question = $_GET['question'] ?? '';
+    $name = $_GET['name'] ?? '';
+    $email = $_GET['email'] ?? '';
+    $user_id = $_GET['user_id'] ?? 0;
+    addQuestion($support_id, $user_id, $question, $name, $email);
+
+    //header('Location: '.$_SERVER['HTTP_REFERER']);
+    die;
+}

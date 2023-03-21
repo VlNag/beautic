@@ -1531,3 +1531,8 @@ function getAllDialog(int $user_id): array
     }
     return $allDialog;
 }
+
+function addQuestion($support_id, $user_id, $question, $name, $email): void
+{
+
+}

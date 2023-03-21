@@ -336,7 +336,7 @@ function moveContact(number, direction, type) {
 /**
  * Скрывает контакт в таблице и очищает данные
  * 
- * @param {integer} number        порядковый номер контакта
+ * @param {int} number        порядковый номер контакта
  * @param {string} type           тип контакта
  * @param {integer 0/1} val       если 1, тогда скрывается контакт для лобавления, 
  *                                показать кнопку для добавления    
@@ -480,7 +480,7 @@ function getJsonContact(number, type) {
     return jarr;
 }
 
-function saveContacts(num1, num2,num3) {  
+function saveContacts(num1, num2, num3) {
 
 	var postData = {};
 	postData['register'] = 'Y';
@@ -510,7 +510,40 @@ function saveContacts(num1, num2,num3) {
 	
 }
 
+function chooseSupport() {
 
+
+}
+
+function sendSupport(support_id, user_id) {
+
+	let question = $('#questionSupport').val();
+	let name = $('#nameSupport').val();
+	let email = $('#emailSupport').val();
+
+	let postData = {
+		support_id: support_id,
+		question: question,
+		name: name,
+		email: email,
+		user_id: user_id
+	};
+	$.ajax({
+		type: 'GET',
+		async: false,
+		url: "/restuser/addquestion/",
+		data: postData,
+		dataType: 'json',
+		success: function (data) {
+			if (data['success']) {
+				//	alert("data['message']");
+				//	document.location = '/';
+				//} else {
+				//	alert(data['message']);
+			}
+		}
+	});
+}
 //>
 
 

@@ -221,37 +221,59 @@ function supportAction($smarty): void
     $user_id = $user['user_id'] ?? 0;
 
     $token  = $_GET['token'] ?? null;
+    $new = $_GET['new'] ?? 0;
     $allDialog = getAllDialog($user_id);
     $dialog = getDialog($token);
 
-    if ((!$dialog['success'])||($dialog['user_id'] != $user_id)) {
-        if ($allDialog) {
-            foreach($allDialog as $dialogCur) {
-               if ($dialogCur['status'] == 1) {
-                   $dialog = getDialog($dialogCur['token']);
-                   if ($dialog['success']) {
-                       break;
-                   }
+    if ($new == 1) {
+        $dialog['status'] = 1;
+        $dialog['token'] = null;
+        $dialog['content'] = null;
+        $dialog['support_id'] = 0;
+        $dialog['name'] = '';
+        $dialog['email'] = '';
+        $dialog['user_id'] = 0;
+
+        if ($user) {
+            $dialog['user_id'] = $user_id;
+            $dialog['name'] = $user['user_name'] ?? $user['login'];
+            $emails = getContact($dialog['user_id'], 'email');
+            $dialog['email'] = $emails[0]['content'] ?? '';
+        }
+    } else {
+        if ((!$dialog['success']) || ($dialog['user_id'] != $user_id)) {
+            if ($allDialog) {
+                foreach ($allDialog as $dialogCur) {
+                    if ($dialogCur['status'] == 1) {
+                        $dialog = getDialog($dialogCur['token']);
+                        if ($dialog['success']) {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!$dialog['success']) {
+                $dialog['status'] = 1;
+                $dialog['token'] = null;
+                $dialog['content'] = null;
+                $dialog['support_id'] = 0;
+                $dialog['name'] = '';
+                $dialog['email'] = '';
+                $dialog['user_id'] = 0;
+
+                if ($user) {
+                    $dialog['user_id'] = $user_id;
+                    $dialog['name'] = $user['user_name'] ?? $user['login'];
+                    $emails = getContact($dialog['user_id'], 'email');
+                    $dialog['email'] = $emails[0]['content'] ?? '';
                 }
             }
         }
-        if (!$dialog['success']) {
-            $dialog['status'] = 1;
-            $dialog['token'] = null;
-            $dialog['content'] = null;
-            $dialog['support_id'] = 0;
-            $dialog['name'] = '';
-            $dialog['email'] = '';
-            $dialog['user_id'] = 0;
-
-            if ($user) {
-                $dialog['user_id'] = $user_id;
-                $dialog['name'] = $user['user_name'] ?? $user['login'];
-                $emails = getContact($dialog['user_id'], 'email');
-                $dialog['email'] = $emails[0]['content'] ?? '';
-            }
-        }
     }
+    $smarty->assign('arInfo', getInfoHeadByUserGroup());
+    $smarty->assign('articleInfo', getInfoArticleByUserGroup()['article_main']);
+
+    $smarty->assign('pageTitle','Задать вопрос');
     $smarty->assign('dialog',$dialog);
     $smarty->assign('allDialog',$allDialog);
 
