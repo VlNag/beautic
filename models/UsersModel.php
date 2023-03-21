@@ -1453,6 +1453,7 @@ function getTimeSessionModification($user_id, $session_id = NULL)
 
 function getDialog($token){
     global $db;
+    $result['user_id'] = 0;
     if ($token) {
         $result['token'] = $token;
         $sql = "SELECT * FROM `bt_support` WHERE `token` = ?";
@@ -1471,7 +1472,7 @@ function getDialog($token){
                 $support_id = $res['support_id'];
                 $result['support_id'] = $support_id;
                 $result['user_id'] = $res['user_id'];
-                $sqlC = "SELECT * FROM `bt_support_content` WHERE `support_id` = ?";
+                $sqlC = "SELECT * FROM `bt_support_content` WHERE `support_id` = ? ORDER BY 'date_added'";
                 $stmtC = mysqli_prepare($db, $sqlC);
                 mysqli_stmt_bind_param($stmtC, 's', $support_id);
                 $rsC = mysqli_stmt_execute($stmtC);
@@ -1502,4 +1503,31 @@ function getContact($user_id, $type = null) {
         $res = null;
     }
     return $res;
+}
+
+/**
+ * @param $user_id integer
+ * @return array $res
+ */
+function getAllDialog(int $user_id): array
+{
+    global $db;
+    $allDialog = array();
+    if ($user_id) {
+        $sql = "SELECT `token` FROM `bt_support` WHERE `user_id` = ?";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);
+        $rs = mysqli_stmt_execute($stmt);
+        if ($rs) {
+            $res = mysqli_stmt_get_result($stmt);
+            $res = createSmartyRsArray($res);
+            if ($res) {
+                foreach($res as $re) {
+                    $token = $re['token'];
+                    $allDialog[] = getDialog($token);
+                }
+            }
+        }
+    }
+    return $allDialog;
 }

@@ -215,28 +215,45 @@ function updatepassAction($smarty){
     loadTemplate($smarty, 'footer');
 }
 
-function supportAction($smarty){
-    $token  = $_GET['token'] ?? null;
-    $dialog = getDialog($token);
-    if (!$dialog['success']) {
-        $dialog['status'] = 1;
-        $dialog['token'] = null;
-        $dialog['content'] = null;
-        $dialog['support_id'] = 0;
-        $dialog['name'] = '';
-        $dialog['email'] = '';
-        $dialog['user_id'] = 0;
+function supportAction($smarty): void
+{
+    $user = $_SESSION['user'] ?? null;
+    $user_id = $user['user_id'] ?? 0;
 
-        $user = $_SESSION['user'] ?? null;
-        if ($user) {
-            $dialog['user_id'] = $user['user_id'] ?? 0;
-            $dialog['name'] = $user['user_name'] ?? $user['login'];
-            $emails = getContact($dialog['user_id'], 'email');
-            $dialog['email'] = $emails[0]['content'] ?? '';
+    $token  = $_GET['token'] ?? null;
+    $allDialog = getAllDialog($user_id);
+    $dialog = getDialog($token);
+
+    if ((!$dialog['success'])||($dialog['user_id'] != $user_id)) {
+        if ($allDialog) {
+            foreach($allDialog as $dialogCur) {
+               if ($dialogCur['status'] == 1) {
+                   $dialog = getDialog($dialogCur['token']);
+                   if ($dialog['success']) {
+                       break;
+                   }
+                }
+            }
+        }
+        if (!$dialog['success']) {
+            $dialog['status'] = 1;
+            $dialog['token'] = null;
+            $dialog['content'] = null;
+            $dialog['support_id'] = 0;
+            $dialog['name'] = '';
+            $dialog['email'] = '';
+            $dialog['user_id'] = 0;
+
+            if ($user) {
+                $dialog['user_id'] = $user_id;
+                $dialog['name'] = $user['user_name'] ?? $user['login'];
+                $emails = getContact($dialog['user_id'], 'email');
+                $dialog['email'] = $emails[0]['content'] ?? '';
+            }
         }
     }
-
     $smarty->assign('dialog',$dialog);
+    $smarty->assign('allDialog',$allDialog);
 
     loadTemplate($smarty, 'header');
     loadTemplate($smarty, 'support');
