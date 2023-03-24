@@ -733,8 +733,46 @@ function addquestionAction(): void
     $name = $_GET['name'] ?? '';
     $email = $_GET['email'] ?? '';
     $user_id = $_GET['user_id'] ?? 0;
-    addQuestion($support_id, $user_id, $question, $name, $email);
+    $token = $_GET['token'] ?? '';
+    $fl = true;
+    if ($user_id == 0) {
+        if (empty($email)) {
+            $_SESSION['message'] = 'Нужно заполнить E-Mail адрес';
+            //header('Location: '.$_SERVER['HTTP_REFERER']);
+            $fl = false;
+          }
+    }
+    if ($fl) {
+        $res = addQuestion($support_id, $user_id, $question, $name, $email, $token);
+        if (!$res) $_SESSION['message'] = 'Не удалось сформировать запрос';
+        //header('Location: ' . $_SERVER['HTTP_REFERER']);
+    }
+    die;
+}
 
-    //header('Location: '.$_SERVER['HTTP_REFERER']);
+function deactivequestionAction(): void
+{
+    $support_id = $_GET['support_id'] ?? 0;
+    $support_id = intval($support_id);
+
+    if ($support_id > 0) {
+        deactiveQuestion($support_id);
+    }
+    die;
+}
+
+function addquestionadmAction(): void
+{
+    $user = $_SESSION['user'] ?? null;
+    $answering_id = $user['user_id'] ?? 0;
+
+    $support_id = $_GET['support_id'] ?? 0;
+    $question = $_GET['question'] ?? '';
+    $user_id = $_GET['user_id'] ?? 0;
+    $token = $_GET['token'] ?? '';
+    $email = $_GET['email'] ?? '';
+    $res = addQuestionAdm($support_id, $user_id, $question, $token, $email, $answering_id);
+    if (!$res) $_SESSION['message'] = 'Не удалось отправить ответ';
+    //header('Location: ' . $_SERVER['HTTP_REFERER']);
     die;
 }

@@ -294,11 +294,11 @@ function sendMail($email, $title, $message, $images = NULL, $files = NULL, $copy
     
         // Настройки вашей почты
         $mail->Host       = 'smtp.beget.com'; // SMTP сервера вашей почты
-        $mail->Username   = 'order@beauty-ornament.ru'; // Логин на почте
-        $mail->Password   = '2M&nUthb2M&nUthb'; // Пароль на почте
+        $mail->Username   = 'test@beauty-ornament.ru'; // Логин на почте
+        $mail->Password   = 'dcE%Cs9v'; // Пароль на почте
         //$mail->SMTPSecure = 'ssl';
         $mail->Port       = 25;
-        $mail->setFrom('order@beauty-ornament.ru', 'Beautic'); // Адрес самой почты и имя отправителя
+        $mail->setFrom('test@beauty-ornament.ru', 'Beautic'); // Адрес самой почты и имя отправителя
     
         // Получатель письма
         $mail->addAddress($email);  

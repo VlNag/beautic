@@ -475,7 +475,7 @@ input::placeholder {
 /*.in-put::-moz-placeholder {color: #dc1c1c;opacity: 1;}
  */
 
-
+/*
 body{margin-top:20px;}
 
 .chat-online {
@@ -485,7 +485,7 @@ body{margin-top:20px;}
 .chat-offline {
     color: #e4606d
 }
-
+*/
 .chat-messages {
     display: flex;
     flex-direction: column;
@@ -508,6 +508,7 @@ body{margin-top:20px;}
     flex-direction: row-reverse;
     margin-left: auto
 }
+/*
 .py-3 {
     padding-top: 1rem!important;
     padding-bottom: 1rem!important;
@@ -522,3 +523,11 @@ body{margin-top:20px;}
 .border-top {
     border-top: 1px solid #dee2e6!important;
 }
+*/
+
+.c-button {
+    font-family: inherit;
+    border-style: none;
+    /* другие стили */
+}
+

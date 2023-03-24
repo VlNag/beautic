@@ -18,7 +18,7 @@
         <link href="{$templateWebPath}css/maindark.css" rel="stylesheet" type="text/css">
     {/if}
     <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>
-    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/main.js?v2"></script>
 </head>
 
 <body {*class="d-flex flex-column h-100"*}>

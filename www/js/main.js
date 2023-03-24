@@ -509,13 +509,15 @@ function saveContacts(num1, num2, num3) {
 	});
 	
 }
+//>
 
+//< functions for support
 function chooseSupport() {
-
-
+	let support_id = $('#selectSupport').val();
+	location.href='/user/support/?token=' + support_id;
 }
 
-function sendSupport(support_id, user_id) {
+function sendSupport(support_id, user_id, token) {
 
 	let question = $('#questionSupport').val();
 	let name = $('#nameSupport').val();
@@ -526,7 +528,8 @@ function sendSupport(support_id, user_id) {
 		question: question,
 		name: name,
 		email: email,
-		user_id: user_id
+		user_id: user_id,
+		token: token
 	};
 	$.ajax({
 		type: 'GET',
@@ -544,6 +547,60 @@ function sendSupport(support_id, user_id) {
 		}
 	});
 }
+
+function sendSupportAdm(support_id, user_id, token, email) {
+
+	let question = $('#questionSupportAdm').val();
+	//let name = $('#nameSupport').val();
+	//let email = $('#emailSupport').val();
+
+	let postData = {
+		support_id: support_id,
+		question: question,
+	    user_id: user_id,
+		email: email,
+		token: token
+	};
+	$.ajax({
+		type: 'GET',
+		async: false,
+		url: "/restuser/addquestionadm/",
+		data: postData,
+		dataType: 'json',
+		success: function (data) {
+			if (data['success']) {
+				//	alert("data['message']");
+				//	document.location = '/';
+				//} else {
+				//	alert(data['message']);
+			}
+		}
+	});
+}
+
+function deactiveSupport(support_id) {
+
+	let postData = {
+		support_id: support_id
+	};
+
+	$.ajax({
+		type: 'GET',
+		async: false,
+		url: "/restuser/deactivequestion/",
+		data: postData,
+		dataType: 'json',
+		success: function (data) {
+			if (data['success']) {
+				//	alert("data['message']");
+				//	document.location = '/';
+				//} else {
+				//	alert(data['message']);
+			}
+		}
+	});
+}
+
 //>
 
 

@@ -1472,7 +1472,7 @@ function getDialog($token){
                 $support_id = $res['support_id'];
                 $result['support_id'] = $support_id;
                 $result['user_id'] = $res['user_id'];
-                $sqlC = "SELECT * FROM `bt_support_content` WHERE `support_id` = ? ORDER BY 'date_added'";
+                $sqlC = "SELECT * FROM `bt_support_content` WHERE `support_id` = ? ORDER BY `date_added` DESC";
                 $stmtC = mysqli_prepare($db, $sqlC);
                 mysqli_stmt_bind_param($stmtC, 's', $support_id);
                 $rsC = mysqli_stmt_execute($stmtC);
@@ -1493,7 +1493,7 @@ function getDialog($token){
 }
 
 function getContact($user_id, $type = null) {
-    global $db;
+    //global $db;
     $sql = "SELECT `content` FROM `bt_user_contact` WHERE `user_id` = '$user_id'";
     if ($type) $sql .= " AND `type_contact` = '$type'";
     $rs = requestUser($sql);
@@ -1532,7 +1532,214 @@ function getAllDialog(int $user_id): array
     return $allDialog;
 }
 
-function addQuestion($support_id, $user_id, $question, $name, $email): void
+function checkExist($table, $condition): int|string
 {
-
+    $sql = "select 1 from $table where $condition limit 1";
+    $rs = requestUser($sql);
+    if ($rs) {
+        $res = mysqli_num_rows($rs);
+    } else {
+        $res = 0;
+    }
+  return $res;
 }
+
+function addQuestion($support_id, $user_id, $question, $name, $email, $token): bool
+{
+    global $db, $website;
+    $support_id = intval($support_id);
+    $user_id = intval($user_id);
+    if (checkExist('`bt_support`', "`support_id` = '$support_id'")) {
+        $sql = "UPDATE `bt_support` SET `name`= ?,`email`= ?,`user_id`='$user_id'" .
+               " WHERE `support_id`='$support_id'";
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, 'ss', $name, $email);
+        $rs = mysqli_stmt_execute($stmt);
+        if ($rs) {
+            $sql = 'INSERT INTO `bt_support_content`(`support_id`, `question`, `date_added`)' .
+                "VALUES('$support_id', ?, NOW())";
+            $stmt = mysqli_prepare($db, $sql);
+            mysqli_stmt_bind_param($stmt, 's', $question);
+            $rs = mysqli_stmt_execute($stmt);
+        }
+        // send letter
+        $dialog = getDialog($token);
+        $messages = $dialog['content'] ?? array();
+        $dialogs = '<p> -----------------------------------------</br></p>';
+        foreach ($messages as $message) {
+             if($message['question']) {
+                 $dialogs .= htmlspecialchars($message['question']);
+                 $dialogs .= '<p> -----------------------------------------</br></p>';
+             } elseif($message['answer']) {
+                 $dialogs .= 'Ответ: ' . htmlspecialchars($message['answer']);
+                 $dialogs .= '<p> -----------------------------------------</br></p>';
+             }
+        }
+
+        //$dialogs = htmlspecialchars($dialogs);
+        $message = <<<END
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+                <p>
+                       Вопрос $support_id получен.</br></p>
+                   $dialogs
+                   <p> В ближайшее время наши менеджеры вам ответят.</br></p>
+                   <p> Историю запроса можно посмотреть по <a href="$website/user/support/?token=$token">ссылке</a></br>
+                </p>
+                <p>  
+                   <b>С уважением, <a href="$website">Beautic</a></b> 
+                </p>
+                <img src="cid:image1" alt="Beautic">
+            </body>
+        </html>
+        END;
+        //writeInFile($message);
+        $res = sendMail($email, "Вопрос $support_id на сайте Beautic", $message, ['logo.png']);
+
+    } else {
+       $sql = 'INSERT INTO `bt_support`(`token`, `status`, `name`, `email`, `user_id`)' .
+               "VALUES ('$token','1',?,?,'$user_id')";
+        //writeInFile($sql);
+        $stmt = mysqli_prepare($db, $sql);
+        mysqli_stmt_bind_param($stmt, 'ss', $name, $email);
+        $rs = mysqli_stmt_execute($stmt);
+        if($rs) {
+            $support_id = mysqli_insert_id($db);
+            //writeInFile(print_r($res, true));
+            $sql = 'INSERT INTO `bt_support_content`(`support_id`, `question`, `date_added`)' .
+                "VALUES('$support_id', ?, NOW())";
+            //writeInFile($sql);
+            $stmt = mysqli_prepare($db, $sql);
+            mysqli_stmt_bind_param($stmt, 's', $question);
+            $rs = mysqli_stmt_execute($stmt);
+        }
+        // send letter
+        $question = htmlspecialchars($question);
+        $message = <<<END
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+                <p>
+                       Запрос $support_id сформирован.</br></p>
+                   <p> -----------------------------------------</br></p>
+                   <p> $question</br></p>
+                   <p> -----------------------------------------</br> </p>
+                   <p> В ближайшее время наши менеджеры вам ответят.</br></p>
+                   <p> Историю запроса можно посмотреть по <a href="$website/user/support/?token=$token">ссылке</a></br>
+                </p>
+                <p>  
+                   <b>С уважением, <a href="$website">Beautic</a></b> 
+                </p>
+                <img src="cid:image1" alt="Beautic">
+            </body>
+        </html>
+        END;
+        //writeInFile($message);
+        $res = sendMail($email, "Запрос $support_id на сайте Beautic", $message, ['logo.png']);
+        
+        
+   }
+   return $rs;
+}
+
+function deactiveQuestion(int $support_id): void
+{
+     $sql = "UPDATE `bt_support` SET `status`='2' WHERE `support_id`='$support_id'";
+    requestUser($sql);
+}
+
+function getActiveDialog(): bool|array
+{
+    //$sql = 'select * from
+    //        (SELECT sup.*, con.answer, con.date_added
+    //        FROM `bt_support` AS sup INNER JOIN `bt_support_content` AS con ON sup.support_id = con.support_id
+    //         WHERE sup.status=1
+    //         ORDER BY sup.support_id, con.date_added DESC) AS res
+    //        group by res.support_id';
+    $sql = 'SELECT * FROM
+            (SELECT sup.*, con.answer, con.date_added
+             FROM `bt_support` AS sup INNER JOIN `bt_support_content` AS con ON sup.support_id = con.support_id
+             WHERE sup.status=1 AND
+                  con.date_added=
+                  (SELECT MAX(con2.date_added)
+		           FROM `bt_support_content` AS con2
+		           WHERE con.support_id = con2.support_id)
+             ) AS res
+            ORDER BY res.user_id, res.date_added';
+    $rs = requestUser($sql);
+    if ($rs) {
+        $res = createSmartyRsArray($rs);
+    } else {
+        $res = array();
+    }
+    return $res;
+}
+
+function addQuestionAdm($support_id, $user_id, $question, $token, $email, $answering_id): bool
+{
+    global $db, $website;
+    $support_id = intval($support_id);
+    $answering_id = intval($answering_id);
+    if (checkExist('`bt_support`', "`support_id` = '$support_id'")) {
+           $sql = 'INSERT INTO `bt_support_content`(`support_id`, `answer`, `date_added`, `answering_id`)' .
+                "VALUES('$support_id', ?, NOW(), $answering_id)";
+            $stmt = mysqli_prepare($db, $sql);
+            mysqli_stmt_bind_param($stmt, 's', $question);
+            $rs = mysqli_stmt_execute($stmt);
+
+        // send letter
+        $dialog = getDialog($token);
+        $messages = $dialog['content'] ?? array();
+        $dialogs = '<p> -----------------------------------------</br></p>';
+        foreach ($messages as $message) {
+            if($message['question']) {
+                $dialogs .= htmlspecialchars($message['question']);
+                $dialogs .= '<p> -----------------------------------------</br></p>';
+            } elseif($message['answer']) {
+                $dialogs .= 'Ответ: ' . htmlspecialchars($message['answer']);
+                $dialogs .= '<p> -----------------------------------------</br></p>';
+            }
+        }
+
+        //$dialogs = htmlspecialchars($dialogs);
+        $message = <<<END
+        <!doctype html>
+        <html lang="en">
+            <head>
+                <meta charset="utf-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+            <body>
+                <p>
+                   Получен ответ на ваш запрос $support_id.</br></p>
+                   $dialogs
+                   <p> Историю запроса можно посмотреть по <a href="$website/user/support/?token=$token">ссылке</a></br>
+                </p>
+                <p>  
+                   <b>С уважением, <a href="$website">Beautic</a></b> 
+                </p>
+                <img src="cid:image1" alt="Beautic">
+            </body>
+        </html>
+        END;
+        //writeInFile($message);
+        $res = sendMail($email, "Вопрос $support_id на сайте Beautic", $message, ['logo.png']);
+
+    } else {
+        $_SESSION['message'] = "Диалог $support_id не найден";
+    }
+    return $rs;
+}
+

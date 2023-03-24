@@ -27,15 +27,20 @@
     </h3>
     <div class="row me-0">
         <div class="col-lg-6 col-md-6 col-sm-12 pe-0">
+
+            <a data-bs-toggle="collapse" href="#userSupport" aria-expanded="true"
+               aria-controls="emailShow" role="button"
+               class='nv-a nv-a2 col-nav-hover nv-hover'>
             <h5 class="ms-2 mb-0 mb-sm-2">
                 Ваши данные
             </h5>
+            </a>
             {* <form method="post" action="/restuser/changepass/" class="me-1">*}
-            <div class="me-1">
+            <div class="collapse show me-1" id="userSupport">
                 <div class="input-group  ms-1  mb-0 mb-sm-2">
-            <span class="input-group-text col-3 col-sm-4">E-Mail
-                <span class="d-none d-sm-block">&nbsp;адрес</span>
-            </span>
+                    <span class="input-group-text col-3 col-sm-4">E-Mail
+                        <span class="d-none d-sm-block">&nbsp;адрес</span>
+                    </span>
                     <input type="email" class="form-control me-2 col-9 col-sm-8"
                            placeholder="E-Mail адрес" id="emailSupport"
                            aria-label="E-Mail адрес" aria-describedby="button-addon2" name="emailSupport"
@@ -56,8 +61,12 @@
                         <select class="form-select me-0 col-8 col-sm-7" id="selectSupport">
                             <option selected>Выберите...</option>
                             {foreach $allDialog as $curDialog}
-                                <option value="{$curDialog['support_id']}">
-                                    {$curDialog['content'][0]['question']}
+                                <option value="{$curDialog['token']}"> {*support_id*}
+                                    {if (isset($curDialog['content'][count($curDialog['content'])-1]['question']))}
+                                        {$curDialog['content'][count($curDialog['content'])-1]['question']}
+                                    {else}
+                                        {$curDialog['support_id']}
+                                    {/if}
                                 </option>
                             {/foreach}
                         </select>

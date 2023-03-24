@@ -29,7 +29,7 @@ $lgLen = 50;
 $mdLen = 30;
 $smLen = 20;
 
-$website = 'http://beautic.local';
+$website = 'http://beauticOS.local';
 $mailAdmin = 'bob_140@ngs.ru';
 
 //> используемые шаблоны

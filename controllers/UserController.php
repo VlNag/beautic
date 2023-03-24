@@ -225,9 +225,9 @@ function supportAction($smarty): void
     $allDialog = getAllDialog($user_id);
     $dialog = getDialog($token);
 
-    if ($new == 1) {
+    if ($new == 1)  {
         $dialog['status'] = 1;
-        $dialog['token'] = null;
+        $dialog['token'] = uniqid('', true);
         $dialog['content'] = null;
         $dialog['support_id'] = 0;
         $dialog['name'] = '';
@@ -241,8 +241,11 @@ function supportAction($smarty): void
             $dialog['email'] = $emails[0]['content'] ?? '';
         }
     } else {
-        if ((!$dialog['success']) || ($dialog['user_id'] != $user_id)) {
-            if ($allDialog) {
+        if ((!$dialog['success'])|| ($dialog['user_id'] != $user_id)) {
+        //if ((!$dialog['success'])&&($dialog['user_id'] == $user_id)) {
+            //d($allDialog);
+
+            if (($allDialog)&&(!$token)) {
                 foreach ($allDialog as $dialogCur) {
                     if ($dialogCur['status'] == 1) {
                         $dialog = getDialog($dialogCur['token']);
@@ -252,9 +255,10 @@ function supportAction($smarty): void
                     }
                 }
             }
-            if (!$dialog['success']) {
+
+            if ((!$dialog['success'])|| ($dialog['user_id'] != $user_id))  {
                 $dialog['status'] = 1;
-                $dialog['token'] = null;
+                $dialog['token'] = uniqid('', true);;
                 $dialog['content'] = null;
                 $dialog['support_id'] = 0;
                 $dialog['name'] = '';
@@ -280,4 +284,37 @@ function supportAction($smarty): void
     loadTemplate($smarty, 'header');
     loadTemplate($smarty, 'support');
     loadTemplate($smarty, 'footer');
+}
+
+function supportadminAction($smarty): void
+{
+    $user = $_SESSION['user'] ?? null;
+    $role = $user['role'] ?? 0;
+    if ($role != 1) header('Location: /'); // 555
+
+    $token  = $_GET['token'] ?? null;
+    $dialog = getDialog($token);
+    if (!$dialog['success']){
+        $dialog['status'] = 1;
+        $dialog['token'] = uniqid('', true);
+        $dialog['content'] = null;
+        $dialog['support_id'] = 0;
+        $dialog['name'] = '';
+        $dialog['email'] = '';
+        $dialog['user_id'] = 0;
+    }
+
+    $activeDialog = getActiveDialog();
+
+    $smarty->assign('arInfo', getInfoHeadByUserGroup());
+    $smarty->assign('articleInfo', getInfoArticleByUserGroup()['article_main']);
+
+    $smarty->assign('pageTitle','Ответить на вопросы');
+    $smarty->assign('dialog',$dialog);
+    $smarty->assign('activeDialog',$activeDialog);
+
+    loadTemplate($smarty, 'header');
+    loadTemplate($smarty, 'supportadmin');
+    loadTemplate($smarty, 'footer');
+
 }

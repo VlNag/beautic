@@ -10,17 +10,18 @@
                         <button class="bg-nav col-nav c-button " type="submit"
                             onclick=
                             "deactiveSupport({$dialog['support_id']});
-                                    location.href='/user/support/?token={$dialog["token"]}';">
+                                    location.href='/user/supportadmin/';">
                                     <h5>| Закрыть</h5>
                         </button>
                     {/if}
                 {/if}
                   </span>
-                {if $dialog['support_id']!=0}
+                <span class="text-break col-5">{$dialog["email"]}</span>
+                {*if $dialog['support_id']!=0}
                     <a href="/user/support/?new=1" class=" nv-hover col-nav col-5">
                         <p class="text-break">/ Новый вопрос</p>
                     </a>
-                {/if}
+                {/if*}
             </div>
         </h5>
         <div class="card mb-1">
@@ -29,11 +30,12 @@
                     {if $dialog['status'] != 2}
                         <div class="flex-grow-0 py-3 px-4 border-top">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Вопрос" id="questionSupport">
+                                <input type="text" class="form-control" placeholder="Ответ" id="questionSupportAdm">
                                 <button class="btn bg-nav-btn col-nav nv-navbar" type="submit"
                                         onclick=
-                                        "sendSupport({$dialog['support_id']}, {$dialog['user_id']}, '{$dialog["token"]}');
-                                                location.href='/user/support/?token={$dialog["token"]}';">
+                                        "sendSupportAdm({$dialog['support_id']}, {$dialog['user_id']},
+                                                       '{$dialog["token"]}', '{$dialog["email"]}');
+                                                location.href='/user/supportadmin/?token={$dialog["token"]}';">
                                     Отправить
                                 </button>
                             </div>
