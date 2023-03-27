@@ -69,7 +69,7 @@
                                             </div>
                                         </div>
                                         <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
-                                            <div class="font-weight-bold mb-1">beautic</div>
+                                            <div class="font-weight-bold mb-1">ID: {$content['answering_id']}</div>
                                             {$content['answer']}
                                         </div>
                                     </div>

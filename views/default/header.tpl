@@ -294,9 +294,9 @@
                                 data-bs-target="#exampleModal">Личный кабинет</button>
                             <button class="btn btn-outline-danger ms-3">Sign out</button> btn-outline-success-->
 
-                        <form action="" class="d-flex me-2">
+                        <form method="post" action="/products/search/" class="d-flex me-2">
                             <input type="search" placeholder="Найти" 
-                                class="form-control me-1 nv-navbar">
+                                class="form-control me-1 nv-navbar" name="search0">
                             <button class="btn bg-nav-btn col-nav nv-navbar"
                                     data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                     data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
@@ -330,7 +330,7 @@
 
                         <form method="post" action="/products/search/" class="d-flex me-2">
                             <input type="search" placeholder="Найти" 
-                                class="form-control me-1 nv-navbar" name="search0">
+                                class="form-control me-1 nv-navbar" name="search1">
                             <button type="submit" class="btn bg-nav-btn col-nav nv-navbar"
                                     data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                     data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
@@ -583,6 +583,64 @@
    {*</div>*}
    </div>
 <!-- /Modal2-->
+
+
+    <!-- Modal contact-->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+        {*aria-bs-labelledby="exampleModalLabel"*}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+
+                        <img src="{$templateWebPath}images/logo_dark.png" alt="logo"
+                             class="me-1 mb-sm-1 img-fluid" width="30">
+                        <a href="/" class="navbar-brand nv-hover mb-sm-2 col-nav">BEAUTIC</a>
+                        Контакты
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        {if {$arInfo['phone']}}
+                        <div class="row mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-telephone-fill col-1 px-0 px-md-2 mt-1" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                            </svg>
+                            <a class='nv-a col-nav-hover nv-hover col-11 px-1 px-md-2' href="tel: {$arInfo['phone']}">
+                                <p class="text-break col-nav nv-hover">{$arInfo['phone']}</p>
+                            </a>
+                        </div>
+                        <div class="row mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-envelope-fill col-1 px-0 px-md-2 mt-1" viewBox="0 0 16 16">
+                                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                            </svg>
+                            <a class='nv-a col-nav-hover nv-hover col-11 px-1 px-md-2' href="mailto: {$arInfo['email']}">
+                                <p class="text-break col-nav nv-hover">{$arInfo['email']}</p>
+                            </a>
+                        </div>
+                        {else}
+                            <p>Для просмотра этой информации необходимо пройти авторизацию либо зарегистрироваться.</p>
+                        {/if}
+                        <div class="row mb-3 d-flex justify-content-center">
+
+                        </div>
+                </div>
+            </div>
+            {*
+            <div class="modal-footer bg-light">
+                <div class="row mb-3">
+
+
+
+                </div>
+            </div>*}
+        </div>
+    </div>
+    <!-- /Modal contact-->
+
 
     <!--</div>-->
     <div class="container my-1">

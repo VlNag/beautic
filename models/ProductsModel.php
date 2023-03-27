@@ -13,7 +13,8 @@ include_once '../models/UsersModel.php';
  * @return array of sql request
  */
 function createRequestForLoadProductsFromFile($fileName, $fileType,
-    $step = DEFOLT_STEP, $updateEverything = 'N') {
+                                              $step = DEFOLT_STEP, $updateEverything = 'N')
+{
     $requestProduct = '';
     $requestProductDescription = '';
     $requestProductCategory = '';
@@ -271,7 +272,8 @@ function updateProducts($requests, $nameField, $sqlStart, $sqlEnd = '')
  *                          ['close']         boolean - true if last step seccessful
  */
 function updateProductsFromFilesByStep($fileNum, $iterationNum,
-    $step = DEFOLT_STEP, $successful = 1, $updateEverything = 'N') {
+                                       $step = DEFOLT_STEP, $successful = 1, $updateEverything = 'N')
+{
     $result = array();
     $totalQuantity = 0;
     $rs = true;
@@ -355,7 +357,7 @@ function updateProductsFromFilesByStep($fileNum, $iterationNum,
     return $result;
 }
 
-function updateProductsFromFilesOLD() 
+function updateProductsFromFilesOLD()
 {
     echo 'start update Product ' . date("Y-m-d H:i:s") . '<br/>';
     $file = $_SERVER["DOCUMENT_ROOT"] . '/xml/import/product_new.xml';
@@ -490,7 +492,8 @@ function updateProductsFromFilesOLD()
     return $rsIt;
 }
 
-function getProductsFromParentUserGroup($parentId, $userGroup = -1, $startPosition = 0, $quantity = 0, $imageDefProd = '')
+function getProductsFromParentUserGroup($parentId, $userGroup = -1, $startPosition = 0,
+                                        $quantity = 0, $imageDefProd = '')
 {
     global $db;
 
@@ -538,8 +541,8 @@ function getNumberProductsFromParentUserGroup($parentId, $userGroup = -1)
     $userGroupAction = getCheckUserGroup(2, $userGroup);
 
     $sql = 'SELECT * FROM `bt_product_quantity` AS act JOIN `bt_product_to_category` AS pro' .
-           '  ON pro.product_id = act.product_id WHERE' .
-           " pro.category_id = $parentId AND act.user_group = $userGroupAction AND act.quantity > 0";
+        '  ON pro.product_id = act.product_id WHERE' .
+        " pro.category_id = $parentId AND act.user_group = $userGroupAction AND act.quantity > 0";
 
     try {
         $rs = mysqli_query($db, $sql);
@@ -549,11 +552,11 @@ function getNumberProductsFromParentUserGroup($parentId, $userGroup = -1)
         echo '</br>';
     }
     $rs = createSmartyRsArray($rs);
-    if($rs){
+    if ($rs) {
         $quanProduct = count($rs);
-        } else {
-         $quanProduct = 0; 
-        }
+    } else {
+        $quanProduct = 0;
+    }
     //d($rs);
     return $quanProduct;
 }
@@ -611,8 +614,8 @@ function getProductFromIdUserGroup($productId, $userGroup = -1)
         }
     }
     //d($rs);
-    if (array_key_exists('description',$rs)) {
-    $rs['description'] = htmlspecialchars_decode($rs['description']);
+    if (array_key_exists('description', $rs)) {
+        $rs['description'] = htmlspecialchars_decode($rs['description']);
     }
     return $rs;
 
@@ -646,23 +649,23 @@ function checkParameter($fieldRequest, $parameter, $userGroupCur = array(), $add
                 if ($productId > 0) {
                     $res = request("select * from `bt_product` where `product_id` = '$productId' limit 1");
                     if ($add) {
-                    if ($res) {
-                    $count = mysqli_num_rows($res);
-                    } else {
-                        $count = 1; 
-                    }
-                    if ($count == 0) {
-                        $resData['success'] = true;
-                        $resData['parameter'] = $productId;
-                    } else {
-                        $resData['error'] = 'id product already exists';
-                        $resData['success'] = false;
-                    }
-                } else {
-                    if ($res) {
-                        $count = mysqli_num_rows($res);
+                        if ($res) {
+                            $count = mysqli_num_rows($res);
                         } else {
-                            $count = 0; 
+                            $count = 1;
+                        }
+                        if ($count == 0) {
+                            $resData['success'] = true;
+                            $resData['parameter'] = $productId;
+                        } else {
+                            $resData['error'] = 'id product already exists';
+                            $resData['success'] = false;
+                        }
+                    } else {
+                        if ($res) {
+                            $count = mysqli_num_rows($res);
+                        } else {
+                            $count = 0;
                         }
                         if ($count > 0) {
                             $resData['success'] = true;
@@ -671,7 +674,7 @@ function checkParameter($fieldRequest, $parameter, $userGroupCur = array(), $add
                             $resData['error'] = 'id product not exists';
                             $resData['success'] = false;
                         }
-                }
+                    }
                 } else {
                     $resData['error'] = 'productId must be greater than zero';
                     $resData['success'] = false;
@@ -703,9 +706,9 @@ function checkParameter($fieldRequest, $parameter, $userGroupCur = array(), $add
                     $res = request("select * from bt_category where category_id = '$categoryId' limit 1");
                     if ($res) {
                         $count = mysqli_num_rows($res);
-                        } else {
-                            $count = 0; 
-                        }
+                    } else {
+                        $count = 0;
+                    }
                     if ($count > 0) {
                         $resData['success'] = true;
                         $resData['parameter'] = $categoryId;
@@ -729,22 +732,22 @@ function checkParameter($fieldRequest, $parameter, $userGroupCur = array(), $add
                 if (!empty($description) && is_array($description)) {
                     foreach ($description as $key => $des) {
                         if (in_array($key, $userGroupCur)) {
-                            if (is_array($des)){
+                            if (is_array($des)) {
                                 $descr[$key] = $des;
-                                if (array_key_exists('name', $des) && !empty($des['name']) ) {
-                                    $resDes = true; 
+                                if (array_key_exists('name', $des) && !empty($des['name'])) {
+                                    $resDes = true;
                                 }
                             }
                         }
                     }
                     if ($add) {
-                    $resData['success'] = $resDes;
+                        $resData['success'] = $resDes;
                     } else {
-                        $resData['success'] = true;  
+                        $resData['success'] = true;
                     }
                     $resData['parameter'] = $descr;
                     if (!$resDes && $add) {
-                        $resData['error'] = 'name is empty'; 
+                        $resData['error'] = 'name is empty';
                     }
                 } else {
                     $resData['error'] = 'description is empty';
@@ -754,23 +757,23 @@ function checkParameter($fieldRequest, $parameter, $userGroupCur = array(), $add
                 $resData['error'] = 'description is necessary parametr';
                 $resData['success'] = false;
             }
-        } elseif ($parameter == 'order' || $parameter == 'price' || 
-                  $parameter == 'quantity' || $parameter == 'date_available') { 
+        } elseif ($parameter == 'order' || $parameter == 'price' ||
+            $parameter == 'quantity' || $parameter == 'date_available') {
             $param = array();
             if (array_key_exists($parameter, $fieldRequest)) {
                 $fields = $fieldRequest[$parameter];
-                 if (is_array($fields)) {
+                if (is_array($fields)) {
                     foreach ($fields as $key => $fil) {
                         if (in_array($key, $userGroupCur)) {
-                            if (array_key_exists($parameter, $fil) ) { //&& !empty($fil[$parameter])
+                            if (array_key_exists($parameter, $fil)) { //&& !empty($fil[$parameter])
                                 $param[$key] = $fil[$parameter];
                             }
                         }
                     }
                 }
-            } 
-            $resData['parameter'] = $param;  
-            $resData['success'] = true;                  
+            }
+            $resData['parameter'] = $param;
+            $resData['success'] = true;
         }
     } else {
         $resData['error'] = 'main parametr is not array';
@@ -815,11 +818,11 @@ function getSqlForFields($fieldRequest, $field, $userGroupCur, $tabel, $fieldTab
                         if (array_key_exists('name', $des) && !empty($des['name'])) {
                             $sql .= "('$productId', '$key', '{$des['name']}'";
                             foreach ($btProductDescriptionInLoad as $btDes) {
-                               if (!empty($des[$btDes])) {
-                                $sql .= ",'{$des[$btDes]}'";
-                               } else {
-                                $sql .= ",''";
-                               }
+                                if (!empty($des[$btDes])) {
+                                    $sql .= ",'{$des[$btDes]}'";
+                                } else {
+                                    $sql .= ",''";
+                                }
                             }
                             $sql .= "),";
                         }
@@ -834,7 +837,7 @@ function getSqlForFields($fieldRequest, $field, $userGroupCur, $tabel, $fieldTab
                 $fl = false;
                 $sql = "INSERT INTO `$tabel`" .
                     "(`product_id`, `user_group`, `$fieldTabel`) VALUES";
-                   
+
                 foreach ($order as $key => $ord) {
                     $fl = true;
                     $sql .= "('$productId', '$key', '$ord'),";
@@ -863,7 +866,7 @@ function addProduct($fieldRequest)
     $resData = array();
     $checkParameter = checkParameter($fieldRequest, 'productId');
     if ($checkParameter['success']) {
-        $productId = $checkParameter['parameter']; 
+        $productId = $checkParameter['parameter'];
         $checkParameter = checkParameter($fieldRequest, 'article');
         if ($checkParameter['success']) {
             $article = $checkParameter['parameter'];
@@ -875,17 +878,17 @@ function addProduct($fieldRequest)
                     $sql = 'INSERT INTO `bt_product`(`product_id`, `article`';
                     $values = " VALUES ('$productId','$article'";
                     foreach ($btProduct as $field) {
-                        if (array_key_exists($field, $fieldRequest)) { 
+                        if (array_key_exists($field, $fieldRequest)) {
                             $val = $fieldRequest[$field];
                             //if (!empty($val)) {
-                                $sql .= ", `$field`";
-                                $values .= ", '$val'";
+                            $sql .= ", `$field`";
+                            $values .= ", '$val'";
                             //}
                         }
                     }
                     $sql .= ', `date_added`)';
                     $values .= ', NOW())';
-                    $rs = request($sql . $values); 
+                    $rs = request($sql . $values);
                     $rs = true;
                     if ($rs) {
                         $resData['success'] = true;
@@ -921,9 +924,9 @@ function addProduct($fieldRequest)
                             $rs = request($sql);
                             if (!$rs) {
                                 if (empty($resData['error'])) {
-                                $resData['error'] = 'failed to write name';
+                                    $resData['error'] = 'failed to write name';
                                 } else {
-                                    $resData['error'] = $resData['error'] . '; failed to write name';  
+                                    $resData['error'] = $resData['error'] . '; failed to write name';
                                 }
                             }
                         }
@@ -1022,22 +1025,22 @@ function getProduct($productId)
     $fieldRequest['productId'] = $productId;
     $checkParameter = checkParameterCategory($fieldRequest, 'categoryId', $resData, false);
     if ($checkParameter['success']) {
-    $resData['productId'] = $productId;
-    $sql = 'SELECT `article`, `image`, `manufacturer_id`, `weight`, `lenght`, `widht`, `height`,' .
-        " `date_added`, `date_modified` FROM `bt_product` WHERE `product_id` = $productId";
-    $rs = request($sql);
-    $res = createSmartyRsArray($rs);
-    if ($res) {
-        foreach ($res as $value) {
-            if (is_array($value)) {
-                foreach ($value as $key => $val) {
-                    if (!is_null ($val)) {
-                        $resData[$key] = $val;
+        $resData['productId'] = $productId;
+        $sql = 'SELECT `article`, `image`, `manufacturer_id`, `weight`, `lenght`, `widht`, `height`,' .
+            " `date_added`, `date_modified` FROM `bt_product` WHERE `product_id` = $productId";
+        $rs = request($sql);
+        $res = createSmartyRsArray($rs);
+        if ($res) {
+            foreach ($res as $value) {
+                if (is_array($value)) {
+                    foreach ($value as $key => $val) {
+                        if (!is_null($val)) {
+                            $resData[$key] = $val;
+                        }
                     }
                 }
             }
         }
-    }
     } else {
         $resData['productId'] = "$productId not found";
     }
@@ -1048,10 +1051,10 @@ function getProduct($productId)
     if ($res) {
         foreach ($res as $value) {
             if (is_array($value)) {
-                if (array_key_exists('category_id', $value) && (!empty($value['category_id']))){
+                if (array_key_exists('category_id', $value) && (!empty($value['category_id']))) {
                     $resData['categoryId'] = $value['category_id'];
                 }
-                if (array_key_exists('date_modified', $value) && (!empty($value['date_modified']))){
+                if (array_key_exists('date_modified', $value) && (!empty($value['date_modified']))) {
                     $resData['date_modified_category'] = $value['date_modified'];
                 }
             }
@@ -1060,24 +1063,24 @@ function getProduct($productId)
 
     $res = getDataFromLocalTable('bt_product_order', $productId);
     if (!empty($res)) {
-        $resData['order'] = $res; 
-    } 
+        $resData['order'] = $res;
+    }
     $res = getDataFromLocalTable('bt_product_price', $productId);
     if (!empty($res)) {
-        $resData['price'] = $res; 
-    } 
+        $resData['price'] = $res;
+    }
     $res = getDataFromLocalTable('bt_product_quantity', $productId);
     if (!empty($res)) {
-        $resData['quantity'] = $res; 
-    } 
+        $resData['quantity'] = $res;
+    }
     $res = getDataFromLocalTable('bt_product_date_available', $productId);
     if (!empty($res)) {
-        $resData['date_available'] = $res; 
-    } 
+        $resData['date_available'] = $res;
+    }
     $res = getDataFromLocalTable('bt_product_description', $productId);
     if (!empty($res)) {
-        $resData['description'] = $res; 
-    } 
+        $resData['description'] = $res;
+    }
 
     return $resData;
 }
@@ -1149,8 +1152,8 @@ function updateProduct($fieldRequest)
     global $userGroupSt;
     global $userGroupMd;
     global $userGroupLg;
-    $btProduct = array('article', 'image', 'manufacturer_id', 'weight', 
-                    'lenght', 'widht', 'height');
+    $btProduct = array('article', 'image', 'manufacturer_id', 'weight',
+        'lenght', 'widht', 'height');
     $resData = array();
     $checkParameter = checkParameter($fieldRequest, 'productId', $userGroupLg, false);
     if ($checkParameter['success']) {
@@ -1172,43 +1175,43 @@ function updateProduct($fieldRequest)
         $checkParameter = checkParameter($fieldRequest, 'categoryId');
         if ($checkParameter['success']) {
             $categoryId = $checkParameter['parameter'];
-            $sql = 'INSERT INTO `bt_product_to_category` ' .   
-                 '(`product_id`, `category_id`, `date_modified`) VALUES ' .
-                 "('$productId', '$categoryId', NOW()) " .
-                 'ON DUPLICATE KEY UPDATE ' .
-                 "`category_id`=VALUES(`category_id`), `date_modified`=VALUES(`date_modified`)"; 
-                $rs = request($sql);
-                if ($rs) {
-                    $resData['success'] = true;
-                }
+            $sql = 'INSERT INTO `bt_product_to_category` ' .
+                '(`product_id`, `category_id`, `date_modified`) VALUES ' .
+                "('$productId', '$categoryId', NOW()) " .
+                'ON DUPLICATE KEY UPDATE ' .
+                "`category_id`=VALUES(`category_id`), `date_modified`=VALUES(`date_modified`)";
+            $rs = request($sql);
+            if ($rs) {
+                $resData['success'] = true;
             }
-            $sql = getSqlForFieldsUpdate($fieldRequest, 'order', $userGroupMd,
-                'bt_product_order', 'sort_order', $productId);
+        }
+        $sql = getSqlForFieldsUpdate($fieldRequest, 'order', $userGroupMd,
+            'bt_product_order', 'sort_order', $productId);
+        if ($sql) {
+            $rs = request($sql);
+        }
+        $sql = getSqlForFieldsUpdate($fieldRequest, 'price', $userGroupLg,
+            'bt_product_price', 'price', $productId);
+        if ($sql) {
+            $rs = request($sql);
+        }
+        $sql = getSqlForFieldsUpdate($fieldRequest, 'quantity', $userGroupMd,
+            'bt_product_quantity', 'quantity', $productId);
+        if ($sql) {
+            $rs = request($sql);
+        }
+        $sql = getSqlForFieldsUpdate($fieldRequest, 'date_available', $userGroupSt,
+            'bt_product_date_available', 'date_available', $productId);
+        if ($sql) {
+            $rs = request($sql);
+        }
+        $sqlUpd = getSqlForFieldsUpdate($fieldRequest, 'description', $userGroupSt,
+            'bt_product_description', '', $productId);
+        foreach ($sqlUpd as $sql) {
             if ($sql) {
                 $rs = request($sql);
             }
-            $sql = getSqlForFieldsUpdate($fieldRequest, 'price', $userGroupLg,
-                'bt_product_price', 'price', $productId);
-            if ($sql) {
-                $rs = request($sql);
-            }
-            $sql = getSqlForFieldsUpdate($fieldRequest, 'quantity', $userGroupMd,
-                'bt_product_quantity', 'quantity', $productId);
-            if ($sql) {
-                $rs = request($sql);
-            }
-            $sql = getSqlForFieldsUpdate($fieldRequest, 'date_available', $userGroupSt,
-                'bt_product_date_available', 'date_available', $productId);
-            if ($sql) {
-                $rs = request($sql);
-            }
-            $sqlUpd = getSqlForFieldsUpdate($fieldRequest, 'description', $userGroupSt,
-                'bt_product_description', '', $productId);
-            foreach ($sqlUpd as $sql) {
-            if ($sql) {
-                $rs = request($sql);
-            }
-            } 
+        }
         //} else {
         //    $resData['error'] = 'failed to add a line';
         //    $resData['success'] = false;
@@ -1221,18 +1224,21 @@ function updateProduct($fieldRequest)
     return $resData;
 }
 
-function getProductsSearch($words){
+function getProductsSearch($words, $userGroup)
+{
     if ($words) {
-        $sql = 'SELECT `product_id`, `name`, `description` FROM `bt_product_description` WHERE ';
+        $sql = "SELECT `product_id`, `name`, `description` FROM `bt_product_description` WHERE `user_group` = '' AND (";
         foreach ($words as $word) {
             $sql .= "`name` LIKE '%$word%' OR";
         }
         $sql = commaDel($sql, 'R');
         $sql = commaDel($sql, 'O');
-        $rs = request($sql);
+        d($sql.')');
+        $rs = request($sql.')');
+
         $res = createSmartyRsArray($rs);
     } else {
         $res = false;
     }
     return $res;
- }
+}

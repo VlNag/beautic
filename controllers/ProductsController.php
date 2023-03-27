@@ -199,13 +199,16 @@ function updateperpageAction()
 }
 
 function searchAction($smarty){
+
+    $userGroup  = $_SESSION['userGroup'] ?? 0;
+    if ($userGroup == !0) header('Location: /');
     if (isset($_POST['search0'])) {
         if (!empty($_POST['search0'])) {
             $words = array_filter(explode(" ", $_POST['search0']));
         } else {
             $words = null;
         }
-        $rsProductsPage = getProductsSearch($words);
+        $rsProductsPage = getProductsSearch($words, $userGroup);
         $smarty->assign('rsProductsPage',$rsProductsPage);
         $smarty->assign('currency','');
         //d($rsProductsPage);
