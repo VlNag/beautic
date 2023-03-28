@@ -200,24 +200,155 @@ function updateperpageAction()
 
 function searchAction($smarty){
 
+    global $imageDefProd;
     $userGroup  = $_SESSION['userGroup'] ?? 0;
-    if ($userGroup == !0) header('Location: /');
-    if (isset($_POST['search0'])) {
-        if (!empty($_POST['search0'])) {
+
+    if ($userGroup == 0)  header('Location: '.$_SERVER['HTTP_REFERER']);
+
+    if (isset($_REQUEST['search0'])) {
+        /*if (!empty($_POST['search0'])) {
             $words = array_filter(explode(" ", $_POST['search0']));
         } else {
             $words = null;
+        }*/
+        $words  = $_REQUEST['search0'] ?? NULL;
+        $words  = htmlspecialchars($words);
+
+        if ($words) {
+            $rsProducts = getProductsSearch($words, $imageDefProd);
+            $quanProduct = count($rsProducts);
+
+            if ($quanProduct > 0) {
+                $smarty->assign('words',$words);
+                $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                $page = intval($page);
+                $page = ($page > 0) ? $page : 1;
+                $quantityPerPage = $_SESSION['perpage'];
+
+                $optionPerPage = array();
+                $j = 0;
+                for($i = 10; $i < 400; $i = $i * 2){
+                    $optionPerPage[$j]['value'] = $i;
+                    if ($i == $quantityPerPage){
+                        $optionPerPage[$j]['select'] = true;
+                    } else {
+                        $optionPerPage[$j]['select'] = false;
+                    }
+                    $j++;
+                }
+                $smarty->assign('optionPerPage',$optionPerPage);
+                $quanPage = intval($quanProduct/$quantityPerPage);
+                if ($quanProduct%$quantityPerPage) {
+                    $quanPage++;
+                }
+                if ($page > $quanPage) {
+                    $page = $quanPage;
+                }
+                if ($quanPage > QUANTITY_PAGINATOR) {
+                    $step = intval(QUANTITY_PAGINATOR/2);
+                    $startPage = (($page - $step) > 0 ? ($page - $step) : 1);
+                    if (($startPage + QUANTITY_PAGINATOR - 1) > $quanPage){
+                        $endPage = $quanPage;
+                        $startPage = $endPage - QUANTITY_PAGINATOR + 1;
+                    } else {
+                        $endPage = $startPage + QUANTITY_PAGINATOR - 1;
+                    }
+                } else {
+                    $startPage = 1;
+                    $endPage = $quanPage;
+                }
+
+                $startPosition = ($page-1) * $quantityPerPage;
+                $rsProductsPage = getProductsSearch($words, $imageDefProd, -1, $startPosition,
+                                                    $quantityPerPage);
+
+                $user  = isset($_SESSION['user'] ) ? $_SESSION['user']  : null;
+                //$userFields = getUser($user);
+                if (isset($user['user_wishlist'])) {
+                    $bookmarks = $user['user_wishlist'];
+                } else {
+                    $bookmarks = array();
+                }
+                foreach ($rsProductsPage as &$rsPoduct) {
+                    $key = array_search($rsPoduct['product_id'], array_column($bookmarks, 'product_id'));
+                    $rsPoduct['link']=getLinkProduct($rsPoduct['product_id'], $rsPoduct['category_id']);
+
+                    if($key!==false) {
+                        $rsPoduct['bookmarks']=true;
+                    } else {
+                        $rsPoduct['bookmarks']=false;
+                    }
+
+                    $rsPoduct['inCart']=$rsPoduct['bookmarks']; // UPDATE *********************************************
+                }
+                unset($rsPoduct);
+                //d($rsProductsPage);
+                $paginator = array();
+                $paginator['page'] = $page;
+                $paginator['startPage'] = $startPage;
+                $paginator['endPage'] = $endPage;
+                $paginator['quanPage'] = $quanPage;
+                $paginator['quanProduct'] = $quanProduct;
+
+                $paginator['startPosition'] = $startPosition + 1;
+                $paginator['endPosition'] = (($startPosition + $quantityPerPage) > $quanProduct) ?
+                                                 $quanProduct : ($startPosition + $quantityPerPage);
+                $paginator['quanPaginator'] = QUANTITY_PAGINATOR;
+                $paginator['quanPaginatorHalf'] = QUANTITY_PAGINATOR/2+1;
+                $paginator['quanPaginatorEnd'] = $quanPage-QUANTITY_PAGINATOR/2;
+                $postfix = substr($quanPage, -1);
+                if (($quanPage < 10) || ($quanPage > 20)) {
+                    if ($postfix == 1) {
+                        $paginator['pageStr'] = 'страница';
+                    } elseif (($postfix == 2) || ($postfix == 3) || ($postfix == 4)) {
+                        $paginator['pageStr'] = 'страницы';
+                    } else {
+                        $paginator['pageStr'] = 'страниц';
+                    }
+                } else {
+                    $paginator['pageStr'] = 'страниц';
+                }
+                $smarty->assign('paginator', $paginator);
+                //>
+                $userGroupCur = getCheckUserGroup(0, -1);
+                if ( $userGroupCur == 4) {
+                    $smarty->assign('currency','т');
+                } else {
+                    $smarty->assign('currency','руб');
+                }
+
+
+                $smarty->assign('arInfo', getInfoHeadByUserGroup());
+                $smarty->assign('articleInfo', getInfoArticleByUserGroup()['article_main']);
+
+                $rsCategories = getAllMainCatsWithChildrenUpd();
+                //$rsCategory = getCatFromIdUserGroup($catId);
+
+                $smarty->assign('pageTitle','Поиск');
+                $smarty->assign('rsCategories',$rsCategories);
+
+                //$smarty->assign('rsCategory',$rsCategory);
+                $smarty->assign('rsProductsPage',$rsProductsPage);
+                //$smarty->assign('cats',$cats);
+
+                //$smarty->assign('rsProducts', $rsProducts);
+                //$smarty->assign('currency', '');
+                //d($rsProducts);
+                loadTemplate($smarty, 'header');
+                loadTemplate($smarty, 'productssearch');
+                loadTemplate($smarty, 'footer');
+            } else {
+                //header('Location: '.$_SERVER['HTTP_REFERER']);
+                header('Location: /');
+            }
+        } else {
+            //header('Location: '.$_SERVER['HTTP_REFERER']);
+            header('Location: /');
         }
-        $rsProductsPage = getProductsSearch($words, $userGroup);
-        $smarty->assign('rsProductsPage',$rsProductsPage);
-        $smarty->assign('currency','');
-        //d($rsProductsPage);
-        loadTemplate($smarty, 'header');
-        loadTemplate($smarty, 'productssearch');
-        loadTemplate($smarty, 'footer');
-
-    } elseif (isset($_POST['search1'])) {
-
+    //} elseif (isset($_POST['search1'])) {
+        //  ???
+    } else {
+        //header('Location: '.$_SERVER['HTTP_REFERER']);
+        header('Location: /');
     }
-
 }

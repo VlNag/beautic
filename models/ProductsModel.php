@@ -1224,21 +1224,80 @@ function updateProduct($fieldRequest)
     return $resData;
 }
 
-function getProductsSearch($words, $userGroup)
+function getProductsSearch($words, $imageDefProd = '', $userGroup = -1, $startPosition = 0, $quantity = 0)
 {
-    if ($words) {
-        $sql = "SELECT `product_id`, `name`, `description` FROM `bt_product_description` WHERE `user_group` = '' AND (";
-        foreach ($words as $word) {
-            $sql .= "`name` LIKE '%$word%' OR";
-        }
-        $sql = commaDel($sql, 'R');
-        $sql = commaDel($sql, 'O');
-        d($sql.')');
-        $rs = request($sql.')');
-
-        $res = createSmartyRsArray($rs);
-    } else {
-        $res = false;
+    global $db;
+    $userGroup = getCheckUserGroup(0, $userGroup);
+    $userGroupAction = getCheckUserGroup(2, $userGroup);
+    $userGroupDescription = getCheckUserGroup(3, $userGroup);
+    $sql = 'SELECT des.product_id, des.name, des.description, pro.article, ' .
+	        "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
+			'pri.price, cat.category_id, act.quantity ' .
+	  	    'FROM `bt_product_description` AS des ' .
+	        'JOIN `bt_product` AS pro ON pro.product_id = des.product_id ' .
+	        'JOIN `bt_product_price` AS pri ON des.product_id = pri.product_id '.
+	        'JOIN `bt_product_to_category` AS cat ON des.product_id = cat.product_id '.
+	        'JOIN `bt_product_quantity` AS act ON des.product_id = act.product_id '.
+	    	"WHERE des.user_group = $userGroupDescription AND pri.user_group = $userGroup " .
+            "AND act.user_group = $userGroupAction AND " .
+            'act.quantity > 0 AND ' .
+            "MATCH (des.name) AGAINST ('$words')";
+    if ($quantity > 0) {
+        $sql .= " LIMIT $startPosition, $quantity";
     }
-    return $res;
+    try {
+        $rs = mysqli_query($db, $sql);
+    } catch (Exception $e) {
+        $rs = false;
+        echo 'Выброшено исключение: ', $e->getMessage(), "\n";
+        echo '</br>';
+    }
+    $rs = createSmartyRsArray($rs);
+    //d($rs);
+    return $rs;
+
+}
+
+function getLinkProduct($product_id, $category_id = 0): string
+{
+    $link = '';
+    $product_id = intval($product_id);
+    $category_id = intval($category_id);
+
+    if ($category_id == 0) {
+        $sql = "SELECT `category_id` FROM `bt_product_to_category` WHERE `product_id` = '$product_id'";
+        $rs = request($sql . ')');
+        if ($rs) {
+            $res = createSmartyRsArray($rs);
+            $category_id = $res[0]['category_id'] ?? 0;
+        }
+    }
+    if ($category_id > 0) {
+
+        $sql = "WITH RECURSIVE lv_recursive (parent_id, category_id) AS
+               (SELECT parent_id, category_id
+                FROM bt_category dep
+                WHERE dep.category_id = $category_id 
+                UNION ALL
+                SELECT dep.parent_id, dep.category_id
+                FROM bt_category dep
+                JOIN lv_recursive rec ON dep.category_id = rec.parent_id)
+                SELECT * FROM lv_recursive";
+
+        $rsCat = request($sql);
+
+        if ($rsCat) {
+            $resCat = createSmartyRsArray($rsCat);
+
+            $link = '/product/';
+            $resCat = array_reverse($resCat);
+            foreach ($resCat as $cat) {
+                if ($link != '/product/') $link .= '_';
+                $link .= $cat['category_id'];
+            }
+            $link .= '/'.$product_id.'/';
+        }
+    }
+
+    return $link;
 }

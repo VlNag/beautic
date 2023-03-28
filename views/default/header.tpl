@@ -311,8 +311,9 @@
                 
                     <div class="d-flex d-none d-sm-block d-lg-none me-2">
                         <button class="btn bg-nav-btn col-nav nv-navbar"
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" 
-                                data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
+                                data-bs-toggle="modal" data-bs-target="#searchModal"
+                                {*data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="Поиск" data-bs-custom-class="custom-tooltip"*}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-search" viewBox="0 0 16 16">
                                 <path
@@ -322,7 +323,7 @@
                         </button>
                     </div>
                 {else}
-                    <div class="d-flex">
+                    {*<div class="d-flex">
 
                     <!--<button class="btn btn-outline-success me-2" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">Личный кабинет</button>
@@ -338,10 +339,10 @@
                                      fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                                 </svg>
-                                {*<span class="d-none d-lg-block">Поиск</span>*}
+                                <!--<span class="d-none d-lg-block">Поиск</span>-->
                             </button>
                         </form>    
-                    </div>
+                    </div>*}
                 {/if}   
 
                 <div class="d-flex mt-1">
@@ -641,6 +642,57 @@
     </div>
     <!-- /Modal contact-->
 
+    <!-- Modal search-->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+        {*aria-bs-labelledby="exampleModalLabel"*}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+
+                        <img src="{$templateWebPath}images/logo_dark.png" alt="logo"
+                             class="me-1 mb-sm-1 img-fluid" width="30">
+                        <a href="/" class="navbar-brand nv-hover mb-sm-2 col-nav">BEAUTIC</a>
+                        поиск
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form method="post" action="/products/search/" class="d-flex me-2">
+                        <input type="search" placeholder="Найти"
+                               class="form-control me-1 nv-navbar" name="search0">
+                        <button class="btn bg-nav-btn col-nav nv-navbar"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="Поиск" data-bs-custom-class="custom-tooltip">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                 fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                            {*<span class="d-none d-lg-block">Поиск</span>*}
+                        </button>
+                    </form>
+
+
+
+
+                    <div class="row mb-3 d-flex justify-content-center">
+
+                    </div>
+                </div>
+            </div>
+            {*
+            <div class="modal-footer bg-light">
+                <div class="row mb-3">
+
+
+
+                </div>
+            </div>*}
+        </div>
+    </div>
+    <!-- /Modal search-->
 
     <!--</div>-->
     <div class="container my-1">

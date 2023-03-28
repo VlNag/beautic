@@ -76,12 +76,12 @@
                         {foreach $rsProductsPage as $itemProd name=prodCildren}
                             <div class="row mb-1 mx-0 mx-sm-1">
                                 <div class="col-1 px-0">
-                                    <a href="/product/{$href1}/{$itemProd['productId']}/">
+                                    <a href="{$itemProd['link']}">
                                         <img src="/images/product/{$itemProd['image']}" class="card-img-top" alt="product">
                                     </a>
                                 </div>
                                 <div class="col-7 col-sm-8  px-0">
-                                    <a href="/product/{$href1}/{$itemProd['productId']}/" class="btn mt-auto bg-nav-opposite nv-hover h-100  w-100 
+                                    <a href="{$itemProd['link']}" class="btn mt-auto bg-nav-opposite nv-hover h-100  w-100
                                             px-0 py-0 d-flex align-items-center justify-content-center col-nav-opposite">
                                         <p class="text-break mb-0">{$itemProd['name']}</p>
                                     </a>
@@ -94,12 +94,12 @@
                                 </div> 
                                 <div class="col-1 px-0 d-flex flex-column flex-md-row align-items-center justify-content-center border border-secondary rounded">
                                     {*assign var="wishlistCount" value=(isset($arUser['user_wishlist'])&&!empty($arUser['user_wishlist'])) ? count($arUser['user_wishlist']):0*}
-                                    <a id="addwishlist_{$itemProd['productId']}" href="#" 
+                                    <a id="addwishlist_{$itemProd['product_id']}" href="#"
                                         
                                         {*onClick='addToBookmark({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",0); document.location.reload();return false; ';
                                         return false; document.location.reload(); alt='Добавить в закладки' 
                                         *}
-                                        onClick='addToBookmark({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",0);return false; '
+                                        onClick='addToBookmark({$itemProd['product_id']},"/product/{$href1}/{$itemProd['product_id']}/",0);return false; '
                                         alt='Удалить из закладок' 
 
                                         class="me-1 me-lg-3 me-xl-4 nav-link {if ! $itemProd['bookmarks']} hideme"{else}"{/if}>
@@ -119,12 +119,12 @@
 
 
                                     </a>
-                                    <a id="removewishlist_{$itemProd['productId']}" href="#" 
+                                    <a id="removewishlist_{$itemProd['product_id']}" href="#"
 
                                         {*onClick='addToBookmark({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",1); document.location.reload(); return false';
                                         return false; document.location.reload(); alt='Удалить из закладок' 
                                         *}
-                                        onClick='addToBookmark({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",1); return false'
+                                        onClick='addToBookmark({$itemProd['product_id']},"{$itemProd['link']}",1); return false'
                                         alt='Добавить в закладки' 
 
                                         class="me-1 me-lg-3 me-xl-4 nav-link {if  $itemProd['bookmarks']} hideme"{else}"{/if} >
@@ -146,16 +146,16 @@
 
                                     </a>
 
-                                    <a id="addcart_{$itemProd['productId']}" href="#"
-                                        onClick='addToCart({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",0);document.location.reload();';
+                                    <a id="addcart_{$itemProd['product_id']}" href="#"
+                                        onClick='addToCart({$itemProd['product_id']},"{$itemProd['link']}",0);document.location.reload();';
                                         return false; alt='Добавить в корзину' 
                                         class="me-1  mb-1 nav-link {if ! $itemProd['inCart']} hideme" {else}"{/if}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket3-fill" viewBox="0 0 16 16">
                                             <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
                                         </svg>
                                     </a>
-                                    <a id="removecart_{$itemProd['productId']}" href="#"
-                                        onClick='addToCart({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",1);document.location.reload();';
+                                    <a id="removecart_{$itemProd['product_id']}" href="#"
+                                        onClick='addToCart({$itemProd['product_id']},"{$itemProd['link']}",1);document.location.reload();';
                                         return false; alt='Добавить в корзину' 
                                         class="me-1  mb-1 nav-link {if  $itemProd['inCart']} hideme" {else}"{/if}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
@@ -175,14 +175,14 @@
                             {foreach $rsProductsPage as $itemProd name=prodCildren}
                                 <div class="col">
                                     <div class="card h-100 bg-nav-btn">
-                                        <a href="/product/{$href1}/{$itemProd['productId']}/">
+                                        <a href="{$itemProd['link']}">
                                             <img src="/images/product/{$itemProd['image']}" class="card-img-top" alt="product">
                                         </a>
                                         <div class="card-body px-1 py-1">
                                         {*<div class="col-1 px-0 d-flex flex-column flex-md-row align-items-center justify-content-center border border-secondary rounded">*}
                                         <div class="d-flex flex-row align-items-center justify-content-center ">
-                                        <a id="addwishlist_{$itemProd['productId']}" href="#" 
-                                            onClick="addToBookmark({$itemProd['productId']},'/product/{$href1}/{$itemProd['productId']}/',0);return false;"
+                                        <a id="addwishlist_{$itemProd['product_id']}" href="#"
+                                            onClick="addToBookmark({$itemProd['product_id']},'{$itemProd['link']}',0);return false;"
                                             alt='Удалить из закладок' 
                                             class="me-1 me-sm-2 me-lg-3 me-xl-4 nav-link {if ! $itemProd['bookmarks']} hideme"{else}"{/if}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
@@ -198,8 +198,8 @@
                                             </svg>
 
                                         </a>
-                                        <a id="removewishlist_{$itemProd['productId']}" href="#" 
-                                            onClick="addToBookmark({$itemProd['productId']},'/product/{$href1}/{$itemProd['productId']}/',1);return false;"
+                                        <a id="removewishlist_{$itemProd['product_id']}" href="#"
+                                            onClick="addToBookmark({$itemProd['product_id']},'{$itemProd['link']}',1);return false;"
                                             alt='Добавить в закладки' 
                                             class="me-1 me-sm-2  me-lg-3 me-xl-4 nav-link {if  $itemProd['bookmarks']} hideme"{else}"{/if} >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -217,16 +217,16 @@
                                             </svg>
                                         </a>
     
-                                        <a id="addcart_{$itemProd['productId']}" href="#"
-                                            onClick='addToCart({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",0);document.location.reload();';
+                                        <a id="addcart_{$itemProd['product_id']}" href="#"
+                                            onClick='addToCart({$itemProd['product_id']},"{$itemProd['link']}",0);document.location.reload();';
                                             return false; alt='Добавить в корзину' 
                                             class="me-1  mb-1 nav-link {if ! $itemProd['inCart']} hideme" {else}"{/if}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket3-fill" viewBox="0 0 16 16">
                                                 <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
                                             </svg>
                                         </a>
-                                        <a id="removecart_{$itemProd['productId']}" href="#"
-                                            onClick='addToCart({$itemProd['productId']},"/product/{$href1}/{$itemProd['productId']}/",1);document.location.reload();';
+                                        <a id="removecart_{$itemProd['product_id']}" href="#"
+                                            onClick='addToCart({$itemProd['product_id']},"{$itemProd['link']}",1);document.location.reload();';
                                             return false; alt='Добавить в корзину' 
                                             class="me-1  mb-1 nav-link {if  $itemProd['inCart']} hideme" {else}"{/if}>
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
@@ -243,7 +243,7 @@
                                         </div>
                                         <div class="card-footer text-muted  h-100   w-100
                                             mx-auto my-0 bg-nav-btn-hover">
-                                            <a href="/product/{$href1}/{$itemProd['productId']}/"
+                                            <a href="{$itemProd['link']}"
                                                 class="btn mt-auto bg-nav-opposite nv-hover h-100  w-100 col-nav-opposite">
                                                 <p class="text-break">{$itemProd['name']}</p>
                                             </a>
@@ -261,7 +261,7 @@
                                 {if $paginator['quanPage'] > $paginator['quanPaginator']}
                                     {if $paginator['page'] > $paginator['quanPaginatorHalf']}
                                         <li class="page-item">
-                                            <a class="page-link" href="/products/{$href1}/1/" aria-label="Первая">
+                                            <a class="page-link" href="/products/search/?search0={$words}&page=1" aria-label="Первая">
                                                 <span aria-hidden="true">&laquo;</span>
                                             </a>
                                         </li>
@@ -269,7 +269,7 @@
                                 {/if}
                                 <li class="page-item">
                                     {assign var="prev" value={$paginator['page']}-1}
-                                    <a class="page-link" href="/products/{$href1}/{$prev}/" aria-label="Предыдущая">
+                                    <a class="page-link" href="/products/search/?search0={$words}&page={$prev}" aria-label="Предыдущая">
                                         <span aria-hidden="true">&lsaquo;</span>
                                     </a>
                                 </li>
@@ -278,20 +278,20 @@
                                 {if $foo == $paginator['page']}
                                     <li class="page-item active"><a class="page-link">{$foo}</a></li>
                                 {else}
-                                    <li class="page-item"><a class="page-link" href="/products/{$href1}/{$foo}/">{$foo}</a></li>
+                                    <li class="page-item"><a class="page-link" href="/products/search/?search0={$words}&page={$foo}">{$foo}</a></li>
                                 {/if}
                             {/for}
                             {if $paginator['page'] < $paginator['quanPage']}
                                 <li class="page-item">
                                     {assign var="next" value={$paginator['page']}+1}
-                                    <a class="page-link" href="/products/{$href1}/{$next}/" aria-label="Следующая">
+                                    <a class="page-link" href="/products/search/?search0={$words}&page={$next}" aria-label="Следующая">
                                         <span aria-hidden="true">&rsaquo;</span>
                                     </a>
                                 </li>
                                 {if $paginator['quanPage'] > $paginator['quanPaginator']}
                                     {if $paginator['page'] < $paginator['quanPaginatorEnd']}
                                         <li class="page-item">
-                                            <a class="page-link" href="/products/{$href1}/{$paginator['quanPage']}/"
+                                            <a class="page-link" href="/products/search/?search0={$words}&page={$paginator['quanPage']}"
                                                 aria-label="Последняя">
                                                 <span aria-hidden="true">&raquo;</span>
                                             </a>
