@@ -18,12 +18,12 @@
         <link href="{$templateWebPath}css/maindark.css" rel="stylesheet" type="text/css">
     {/if}
     <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>
-    <script type="text/javascript" src="/js/main.js?v2"></script>
+    <script type="text/javascript" src="/js/main.js?v3"></script>
 </head>
 
 <body {*class="d-flex flex-column h-100"*}>
     {if isset($message)}
-        <!-- Modal3-->
+        <!-- Modal popup info-->
         <div class="modal fade" id="exampleModal3" tabindex="-1" {*aria-bs-labelledby="exampleModalLabel3*}"
              aria-hidden="false">
             <div class="modal-dialog">
@@ -33,53 +33,15 @@
                         <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
                         </button>
                     </div>
-                        {*
-                        <div class="modal-body">
-                            <form method="post" action="/index/upd/">
-                                <div class="row mb-3">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label">
-                                        Логин
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="inputPass" class="col-sm-2 col-form-label">
-                                        Пароль
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="inputPass">
-                                    </div>
-                                </div>
 
-                                <div class="row mb-3">
-                                    <button type="submit"
-                                        class="btn bg-nav-btn col-nav nv-navbar col-sm-12">Зарегистрироваться</button>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-6">
-                                        <a href="#" class="nav-link">
-                                            Забыли пароль
-                                        </a>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <a href="#" class="nav-link">
-                                            Авторизироваться
-                                        </a>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        *} 
                 </div>
             </div>
         </div>
         {*</div>*}
-        <!-- /Modal3-->
+        <!-- /Modal popup info-->
     {/if}   
 
-    <!--<div class="container"  id="header">fixed-top class="d-md-flex flex-md-columnm in-vh-100" -->
+    <!--<div class="container"  id="header">fixed-top class="d-md-flex flex-md-column in-vh-100" -->
     <nav class="navbar navbar-expand-sm  nv-navbar bg-nav">
         <!--<nav class="navbar  navbar-expand-md navbar-dark bg-dark">
            fixed-top -->
@@ -258,30 +220,30 @@
                             
                         </button>
                         {*cart not realised*} 
-                        <button class="btn bg-nav-btn col-nav me-2  
+                        <button class="btn bg-nav-btn col-nav me-2  position-relative
                                      mb-sm-0 mb-1 nv-navbar" 
                                 data-bs-toggle="tooltip" data-bs-placement="bottom" 
                                 data-bs-title="Корзина" data-bs-custom-class="custom-tooltip"
-                                onclick="window.location.href = '/user/bookmarks/';">
-                            {if isset($arUser['user_wishlist'])}
-                                {if !empty($arUser['user_wishlist'])}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                        class="bi bi-basket3-fill" viewBox="0 0 16 16">
-                                        <path 
-                                            d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
-                                    </svg>
-                                {else}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                         class="bi bi-basket3" viewBox="0 0 16 16">
-                                        <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
-                                    </svg>
-                                {/if}
-                            {else}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" 
-                                     class="bi bi-basket3" viewBox="0 0 16 16">
-                                    <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
-                                </svg>
-                            {/if}
+                                onclick="window.location.href = '/user/';">
+                            {assign var="cartNotNull"
+                            value=isset($arUser['user_cart'])&&!empty($arUser['user_cart'])}
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-basket3-fill {if !$cartNotNull}hideme{/if}"
+                                 viewBox="0 0 16 16" id="userCartFull">
+                                <path
+                                        d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM2.468 15.426.943 9h14.114l-1.525 6.426a.75.75 0 0 1-.729.574H3.197a.75.75 0 0 1-.73-.574z"/>
+                            </svg>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill
+                                         bg-light col-nav {if !$cartNotNull}hideme{/if}" id="userCart">
+                                {count($arUser['user_cart'])}
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-basket3 {if $cartNotNull}hideme{/if}" viewBox="0 0 16 16"
+                                 id="userCartEmpty">
+                                <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 .5 6h1.717L5.07 1.243a.5.5 0 0 1 .686-.172zM3.394 15l-1.48-6h-.97l1.525 6.426a.75.75 0 0 0 .729.574h9.606a.75.75 0 0 0 .73-.574L15.056 9h-.972l-1.479 6h-9.21z"/>
+                            </svg>
+
                         </button>
 
 
@@ -583,8 +545,7 @@
        </div>
    {*</div>*}
    </div>
-<!-- /Modal2-->
-
+   <!-- /Modal2-->
 
     <!-- Modal contact-->
     <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">

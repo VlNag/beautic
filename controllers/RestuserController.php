@@ -776,3 +776,82 @@ function addquestionadmAction(): void
     //header('Location: ' . $_SERVER['HTTP_REFERER']);
     die;
 }
+
+function addcartAction(): void
+{
+    $user = $_SESSION['user'] ?? null;
+    if ($user) {
+        $user_id = $user['user_id'];
+
+        $user_id = intval($user_id);
+        if ($user_id > 0) {
+            if (isset($_POST['product_id'])) {
+                $product_id = $_POST['product_id'];
+                $product_id = intval($product_id);
+
+                addCartUser($user_id, $product_id);
+                $newCart['product_id'] = $product_id;
+                $newCart['quantity'] = 1;
+
+                $_SESSION['user']['user_cart'][] = $newCart;
+                $t = time();
+                updateSessionModification($user_id, session_id(), $_SERVER["HTTP_USER_AGENT"], $t, getIp());
+                }
+           }
+        }
+    die;
+}
+
+function delcartAction(): void
+{
+    $user = $_SESSION['user'] ?? null;
+    if ($user) {
+        $user_id = $user['user_id'];
+        $user_id = intval($user_id);
+        if ($user_id > 0) {
+            if (isset($_POST['product_id'])) {
+                $product_id = $_POST['product_id'];
+                $product_id = intval($product_id);
+                delCartUser($user_id, $product_id);
+                if (isset($_SESSION['user']['user_cart'])) {
+                    foreach($_SESSION['user']['user_cart'] as $subKey => $subArray){
+                        if($subArray['product_id'] == $product_id){
+                            unset($_SESSION['user']['user_cart'][$subKey]);
+                        }
+                    }
+                }
+                $t = time();
+                updateSessionModification($user_id, session_id(), $_SERVER["HTTP_USER_AGENT"], $t, getIp());
+            }
+        }
+    }
+    die;
+}
+
+function updcartAction(): void
+{
+    $user = $_SESSION['user'] ?? null;
+    if ($user) {
+        $user_id = $user['user_id'];
+        $user_id = intval($user_id);
+        if ($user_id > 0) {
+            if (isset($_POST['product_id'])) {
+                $product_id = $_POST['product_id'];
+                $product_id = intval($product_id);
+                $quantity = $_POST['quantity'];
+                $quantity = intval($quantity);
+                updCartUser($user_id, $product_id, $quantity);
+                if (isset($_SESSION['user']['user_cart'])) {
+                    foreach($_SESSION['user']['user_cart'] as $subKey => $subArray){
+                        if($subArray['product_id'] == $product_id){
+                            $subArray['quantity'] == $quantity;
+                        }
+                    }
+                }
+                $t = time();
+                updateSessionModification($user_id, session_id(), $_SERVER["HTTP_USER_AGENT"], $t, getIp());
+            }
+        }
+    }
+    die;
+}

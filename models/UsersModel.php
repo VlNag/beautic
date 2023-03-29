@@ -498,6 +498,20 @@ function getUser($fieldRequest)
                 $i++; 
             }
         }
+        $sql = 'SELECT `product_id`,`quantity`, `date_added` FROM `bt_user_cart`' .
+            " WHERE `user_id` = $user_id";
+        $rs = requestUser($sql);
+        $res = createSmartyRsArray($rs);
+        $i = 0;
+        if ($res) {
+            foreach ($res as $value) {
+                foreach($value as $key => $val) {
+                    $resData['user_cart'][$i][$key] = $val;
+                }
+                $i++;
+            }
+        }
+
         $sql = 'SELECT `date_added`, `login` FROM `bt_user_update`' .
             " WHERE `user_id` = $user_id";
         $rs = requestUser($sql);
@@ -1002,6 +1016,13 @@ function checkUser($login, $pass)
             } else {
                 $data['user_wishlist'] = array();   
             }
+            if (!empty($wishlists['user_cart'])) {
+                $data['user_cart'] = $wishlists['user_cart'];
+            } else {
+                $data['user_cart'] = array();
+            }
+
+
             $resData['data'] = $data;
             $resData['success'] = true; 
 
@@ -1088,8 +1109,15 @@ function getUserForUpdateSession($userId)
 
             $wishlists = getUser(array('user_id' => $data['user_id'])); 
             if (!empty($wishlists['user_wishlist'])) { 
-            $data['user_wishlist'] = $wishlists['user_wishlist'];
+                $data['user_wishlist'] = $wishlists['user_wishlist'];
+            } else {
+                $data['user_wishlist'] = array();
             }
+           if (!empty($wishlists['user_cart'])) {
+               $data['user_cart'] = $wishlists['user_cart'];
+           } else {
+               $data['user_cart'] = array();
+           }
         }
     }
     return $data;
@@ -1742,4 +1770,27 @@ function addQuestionAdm($support_id, $user_id, $question, $token, $email, $answe
     }
     return $rs;
 }
+
+function delCartUser($userId,$productId): void
+{
+    $sql = 'DELETE FROM `bt_user_cart` WHERE ' .
+        " `user_id` = '$userId' AND `product_id` = '$productId'";
+    $res = requestUser($sql);
+}
+
+function addCartUser($user_id, $productId, $quantity = 1): void
+{
+    $sql = 'INSERT INTO `bt_user_cart`(`user_id`, `product_id`, `quantity`, `date_added`) VALUES' .
+        " ('$user_id','$productId','$quantity',NOW())";
+    writeInFile($sql);
+    $res = requestUser($sql);
+}
+
+function updCartUser($user_id, $productId, $quantity = 1): void
+{
+    $sql = "UPDATE `bt_user_cart` SET `quantity`='$quantity',`date_modified`=NOW()" .
+          " WHERE `user_id`='$user_id',`product_id`='$productId'";
+    $res = requestUser($sql);
+}
+
 

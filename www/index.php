@@ -51,7 +51,7 @@ if (isset($_SESSION['user'])) {
         }
     }
 }
-
+//d($_SESSION['user']);
 // если в сессии нет информации о группе пользователя то создаём её
 if (!isset($_SESSION['userGroup'])) {
     $_SESSION['userGroup'] = 0;
