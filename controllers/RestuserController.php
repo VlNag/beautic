@@ -847,11 +847,12 @@ function updcartAction(): void
                 $quantity = intval($quantity);
                 updCartUser($user_id, $product_id, $quantity);
                 if (isset($_SESSION['user']['user_cart'])) {
-                    foreach($_SESSION['user']['user_cart'] as $subKey => $subArray){
+                    foreach($_SESSION['user']['user_cart'] as &$subArray){
                         if($subArray['product_id'] == $product_id){
-                            $subArray['quantity'] == $quantity;
+                            $subArray['quantity'] = $quantity;
                         }
                     }
+                    unset($subArray);
                 }
                 $t = time();
                 updateSessionModification($user_id, session_id(), $_SERVER["HTTP_USER_AGENT"], $t, getIp());

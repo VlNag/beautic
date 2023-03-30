@@ -83,13 +83,13 @@
                                     <div class="col-7 col-sm-8  px-0">
                                         <a href="{$itemProd['link']}"
                                            class="btn mt-auto bg-nav-opposite col-nav-opposite nv-hover h-100  w-100
-                                    px-0 py-0 d-flex align-items-center justify-content-center">
+                                                  px-0 py-0 d-flex align-items-center justify-content-center">
                                             <p class="text-break mb-0">{$itemProd['name']}</p>
                                         </a>
                                     </div>
                                     <div
                                             class="col-3 col-sm-2 px-0 d-flex align-items-center justify-content-center
-                                               border border-secondary rounded">
+                                                   border border-secondary rounded">
                                         <p class="col-nav text-center align-middle mb-0">
                                             {*Цена: {$itemProd['price']|string_format:"%.2f"} {$currency}*}
                                             {$itemProd['price']|string_format:"%.2f"}
@@ -154,8 +154,12 @@
                                             </svg>
                                         </a>
                                         <a id="removecart_{$itemProd['product_id']}" href="#"
-                                           onClick="addToCart({$itemProd['product_id']},1);
-                                                location.reload(); return false;"
+                                           onClick='addToCart({$itemProd['product_id']},1,
+                                                             "{$itemProd['image']}",
+                                                             "{$itemProd['name']}",
+                                                             "{$itemProd['price']|string_format:"%.2f"}",
+                                                             "{$itemProd['link']}");
+                                                location.reload(); return false;'
                                            alt='Добавить в корзину'
                                            class="me-1  mb-1 nav-link
                                                  {if  $itemProd['inCart']} hideme" {else}"{/if}>
@@ -247,7 +251,11 @@
                                                     </a>
                                                     <a id="removecart_{$itemProd['product_id']}" href="#"
                                                        onClick='addToCart({$itemProd['product_id']},
-                                                                 "{$itemProd['link']}",1) ;
+                                                                 "{$itemProd['link']}",1,
+                                                                 "{$itemProd['image']}",
+                                                                 "{$itemProd['name']}",
+                                                                 "{$itemProd['price']|string_format:"%.2f"}",
+                                                                 "{$itemProd['link']}") ;
                                                                  location.reload();
                                                                  return false;'
                                                        alt='Добавить в корзину'

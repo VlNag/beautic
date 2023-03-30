@@ -149,6 +149,12 @@ function bookmarksAction($smarty){
     } else {
       $bookmarks = array();
     }
+    if (isset($user['user_cart'])) {
+        $userCart = $user['user_cart'];
+    } else {
+        $userCart = array();
+    }
+
     foreach ($bookmarks as &$mark) {
         $productId = $mark['product_id']; 
         $product = getProductFromIdUserGroup($productId);
@@ -156,7 +162,12 @@ function bookmarksAction($smarty){
         $mark['price'] = isset($product['price']) ? $product['price'] : '';
         $mark['image'] = empty($product['image']) ? ($imageDefProd) : $product['image'];
         $mark['bookmarks'] = true;
-        $mark['inCart'] = true;
+        $key = array_search($productId, array_column($userCart, 'product_id'));
+        if($key!==false) {
+            $mark['inCart']=true;
+        } else {
+            $mark['inCart']=false;
+        }
     }
     $rsCategories = getAllMainCatsWithChildrenUpd(); 
     $smarty->assign('rsCategories',$rsCategories);

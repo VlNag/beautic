@@ -1831,7 +1831,7 @@ function addCartUser($user_id, $productId, $quantity = 1): void
 function updCartUser($user_id, $productId, $quantity = 1): void
 {
     $sql = "UPDATE `bt_user_cart` SET `quantity`='$quantity',`date_modified`=NOW()" .
-          " WHERE `user_id`='$user_id',`product_id`='$productId'";
+          " WHERE `user_id`='$user_id' AND `product_id`='$productId'";
     $res = requestUser($sql);
 }
 

@@ -679,6 +679,118 @@ function addToCart(productId, add, image = "", name = "", price = 0.0, link = ''
 	}
 }
 
+function updCart(productId, quantity, increase, ar = '') {
+	let arr = ar.split(' ,');
+	let quantityNew = 0;
+	let wishlistCount = Number(($("#userCart").text()));
+
+	if (increase == 0) {
+		if (quantity > 0) {
+			quantityNew = quantity;
+		} else {
+			quantityNew = 0;
+			$('#quantityId_' + productId).val(0);
+			$('#trCart_' + productId).hide();
+		}
+	} else {
+		if (increase == 1) {
+			quantityNew = Number($('#quantityId_' + productId).val())+1;
+			$('#quantityId_' + productId).val(quantityNew);
+		} else {
+			quantityNew = Number($('#quantityId_' + productId).val())-1;
+			if (quantityNew > 0) {
+				$('#quantityId_' + productId).val(quantityNew);
+			} else {
+				quantityNew = 0;
+				$('#quantityId_' + productId).val(0);
+				$('#trCart_' + productId).hide();
+			}
+		}
+	}
+	if (quantityNew > 0) {
+		let postData = {
+			product_id: productId,
+			quantity: quantityNew
+		};
+		$.ajax({
+			type: 'POST',
+			async: false,
+			url: "/restuser/updcart/",
+			data: postData,
+			dataType: 'json',
+			success: function (data) {
+			}
+		});
+	} else {
+		// удалить из корзины
+		if (wishlistCount <= 1) {
+			$("#userCartFull").hide();
+			$("#userCartEmpty").show();
+			$("#userCart").hide();
+		}
+		$("#userCart").text(wishlistCount-1);
+		let objNameAdd = "#addcart_" + productId;
+		let objNameRem = "#removecart_" + productId;
+		$(objNameAdd).hide();
+		$(objNameRem).show();
+
+		let postDataDel = {
+			product_id: productId
+		};
+		$.ajax({
+			type: 'POST',
+			async: false,
+			url: "/restuser/delcart/",
+			data: postDataDel,
+			dataType: 'json',
+			success: function (data) {
+			}
+		});
+	}
+    // обновить сумму
+	let sum = 0;
+	$.each(arr, function(key, value){
+		quan = Number($('#quantityId_' + value).val());
+		pric = Number($('#priceId_' + value).text());
+		sum = sum + quan * pric;
+	});
+	$('#sumCartId').text(number_format(sum, 2, '.', '') );
+}
+
+/***
+ number - исходное число
+ decimals - количество знаков после разделителя
+ dec_point - символ разделителя
+ thousands_sep - разделитель тысячных
+ ***/
+function number_format(number, decimals, dec_point, thousands_sep) {
+	number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+	var n = !isFinite(+number) ? 0 : +number,
+		prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+		sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+		dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+		s = '',
+		toFixedFix = function(n, prec) {
+			var k = Math.pow(10, prec);
+			return '' + (Math.round(n * k) / k)
+				.toFixed(prec);
+		};
+	// Fix for IE parseFloat(0.55).toFixed(0) = 0;
+	s = (prec ? toFixedFix(n, prec) : '' + Math.round(n))
+		.split('.');
+	if (s[0].length > 3) {
+		s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+	}
+	if ((s[1] || '')
+		.length < prec) {
+		s[1] = s[1] || '';
+		s[1] += new Array(prec - s[1].length + 1)
+			.join('0');
+	}
+	return s.join(dec);
+}
+
+
 
 
 

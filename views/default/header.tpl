@@ -618,14 +618,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
-
-
-                    <ul class=" pull-right">
+                    {if $arUser['user_cart']}
+                    <ul class="ps-0 {*pull-right*}">
                         <li>
-                            <table class="cart table table-striped">
+                            {assign var="idsProductCart" value=""}
+                            {foreach $arUser['user_cart'] as $productCart name=idProductCart}
+                                {if $smarty.foreach.idProductCart.first}
+                                    {assign var="idsProductCart" value="`$productCart['product_id']`"}
+                                {else}
+                                    {assign var="idsProductCart" value="`$idsProductCart` ,`$productCart['product_id']`"}
+                                {/if}
+                            {/foreach}
+                             <table class="table table-striped">
+                                {assign var="sum" value="`0`"}
+                                {$sum = $sum|floatval}
                                 {foreach $arUser['user_cart'] as $productCart}
-                                <tr>
-
+                                    {$pric = $productCart['price']|floatval}
+                                    {$quan = $productCart['quantity']|intval}
+                                    {assign var="sum" value="`$sum+$pric*$quan`"}
+                                <tr id="trCart_{$productCart['product_id']}">
                                     <td class="image">
                                         <a href="{$productCart['link']}">
                                             <img src="/images/product/{$productCart['image']}"
@@ -635,31 +646,60 @@
                                         </a>
                                     </td>
                                     <td class="name text-left">
-                                        <a href="{$productCart['link']}">
-                                            "{$productCart['name']}"
+                                        <a href="{$productCart['link']}"
+                                           class="nv-hover">
+                                            <p class="text-break mb-0">{$productCart['name']}</p>
                                         </a>
                                     </td>
-                                    <td class="quantity text-right">
-                                        <div class="input-group" style="max-width:100px;">
-                                            <input type="text" name="quantity_{$productCart['product_id']}"
+                                    <td class="quantity text-right align-middle">
+                                        <div class="input-group" >
+                                            <input type="text" name="quantityName_{$productCart['product_id']}"
+                                                   id="quantityId_{$productCart['product_id']}"
                                                    value="{$productCart['quantity']}"
-                                                   onchange="cart.update('3447', $(this).val());" size="1"
-                                                   class="form-control"/>
-                                            <span>
-                                                <i class="fa fa-plus btn btn-default"
-                                                   onclick="cart.update('3447', parseFloat($(this).parent().prev().val())+1);"></i>
-                                                <i class="fa fa-minus btn btn-default"
-                                                   onclick="cart.update('3447', parseFloat($(this).parent().prev().val())-1);"></i>
-                                            </span>
+                                                   onchange="updCart({$productCart['product_id']},
+                                                                     $(this).val(), 0, '{$idsProductCart}');"
+                                                   class="form-control border border-col rounded px-0 text-center"/>
+                                            <div class="btn-group-vertical" role="group" aria-label="">
+                                                <button type=""
+                                                    class="btn col-nav nv-navbar border border-col rounded px-1 py-1"
+                                                    onclick="updCart({$productCart['product_id']},
+                                                                      0, 1, '{$idsProductCart}');">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                         width="16" height="16" fill="currentColor"
+                                                         class="bi bi-plus-lg"
+                                                         viewBox="0 0 16 16">
+                                                         <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                                    </svg>
+                                                </button>
+                                                <button type=""
+                                                    class="btn col-nav nv-navbar border border-col rounded px-1 py-1"
+                                                    onclick="updCart({$productCart['product_id']},
+                                                                      0, -1, '{$idsProductCart}');">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                         width="16" height="16" fill="currentColor"
+                                                         class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="total text-right">
-                                        {$productCart['price']|string_format:"%.2f"}
+                                    <td class="total text-right align-middle" >
+                                        <span id="priceId_{$productCart['product_id']}">
+                                            {$productCart['price']|string_format:"%.2f"}
+                                        </span>
                                     </td>
-                                    <td class="remove text-center">
-                                        <button type="button" onclick="cart.remove('3447', 619271);" title="Удалить"
-                                                class="">
-                                            <i class="fa fa-times"></i>
+                                    <td class="remove text-center align-middle">
+                                        <button type="button"
+                                                onclick="updCart({$productCart['product_id']},
+                                                             0, 0, '{$idsProductCart}');"
+                                                title="Удалить" class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="16" height="16" fill="currentColor"
+                                                 class="bi bi-x-lg mb-1" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                                                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                                            </svg>
                                         </button>
                                     </td>
 
@@ -672,23 +712,32 @@
                                 <table class="table table-bordered">
                                     <tr>
                                         <td class="text-right"><strong>Итого:</strong></td>
-                                        <td class="text-right">85109.00 тг.</td>
+                                        <td class="text-right">
+                                            <span  id="sumCartId">
+                                                {$sum|string_format:"%.2f"}
+                                            </span>
+                                        </td>
                                     </tr>
-                                    <tr>
+                                    {*<tr>
                                         <td class="text-right"><strong>Всего:</strong></td>
                                         <td class="text-right">85109.00 тг.</td>
-                                    </tr>
+                                    </tr>*}
                                 </table>
-                                <p class="text-right">
-                                    <a href="index.php?route=checkout/uni_checkout" class="btn btn-primary">
-                                        Оформление заказа</strong>
+                                {*<p class="text-right">*}
+                                    <a href="/faq/" class="nav-link">
+                                        <div class='d-inline-flex nv-hover'>
+                                            <span class='col-nav nv-hover'>
+                                                <strong>Оформление заказа</strong>
+                                            </span>
+                                        </div>
                                     </a>
-                                </p>
+                                {*</p>*}
                             </div>
                         </li>
                     </ul>
-
-
+                    {else}
+                        Ваша корзина пуста!
+                    {/if}
                 </div>
             </div>
             {*
