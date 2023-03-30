@@ -66,7 +66,19 @@ function indexAction($smarty)
    }
    $rsProduct['bookmarks']=$flMark;
 
-   // update ********************************************************
+   if (isset($user['user_cart'])) {
+       $userCart = $user['user_cart'];
+   } else {
+       $userCart = array();
+   }
+   $flMark = false;
+   foreach ($userCart as $marks) {
+       if (array_key_exists('product_id', $marks)) {
+           if ($productId == $marks['product_id']) {
+               $flMark = true;
+           }
+       }
+   }
    $rsProduct['inCart']=$flMark;
    
    $smarty->assign('pageTitle',$rsProduct['name']);

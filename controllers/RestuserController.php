@@ -788,10 +788,15 @@ function addcartAction(): void
             if (isset($_POST['product_id'])) {
                 $product_id = $_POST['product_id'];
                 $product_id = intval($product_id);
-
+                $image = $_POST['image'] ?? '';
                 addCartUser($user_id, $product_id);
                 $newCart['product_id'] = $product_id;
                 $newCart['quantity'] = 1;
+
+                $newCart['image'] = $_POST['image'] ?? '';
+                $newCart['name'] = $_POST['name'] ?? '';
+                $newCart['price'] =  $_POST['price'] ?? 0;
+                $newCart['link'] = $_POST['link'] ?? '';
 
                 $_SESSION['user']['user_cart'][] = $newCart;
                 $t = time();

@@ -1010,17 +1010,19 @@ function checkUser($login, $pass)
                 $data['showName'] = 0;
             }
 
-            $wishlists = getUser(array('user_id' => $data['user_id']));
-            if (!empty($wishlists['user_wishlist'])) { 
+            //$wishlists = getUser(array('user_id' => $data['user_id']));
+            /*if (!empty($wishlists['user_wishlist'])) {
                 $data['user_wishlist'] = $wishlists['user_wishlist'];
             } else {
                 $data['user_wishlist'] = array();   
-            }
-            if (!empty($wishlists['user_cart'])) {
+            }*/
+            $data['user_wishlist'] = getwishlistUser($data['user_id']);
+            $data['user_cart'] = getCartUser($data['user_id'], $data['user_group']);
+            /*if (!empty($wishlists['user_cart'])) {
                 $data['user_cart'] = $wishlists['user_cart'];
             } else {
                 $data['user_cart'] = array();
-            }
+            }*/
 
 
             $resData['data'] = $data;
@@ -1107,17 +1109,19 @@ function getUserForUpdateSession($userId)
                 $data['showName'] = 0;
             }
 
-            $wishlists = getUser(array('user_id' => $data['user_id'])); 
-            if (!empty($wishlists['user_wishlist'])) { 
+            //$wishlists = getUser(array('user_id' => $data['user_id']));
+            /*if (!empty($wishlists['user_wishlist'])) {
                 $data['user_wishlist'] = $wishlists['user_wishlist'];
             } else {
                 $data['user_wishlist'] = array();
-            }
-           if (!empty($wishlists['user_cart'])) {
+            }*/
+           $data['user_wishlist'] = getwishlistUser($data['user_id']);
+           $data['user_cart'] = getCartUser($data['user_id'], $data['user_group']);
+           /*if (!empty($wishlists['user_cart'])) {
                $data['user_cart'] = $wishlists['user_cart'];
            } else {
                $data['user_cart'] = array();
-           }
+           }*/
         }
     }
     return $data;
@@ -1135,6 +1139,44 @@ function addwishlistUser($user_id, $productId, $link)
     $sql = 'INSERT INTO `bt_user_wishlist`(`user_id`, `product_id`, `link`, `date_added`) VALUES' . 
     " ('$user_id','$productId','$link',NOW())";
     $res = requestUser($sql);   
+}
+
+function getwishlistUser($userId): array
+{
+    $sql = 'SELECT `product_id`, `link`, `date_added` FROM `bt_user_wishlist`' .
+        " WHERE `user_id` = $userId";
+    $rs = requestUser($sql);
+    $res = createSmartyRsArray($rs);
+    if (!$res) $res = array();
+    return $res;
+}
+
+function getCartUser($userId, $userGroup): array
+{
+    global $imageDefProd;
+    $userGroupDescription = getCheckUserGroup(3, $userGroup);
+    $sql = 'SELECT cart.product_id, cart.quantity, cart.date_added, cart.date_modified, ' .
+           "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
+           'des.name, pri.price, cat.category_id ' .
+           'FROM `bt_user_cart` AS cart ' .
+           'JOIN `bt_product` AS pro ON pro.product_id = cart.product_id ' .
+           'JOIN `bt_product_description` AS des ON des.product_id = cart.product_id '.
+           'JOIN `bt_product_price` AS pri ON cart.product_id = pri.product_id ' .
+           'JOIN `bt_product_to_category` AS cat ON des.product_id = cat.product_id '.
+           "WHERE cart.user_id = $userId AND des.user_group = $userGroupDescription " .
+           "AND pri.user_group = $userGroup ";
+
+    $rs = requestUser($sql);
+    $res = createSmartyRsArray($rs);
+    if ($res) {
+        foreach ($res as &$productCart) {
+            $productCart['link'] = getLinkProduct($productCart['product_id'], $productCart['category_id']);
+        }
+        unset($productCart);
+    } else {
+        $res = array();
+    }
+    return $res;
 }
 
 function getUsersByEmail($email)
@@ -1781,8 +1823,8 @@ function delCartUser($userId,$productId): void
 function addCartUser($user_id, $productId, $quantity = 1): void
 {
     $sql = 'INSERT INTO `bt_user_cart`(`user_id`, `product_id`, `quantity`, `date_added`) VALUES' .
-        " ('$user_id','$productId','$quantity',NOW())";
-    writeInFile($sql);
+        " ('$user_id','$productId','$quantity',NOW()) ".
+        ' ON DUPLICATE KEY UPDATE `quantity`=VALUES(`quantity`), `date_added`=VALUES(`date_added`)';
     $res = requestUser($sql);
 }
 
@@ -1793,4 +1835,46 @@ function updCartUser($user_id, $productId, $quantity = 1): void
     $res = requestUser($sql);
 }
 
+function getLinkProduct($product_id, $category_id = 0): string
+{
+    $link = '';
+    $product_id = intval($product_id);
+    $category_id = intval($category_id);
 
+    if ($category_id == 0) {
+        $sql = "SELECT `category_id` FROM `bt_product_to_category` WHERE `product_id` = '$product_id'";
+        $rs = request($sql . ')');
+        if ($rs) {
+            $res = createSmartyRsArray($rs);
+            $category_id = $res[0]['category_id'] ?? 0;
+        }
+    }
+    if ($category_id > 0) {
+
+        $sql = "WITH RECURSIVE lv_recursive (parent_id, category_id) AS
+               (SELECT parent_id, category_id
+                FROM bt_category dep
+                WHERE dep.category_id = $category_id 
+                UNION ALL
+                SELECT dep.parent_id, dep.category_id
+                FROM bt_category dep
+                JOIN lv_recursive rec ON dep.category_id = rec.parent_id)
+                SELECT * FROM lv_recursive";
+
+        $rsCat = requestUser($sql);
+
+        if ($rsCat) {
+            $resCat = createSmartyRsArray($rsCat);
+
+            $link = '/product/';
+            $resCat = array_reverse($resCat);
+            foreach ($resCat as $cat) {
+                if ($link != '/product/') $link .= '_';
+                $link .= $cat['category_id'];
+            }
+            $link .= '/'.$product_id.'/';
+        }
+    }
+
+    return $link;
+}

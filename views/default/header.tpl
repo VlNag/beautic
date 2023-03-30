@@ -18,7 +18,7 @@
         <link href="{$templateWebPath}css/maindark.css" rel="stylesheet" type="text/css">
     {/if}
     <script type="text/javascript" src="/js/jquery-3.6.1.min.js"></script>
-    <script type="text/javascript" src="/js/main.js?v3"></script>
+    <script type="text/javascript" src="/js/main.js?v4"></script>
 </head>
 
 <body {*class="d-flex flex-column h-100"*}>
@@ -222,9 +222,11 @@
                         {*cart not realised*} 
                         <button class="btn bg-nav-btn col-nav me-2  position-relative
                                      mb-sm-0 mb-1 nv-navbar" 
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" 
-                                data-bs-title="Корзина" data-bs-custom-class="custom-tooltip"
-                                onclick="window.location.href = '/user/';">
+                                {*data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="Корзина" data-bs-custom-class="custom-tooltip"*}
+                                data-bs-toggle="modal" data-bs-target="#cartModal"
+                                {*onclick="window.location.href = '/user/';"*}
+                            >
                             {assign var="cartNotNull"
                             value=isset($arUser['user_cart'])&&!empty($arUser['user_cart'])}
 
@@ -602,6 +604,104 @@
         </div>
     </div>
     <!-- /Modal contact-->
+
+    <!-- Modal cart-->
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+        {*aria-bs-labelledby="exampleModalLabel"*}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Корзина
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal" {*aria-bs-label="close"*}>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <ul class=" pull-right">
+                        <li>
+                            <table class="cart table table-striped">
+                                {foreach $arUser['user_cart'] as $productCart}
+                                <tr>
+
+                                    <td class="image">
+                                        <a href="{$productCart['link']}">
+                                            <img src="/images/product/{$productCart['image']}"
+                                                 alt="{$productCart['name']}"
+                                                 title="{$productCart['name']}"
+                                                 class="img-thumbnail"/>
+                                        </a>
+                                    </td>
+                                    <td class="name text-left">
+                                        <a href="{$productCart['link']}">
+                                            "{$productCart['name']}"
+                                        </a>
+                                    </td>
+                                    <td class="quantity text-right">
+                                        <div class="input-group" style="max-width:100px;">
+                                            <input type="text" name="quantity_{$productCart['product_id']}"
+                                                   value="{$productCart['quantity']}"
+                                                   onchange="cart.update('3447', $(this).val());" size="1"
+                                                   class="form-control"/>
+                                            <span>
+                                                <i class="fa fa-plus btn btn-default"
+                                                   onclick="cart.update('3447', parseFloat($(this).parent().prev().val())+1);"></i>
+                                                <i class="fa fa-minus btn btn-default"
+                                                   onclick="cart.update('3447', parseFloat($(this).parent().prev().val())-1);"></i>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="total text-right">
+                                        {$productCart['price']|string_format:"%.2f"}
+                                    </td>
+                                    <td class="remove text-center">
+                                        <button type="button" onclick="cart.remove('3447', 619271);" title="Удалить"
+                                                class="">
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </td>
+
+                                </tr>
+                                {/foreach}
+                            </table>
+                        </li>
+                        <li>
+                            <div>
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <td class="text-right"><strong>Итого:</strong></td>
+                                        <td class="text-right">85109.00 тг.</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right"><strong>Всего:</strong></td>
+                                        <td class="text-right">85109.00 тг.</td>
+                                    </tr>
+                                </table>
+                                <p class="text-right">
+                                    <a href="index.php?route=checkout/uni_checkout" class="btn btn-primary">
+                                        Оформление заказа</strong>
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                </div>
+            </div>
+            {*
+            <div class="modal-footer bg-light">
+                <div class="row mb-3">
+
+
+
+                </div>
+            </div>*}
+        </div>
+    </div>
+    <!-- /Modal cart-->
 
     <!-- Modal search-->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">

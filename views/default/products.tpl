@@ -153,7 +153,9 @@
                                         </svg>
                                     </a>
                                     <a id="addcart_{$itemProd['productId']}" href="#"
-                                       onClick='addToCart({$itemProd['productId']},0);return false;'
+                                       onClick='addToCart({$itemProd['productId']},0);
+                                                location.reload();
+                                                location.reload(); return false;'
                                        alt='Удалить из корзины'
                                        class="me-1  mb-1 nav-link
                                            {if ! $itemProd['inCart']} hideme" {else}"{/if}>
@@ -169,7 +171,13 @@
                                         </svg>
                                     </a>
                                     <a id="removecart_{$itemProd['productId']}" href="#"
-                                       onClick='addToCart({$itemProd['productId']},1); return false;'
+                                       onClick='addToCart({$itemProd['productId']},1,
+                                       "{$itemProd['image']}",
+                                       "{$itemProd['name']}",
+                                       "{$itemProd['price']|string_format:"%.2f"}",
+                                       "/product/{$href1}/{$itemProd['productId']}/"
+                                       );
+                                                location.reload(); return false;'
                                        alt='Добавить в корзину'
                                        class="me-1  mb-1 nav-link
                                              {if  $itemProd['inCart']} hideme" {else}"{/if}>
@@ -254,6 +262,7 @@
                                                 </a>
                                                 <a id="addcart_{$itemProd['productId']}" href="#"
                                                    onClick="addToCart({$itemProd['productId']},0);
+                                                location.reload();
                                                            return false;"
                                                    alt='Удалить из корзины'
                                                    class="me-1  mb-1 nav-link
@@ -273,7 +282,13 @@
                                                     </svg>
                                                 </a>
                                                 <a id="removecart_{$itemProd['productId']}" href="#"
-                                                   onClick="addToCart({$itemProd['productId']},1); return false;"
+                                                   onClick='addToCart({$itemProd['productId']},1,
+                                                   "{$itemProd['image']}",
+                                                   "{$itemProd['name']}",
+                                                   "{$itemProd['price']|string_format:"%.2f"}",
+                                                   "/product/{$href1}/{$itemProd['productId']}/"
+                                                );
+                                                location.reload();return false;'
                                                    alt='Добавить в корзину'
                                                    class="me-1  mb-1 nav-link
                                                          {if  $itemProd['inCart']} hideme" {else}"{/if}>

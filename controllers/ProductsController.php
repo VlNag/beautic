@@ -10,6 +10,7 @@ include_once '../models/CategoriesModel.php';
 include_once '../models/ProductsModel.php';
 include_once '../models/InfoModel.php';
 include_once '../models/UsersModel.php';
+
 /**
  * формирование страницы категории
  * 
@@ -97,32 +98,28 @@ function indexAction($smarty)
    } else {
      $bookmarks = array();
    }
+    if (isset($user['user_cart'])) {
+        $userCart = $user['user_cart'];
+    } else {
+        $userCart = array();
+    }
+
     foreach ($rsProductsPage as &$rsPoduct) {
     //if (empty($rsPoduct['image'])) {
     //  $rsPoduct['image']=$imageDefProd;
     // }
-    // $flMark = false;
      $key = array_search($rsPoduct['productId'], array_column($bookmarks, 'product_id'));
-     //echo phpinfo();
      if($key!==false) {
       $rsPoduct['bookmarks']=true;
      } else {
       $rsPoduct['bookmarks']=false;
      }
-
-
-     //foreach ($bookmarks as $marks) {
-     // if (array_key_exists('product_id',$marks)) {
-       
-     //   if ($rsPoduct['productId'] == $marks['product_id']) {
-     //   $flMark = true;
-     //   }
-     // }
-     //}
-     //$rsPoduct['bookmarks']=$flMark;
-
-     // update ******************************************************
-     $rsPoduct['inCart']=$rsPoduct['bookmarks'];
+        $key = array_search($rsPoduct['productId'], array_column($userCart, 'product_id'));
+        if($key!==false) {
+            $rsPoduct['inCart']=true;
+        } else {
+            $rsPoduct['inCart']=false;
+        }
    }
    unset($rsPoduct);
 
@@ -269,6 +266,12 @@ function searchAction($smarty){
                 } else {
                     $bookmarks = array();
                 }
+                if (isset($user['user_cart'])) {
+                    $userCart = $user['user_cart'];
+                } else {
+                    $userCart = array();
+                }
+
                 foreach ($rsProductsPage as &$rsPoduct) {
                     $key = array_search($rsPoduct['product_id'], array_column($bookmarks, 'product_id'));
                     $rsPoduct['link']=getLinkProduct($rsPoduct['product_id'], $rsPoduct['category_id']);
@@ -278,8 +281,12 @@ function searchAction($smarty){
                     } else {
                         $rsPoduct['bookmarks']=false;
                     }
-
-                    $rsPoduct['inCart']=$rsPoduct['bookmarks']; // UPDATE *********************************************
+                    $key = array_search($rsPoduct['product_id'], array_column($userCart, 'product_id'));
+                    if($key!==false) {
+                        $rsPoduct['inCart']=true;
+                    } else {
+                        $rsPoduct['inCart']=false;
+                    }
                 }
                 unset($rsPoduct);
                 //d($rsProductsPage);
@@ -352,3 +359,4 @@ function searchAction($smarty){
         header('Location: /');
     }
 }
+

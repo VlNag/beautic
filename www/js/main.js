@@ -609,7 +609,7 @@ function deactiveSupport(support_id) {
  * @param {int} productId Id продукта
  * @param {int} add   Добавить/удалить 1/0 в избранное
  */
-function addToCart(productId, add) {
+function addToCart(productId, add, image = "", name = "", price = 0.0, link = '') {
 
 	var objNameAdd = "#addcart_" + productId;
 	var objNameRem = "#removecart_" + productId;
@@ -620,7 +620,11 @@ function addToCart(productId, add) {
 
 	if (add) {
 		var postData = {
-			product_id: productId
+			product_id: productId,
+			image: image,
+			name: name,
+			price: price,
+			link: link
 			};
 
 		$(objNameRem).hide();
