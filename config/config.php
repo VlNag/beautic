@@ -13,8 +13,8 @@ const QUANTITY_PER_PAGE = 10;
 const QUANTITY_PAGINATOR = 5;
 //<
 
-const DEFOLT_STEP = 1000;
-const REST_KEY = '12345';
+const DEFAULT_STEP = 1000;
+define('REST_KEY', readFromFile('inf1.txt')); //'12345';
 
 $userGroupSt = array('1', '4');
 $userGroupMd = array('1', '2', '4');
@@ -29,7 +29,7 @@ $lgLen = 50;
 $mdLen = 30;
 $smLen = 20;
 
-$website = 'http://beauticOS.local';
+$website = $_SERVER['SERVER_NAME']; //'http://beauticOS.local';
 $mailAdmin = 'bob_140@ngs.ru';
 
 //> используемые шаблоны

@@ -57,6 +57,8 @@ if (!isset($_SESSION['userGroup'])) {
     $_SESSION['userGroup'] = 0;
 }
 
+$_SESSION['discount'] = 6; // для отладки
+
 // если в сессии не задана тема то light
 if (!isset($_SESSION['theme'])) {
     $_SESSION['theme'] = 'light';

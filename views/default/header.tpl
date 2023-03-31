@@ -693,7 +693,8 @@
                                         <button type="button"
                                                 onclick="updCart({$productCart['product_id']},
                                                              0, 0, '{$idsProductCart}');"
-                                                title="Удалить" class="">
+                                                title="Удалить"
+                                                class="btn col-nav nv-navbar border border-col rounded px-1 py-1">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="16" height="16" fill="currentColor"
                                                  class="bi bi-x-lg mb-1" viewBox="0 0 16 16">
@@ -715,19 +716,27 @@
                                         <td class="text-right">
                                             <span  id="sumCartId">
                                                 {$sum|string_format:"%.2f"}
+                                                {if $smarty.session.userGroup == 4}т{else}руб{/if}
                                             </span>
                                         </td>
                                     </tr>
-                                    {*<tr>
-                                        <td class="text-right"><strong>Всего:</strong></td>
-                                        <td class="text-right">85109.00 тг.</td>
-                                    </tr>*}
+                                    {if $smarty.session.discount > 0}
+                                    <tr>
+                                        <td class="text-right">
+                                            <strong>С учётом скидки {$smarty.session.discount}%:</strong>
+                                        </td>
+                                        <td class="text-right">
+                                            {($sum/100*(100-{$smarty.session.discount}))|string_format:"%.2f"}
+                                            {if $smarty.session.userGroup == 4}т{else}руб{/if}
+                                        </td>
+                                    </tr>
+                                    {/if}
                                 </table>
                                 {*<p class="text-right">*}
                                     <a href="/faq/" class="nav-link">
                                         <div class='d-inline-flex nv-hover'>
                                             <span class='col-nav nv-hover'>
-                                                <strong>Оформление заказа</strong>
+                                                <h5>Оформление заказа</h5>
                                             </span>
                                         </div>
                                     </a>

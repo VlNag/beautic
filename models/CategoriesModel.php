@@ -10,7 +10,7 @@ include_once '../models/UsersModel.php';
  * @return array of sql request
  */
 function createRequestForLoadCategoriesFromFile($xmlCategories, $fileType,
-                                    $start, $step = DEFOLT_STEP, $updateEverything = 'N')
+                                    $start, $step = DEFAULT_STEP, $updateEverything = 'N')
 {
     $requestCategory = '';
     $requestCategoryDescription = '';
@@ -278,8 +278,8 @@ function updateCategoriesFromFiles()
         //d($xmlCategories);
         $j = 0;
         $rs = true; 
-        while (($j * DEFOLT_STEP) < count($xmlCategories)) {
-        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 1, $j * DEFOLT_STEP, DEFOLT_STEP);
+        while (($j * DEFAULT_STEP) < count($xmlCategories)) {
+        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 1, $j * DEFAULT_STEP, DEFAULT_STEP);
         //d($requests);
          
         $res = updateCategories($requests, 'requestCategory', 
@@ -325,9 +325,9 @@ function updateCategoriesFromFiles()
          echo 'start update Category cur in total '. count($xmlCategories) . ' :: ' . date("Y-m-d H:i:s") . '<br/>';
         $j = 0;
         $rs = true; 
-        while (($j * DEFOLT_STEP) < count($xmlCategories)) {
+        while (($j * DEFAULT_STEP) < count($xmlCategories)) {
 
-        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 2, $j * DEFOLT_STEP, DEFOLT_STEP);
+        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 2, $j * DEFAULT_STEP, DEFAULT_STEP);
         
         $res = updateCategories($requests, 'requestCategory', 
                         'INSERT INTO bt_category(`category_id`, `parent_id`, `image`, 
@@ -380,9 +380,9 @@ function updateCategoriesFromFiles()
         echo 'start update Category old in total '. count($xmlCategories) . ' :: ' . date("Y-m-d H:i:s") . '<br/>';
         $j = 0;
         $rs = true; 
-        while (($j * DEFOLT_STEP) < count($xmlCategories)) {
+        while (($j * DEFAULT_STEP) < count($xmlCategories)) {
 
-        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 3, $j * DEFOLT_STEP, DEFOLT_STEP);
+        $requests = createRequestForLoadCategoriesFromFile($xmlCategories, 3, $j * DEFAULT_STEP, DEFAULT_STEP);
         $rs = updateCategories($requests, 'requestCategoryActive', 
                         'INSERT INTO bt_category_is_active
                             (`category_id`, `user_group`, `active`, `date_modified`) VALUES ',

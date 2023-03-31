@@ -13,7 +13,7 @@ include_once '../models/UsersModel.php';
  * @return array of sql request
  */
 function createRequestForLoadProductsFromFile($fileName, $fileType,
-                                              $step = DEFOLT_STEP, $updateEverything = 'N')
+                                              $step = DEFAULT_STEP, $updateEverything = 'N')
 {
     $requestProduct = '';
     $requestProductDescription = '';
@@ -272,7 +272,7 @@ function updateProducts($requests, $nameField, $sqlStart, $sqlEnd = '')
  *                          ['close']         boolean - true if last step seccessful
  */
 function updateProductsFromFilesByStep($fileNum, $iterationNum,
-                                       $step = DEFOLT_STEP, $successful = 1, $updateEverything = 'N')
+                                       $step = DEFAULT_STEP, $successful = 1, $updateEverything = 'N')
 {
     $result = array();
     $totalQuantity = 0;
