@@ -755,6 +755,8 @@ function updCart(productId, quantity, increase, ar = '') {
 		sum = sum + quan * pric;
 	});
 	$('#sumCartId').text(number_format(sum, 2, '.', '') );
+	let discount = Number($('#cartDiscountId').text());
+	$('#sumCartDiscountId').text(number_format((sum/100*(100-discount)), 2, '.', '') );
 }
 
 /***

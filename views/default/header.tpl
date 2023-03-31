@@ -716,17 +716,22 @@
                                         <td class="text-right">
                                             <span  id="sumCartId">
                                                 {$sum|string_format:"%.2f"}
-                                                {if $smarty.session.userGroup == 4}т{else}руб{/if}
                                             </span>
+                                            {if $smarty.session.userGroup == 4}т{else}руб{/if}
                                         </td>
                                     </tr>
                                     {if $smarty.session.discount > 0}
                                     <tr>
                                         <td class="text-right">
-                                            <strong>С учётом скидки {$smarty.session.discount}%:</strong>
+                                            <strong>
+                                                С учётом скидки
+                                                <span  id="cartDiscountId">{$smarty.session.discount}</span>%:
+                                            </strong>
                                         </td>
                                         <td class="text-right">
-                                            {($sum/100*(100-{$smarty.session.discount}))|string_format:"%.2f"}
+                                            <span  id="sumCartDiscountId">
+                                                {($sum/100*(100-{$smarty.session.discount}))|string_format:"%.2f"}
+                                            </span>
                                             {if $smarty.session.userGroup == 4}т{else}руб{/if}
                                         </td>
                                     </tr>
