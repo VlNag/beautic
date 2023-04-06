@@ -1904,6 +1904,8 @@ function checkFieldOrder($fieldsData, $fieldName, $table, $columnNane): int
     return $res;
 }
 
+//< Order
+
 function addOrder($fieldsData): array
 {
     global $db;
@@ -2127,3 +2129,24 @@ function updOrderProducts($order_id, $products): bool
     delOrderProducts($order_id);
     return addOrderProducts($order_id, $products, false);
 }
+
+function getOrderPaymentMethod(): array
+{
+    $res = array();
+    $sql = 'SELECT `payment_method_id` AS id, `payment_method_name` AS name FROM `bt_order_payment_method` WHERE 1';
+    $rs = requestUser($sql);
+    if ($rs) $res = createSmartyRsArray($rs);
+    return $res;
+}
+
+function getOrderShippingMethod(): array
+{
+    $res = array();
+    $sql = 'SELECT `shipping_method_id` AS id, `shipping_method_name` AS name FROM `bt_order_shipping_method` ' .
+           'WHERE 1';
+    $rs = requestUser($sql);
+    if ($rs) $res = createSmartyRsArray($rs);
+    return $res;
+}
+
+//> Order

@@ -230,13 +230,13 @@
     </div>
 
     <div class="row mx-0"> <!-- Данные покупателя -->
-        <div class="col-lg-6 col-md-8 col-sm-12 pe-0">
-            <h5 class="heading col-nav ms-2 mb-1 mb-sm-2 mb-lg-4 d-flex">
+        <div class="col-lg-6 col-md-7 col-sm-12 pe-0">
+            <h5 class="heading col-nav ms-2 mb-1 mb-sm-1 mb-lg-2 d-flex">
                 <span class="pe-2">Контактные данные</span>
                 <div class=" flex-fill me-2" id="vn-line"> </div>
             </h5>
-            <form method="post" action="/restuser/updatein/">
-                 <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
+            {*<form method="post" action="/restuser/updatein/">*}
+                 <div class="input-group  mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
                     <span class="input-group-text" id="basic-addon2">
                         <span class="me-3">Имя</span>
                     </span>
@@ -244,61 +244,117 @@
                         aria-describedby="basic-addon2" name="name" value="{$arUser['user_name']|@htmlspecialchars}">
                 </div>
 
-                <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
-                    <span class="input-group-text">Дополнительные </br> условия</span>
+                <div class="input-group  mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
+                    <div class="btn-group">
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Выберите/добавьте телефон
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#" onclick="chouse();">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                        </ul>
+                    </div>
+                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="Телефон" aria-label="Телефон"
+                           aria-describedby="basic-addon2" name="phone" value="">
+                </div>
+
+                <div class="input-group mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
+                    <div class="btn-group">
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Выберите/добавьте E-mail
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                        </ul>
+                    </div>
+                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="E-mail" aria-label="E-mail"
+                           aria-describedby="basic-addon2" name="email" value="">
+                </div>
+
+                <div class="input-group mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
+                    <div class="btn-group dropup">
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Выберите/добавьте адрес доставки
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                        </ul>
+                    </div>
                     <textarea class="form-control me-2 me-sm-3 me-lg-5" aria-label="Дополнительные условия"
-                        name="condition">{$arUser['conditions']}</textarea>
+                              name="condition">{$arUser['conditions']}</textarea>
+                    {*<input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="Адрес" aria-label="Адрес"
+                           aria-describedby="basic-addon2" name="address" value="">*}
                 </div>
 
-                <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
-                    <div class="input-group-text">
-                        {if $arUser['mailing']==1}
-                            <input class="form-check-input mt-0" type="checkbox" value="" checked aria-label="Флажок"
-                                name="mailing">
-                        {else}
-                            <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Флажок"
-                                name="mailing">
-                        {/if}
-                    </div>
-                    <span class="input-group-text">Подписаться на рассылку прайсов</span>
-                    {*<input type="text" class="form-control" aria-label="Ввод текста с флажком">*}
-                </div>
-                <div class="input-group  mb-1 mb-sm-2 mb-lg-4  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
 
-                    <div class="input-group-text">
-                        {if $arUser['user_group'] != 4}
-                            <input class="form-check-input mt-0" type="radio" value="1" checked aria-label="Радиокнопка"
-                                name="currency">
-                        {else}
-                            <input class="form-check-input mt-0" type="radio" value="1" aria-label="Радиокнопка"
-                                name="currency">
-                        {/if}
-                    </div>
-                    <span class="input-group-text" id="basic-addon1">РУБ</span>
-                    <div class="input-group-text">
-                        {if $arUser['user_group']==4}
-                            <input class="form-check-input mt-0" type="radio" value="4" checked aria-label="Радиокнопка"
-                                name="currency">
-                        {else}
-                            <input class="form-check-input mt-0" type="radio" value="4" aria-label="Радиокнопка"
-                                name="currency">
-                        {/if}
-                    </div>
-                    <span class="input-group-text" id="basic-addon1">ТЕНГЕ</span>
-                    {*<input type="text" class="form-control" aria-label="Ввод текста с переключателем">*}
-                </div>
-                <div class=" d-flex justify-content-center">
-                    <button type="submit" class="btn bg-nav-btn col-nav nv-navbar col-11 col-lg-4 mb-1">
-                        Сохранить
-                    </button>
-                </div>
-            </form>
-
+            {*</form>*}
         </div>
-        <div class="col-lg-6 col-md-4 col-sm-0 pe-0">
-            <div class="row ms-0 ms-md-2 me-0 d-none d-md-block">
-                {include file='userlink.tpl'}
+
+        <div class="col-lg-6 col-md-5 col-sm-12 pe-0">
+            <div class="row ms-0 ms-md-2 me-0 ">
+                <div class="row px-0">
+                    <div class="col-12 col-lg-8 pe-1 ps-2">
+                        <h5 class="heading col-nav ps-0 mb-1 mb-sm-1 mb-lg-2 d-flex">
+                            <span class="pe-2">Способ оплаты</span>
+                            <div class=" flex-fill me-2" id="vn-line"></div>
+                        </h5>
+                        <select class="form-select border border-col rounded pe-4 mb-1 mb-sm-2"
+                                id="paymentMethod"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="Способ оплаты" data-bs-custom-class="custom-tooltip">
+                            {*<option selected disabled>Выберите</option>*}
+                            {*foreach $paymentMethod as $payMethod*}
+                            {foreach from=$paymentMethod item=$payMethod name=paymentMethodName}
+                                <option value={$payMethod['id']}
+                                         {if $smarty.foreach.paymentMethodName.first}selected{/if}>
+                                    {$payMethod['name']}
+                                </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="row px-0">
+                    <div class="col-12 col-lg-8 pe-1 ps-2">
+                        <h5 class="heading col-nav ps-0 mb-1 mb-sm-1 mb-lg-2 d-flex">
+                            <span class="pe-2">Способ доставки</span>
+                            <div class=" flex-fill me-2" id="vn-line"></div>
+                        </h5>
+                        <select class="form-select border border-col rounded pe-4 mb-1 mb-sm-2"
+                                id="shippingMethod"
+                                data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                data-bs-title="Способ доставки" data-bs-custom-class="custom-tooltip">
+                            {*<option selected disabled>Выберите</option>
+                            {foreach $shippingMethod as $shipMethod*}
+                            {foreach from=$shippingMethod item=$shipMethod name=shippingMethodName}
+                                <option value={$shipMethod['id']}
+                                        {if $smarty.foreach.shippingMethodName.first}selected{/if}>
+                                    {$shipMethod['name']}
+                                </option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="row px-0">
+                    <div class="col-12 col-lg-8 pe-1 ps-2">
+                        <div class="input-group ps-0 mb-1 mb-sm-1 mb-lg-2">
+                            <span class="input-group-text">Дополнительные </br> условия</span>
+                            <textarea class="form-control me-0" aria-label="Дополнительные условия"
+                                      name="condition">{$arUser['conditions']}</textarea>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
+        <div class=" d-flex justify-content-center">
+            <button type="submit" class="btn bg-nav-btn col-nav nv-navbar col-11 col-lg-4 mb-1">
+                Сохранить
+            </button>
         </div>
     </div>
 

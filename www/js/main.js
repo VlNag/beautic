@@ -881,7 +881,6 @@ function updCartOrd(productId, quantity, increase, price, ar = '') {
 	// обновить сумму
 	let sum = 0;
 	let shippingDateNew = new Date();
-	alert(shippingDateNew);
 	$.each(arr, function(key, value){
 		quan = Number($('#quantityIdOrd_' + value).val());
 		pric = Number($('#priceIdOrd_' + value).text());
@@ -891,8 +890,6 @@ function updCartOrd(productId, quantity, increase, price, ar = '') {
 			let manth = Number(shippingDateStr.substring(3, 5));
 			let day = shippingDateStr.substring(0, 2);
 			let shippingDate = new Date(year, manth - 1, day);
-
-			alert(shippingDate);
 			if (shippingDate > shippingDateNew) shippingDateNew = shippingDate;
 		}
 		sum = sum + quan * pric;

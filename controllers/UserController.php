@@ -339,6 +339,9 @@ function makingorderAction($smarty): void
     $smarty->assign('arInfo', getInfoHeadByUserGroup());
     $smarty->assign('pageTitle','Оформление заказа');
 
+    $smarty->assign('paymentMethod', getOrderPaymentMethod());
+    $smarty->assign('shippingMethod', getOrderShippingMethod());
+
     loadTemplate($smarty, 'header');
     loadTemplate($smarty, 'order');
     loadTemplate($smarty, 'footer');
