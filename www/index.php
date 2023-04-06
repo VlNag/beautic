@@ -8,7 +8,6 @@ include_once '../models/UsersModel.php';
 include_once '../models/CategoriesModel.php';
 
 if(session_status() === PHP_SESSION_NONE) session_start();// стартуем сессию
-
 //если в сессии есть данные об авторизированном пользователе то проверяем сессию и передаём в шаблон
 if (isset($_SESSION['user'])) {
     if (isset($_SESSION['user']['user_id'])) {
@@ -20,6 +19,8 @@ if (isset($_SESSION['user'])) {
                 if ($session['date_update'] <= $sessionModTime) { // обновляем сессионные данные
 
                     $user = getUserForUpdateSession($user_id);
+                    $_SESSION['discount'] = max(floatval($user['discount']) ?? 0,
+                                              floatval($_SESSION['discount']) ?? 0);
                     $_SESSION['userGroup'] = $user['user_group'];
                     $_SESSION['user'] = $user;
 
@@ -51,13 +52,14 @@ if (isset($_SESSION['user'])) {
         }
     }
 }
+$_SESSION['id'] = session_id();
 //d($_SESSION['user']);
 // если в сессии нет информации о группе пользователя то создаём её
 if (!isset($_SESSION['userGroup'])) {
     $_SESSION['userGroup'] = 0;
 }
 
-$_SESSION['discount'] = 6; // для отладки
+
 
 // если в сессии не задана тема то light
 if (!isset($_SESSION['theme'])) {

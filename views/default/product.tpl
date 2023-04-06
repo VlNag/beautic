@@ -219,7 +219,8 @@
                                             "{$rsProduct['image']}",
                                             "{$rsProduct['name']}",
                                             "{$rsProduct['price']|string_format:"%.2f"}",
-                                            "{$hrefProd}"
+                                            "{$hrefProd}",
+                                            "{$rsProduct['date_available']}"
                                             );
                                                 location.reload(); return false;'
                                alt='Добавить в корзину'

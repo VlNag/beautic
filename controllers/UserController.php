@@ -161,6 +161,7 @@ function bookmarksAction($smarty){
         $mark['name'] = isset($product['name']) ? $product['name'] : '';
         $mark['price'] = isset($product['price']) ? $product['price'] : '';
         $mark['image'] = empty($product['image']) ? ($imageDefProd) : $product['image'];
+        $mark['date_available'] = $product['date_available'] ?? '';
         $mark['bookmarks'] = true;
         $key = array_search($productId, array_column($userCart, 'product_id'));
         if($key!==false) {
@@ -169,7 +170,7 @@ function bookmarksAction($smarty){
             $mark['inCart']=false;
         }
     }
-    $rsCategories = getAllMainCatsWithChildrenUpd(); 
+    $rsCategories = getAllMainCatsWithChildrenUpd();
     $smarty->assign('rsCategories',$rsCategories);
 
     $smarty->assign('bookmarks',$bookmarks);
@@ -328,4 +329,17 @@ function supportadminAction($smarty): void
     loadTemplate($smarty, 'supportadmin');
     loadTemplate($smarty, 'footer');
 
+}
+
+function makingorderAction($smarty): void
+{
+    $user  = $_SESSION['user'] ?? null;
+    if ($user == null) header('Location: /');
+
+    $smarty->assign('arInfo', getInfoHeadByUserGroup());
+    $smarty->assign('pageTitle','Оформление заказа');
+
+    loadTemplate($smarty, 'header');
+    loadTemplate($smarty, 'order');
+    loadTemplate($smarty, 'footer');
 }

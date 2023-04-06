@@ -501,25 +501,27 @@ function getProductsFromParentUserGroup($parentId, $userGroup = -1, $startPositi
     $userGroupAction = getCheckUserGroup(2, $userGroup);
     $userGroupDescription = getCheckUserGroup(3, $userGroup);
 
-    $sql = "SELECT productId, article, image, name, description, price, IFNULL(sort_order, 0) as ordr " .
+    $sql = "SELECT productId, article, image, name, description, price, date_available, IFNULL(sort_order, 0) as ordr ".
         "FROM (SELECT * FROM" .
-        "(SELECT pro.product_id as `productId`, pro.article, CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .  //pro.image
-        "des.name, des.description, pri.price, ord.user_group, ord.sort_order " .
+        '(SELECT pro.product_id as `productId`, pro.article, '.
+        "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .  //pro.image
+        "des.name, des.description, pri.price, ord.user_group, ord.sort_order, dat.date_available " .
         "FROM `bt_product` AS pro " .
         "JOIN `bt_product_quantity` AS act ON pro.product_id = act.product_id " .
         "JOIN `bt_product_description` AS des ON pro.product_id = des.product_id " .
         "JOIN `bt_product_price` AS pri ON pro.product_id = pri.product_id " .
         "JOIN `bt_product_to_category` AS cat ON pro.product_id = cat.product_id " .
+        "JOIN `bt_product_date_available` AS dat ON pro.product_id = dat.product_id " .
         "LEFT JOIN `bt_product_order` AS ord ON pro.product_id = ord.product_id " .
         "WHERE cat.category_id = $parentId AND act.user_group = $userGroupAction AND " .
         "act.quantity > 0 AND des.user_group = $userGroupDescription " .
-        "AND pri.user_group = $userGroup ) AS pr " .
+        "AND dat.user_group = $userGroupDescription AND pri.user_group = $userGroup ) AS pr " .
         "WHERE pr.user_group = $userGroupAction OR pr.sort_order IS NULL) as pr2 " .
         "ORDER BY  ordr , name";
     if ($quantity > 0) {
         $sql .= " LIMIT $startPosition, $quantity";
     }
-    //d($sql);
+
     try {
         $rs = mysqli_query($db, $sql);
     } catch (Exception $e) {
@@ -1232,19 +1234,21 @@ function getProductsSearch($words, $imageDefProd = '', $userGroup = -1, $startPo
     $userGroupDescription = getCheckUserGroup(3, $userGroup);
     $sql = 'SELECT des.product_id, des.name, des.description, pro.article, ' .
 	        "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
-			'pri.price, cat.category_id, act.quantity ' .
+			'pri.price, cat.category_id, act.quantity, dat.date_available ' .
 	  	    'FROM `bt_product_description` AS des ' .
 	        'JOIN `bt_product` AS pro ON pro.product_id = des.product_id ' .
 	        'JOIN `bt_product_price` AS pri ON des.product_id = pri.product_id '.
 	        'JOIN `bt_product_to_category` AS cat ON des.product_id = cat.product_id '.
 	        'JOIN `bt_product_quantity` AS act ON des.product_id = act.product_id '.
+            'JOIN `bt_product_date_available` AS dat ON des.product_id = dat.product_id ' .
 	    	"WHERE des.user_group = $userGroupDescription AND pri.user_group = $userGroup " .
-            "AND act.user_group = $userGroupAction AND " .
+            "AND act.user_group = $userGroupAction AND dat.user_group = $userGroupDescription AND " .
             'act.quantity > 0 AND ' .
             "MATCH (des.name) AGAINST ('$words')";
     if ($quantity > 0) {
         $sql .= " LIMIT $startPosition, $quantity";
     }
+
     try {
         $rs = mysqli_query($db, $sql);
     } catch (Exception $e) {

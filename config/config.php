@@ -13,6 +13,7 @@ const QUANTITY_PER_PAGE = 10;
 const QUANTITY_PAGINATOR = 5;
 //<
 
+const ORDER_CANCELLED = 999;
 const DEFAULT_STEP = 1000;
 define('REST_KEY', readFromFile('inf1.txt')); //'12345';
 

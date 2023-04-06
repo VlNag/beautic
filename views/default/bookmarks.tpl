@@ -158,7 +158,8 @@
                                                              "{$itemProd['image']}",
                                                              "{$itemProd['name']}",
                                                              "{$itemProd['price']|string_format:"%.2f"}",
-                                                             "{$itemProd['link']}");
+                                                             "{$itemProd['link']}",
+                                                             "{$itemProd['date_available']}");
                                                 location.reload(); return false;'
                                            alt='Добавить в корзину'
                                            class="me-1  mb-1 nav-link
@@ -235,8 +236,7 @@
                                                     </svg>
                                                     </a>
                                                     <a id="addcart_{$itemProd['product_id']}" href="#"
-                                                       onClick='addToCart({$itemProd["product_id"]},
-                                                                 "{$itemProd['link']}",0);
+                                                       onClick='addToCart({$itemProd["product_id"]}, 0);
                                                        return false;
                                                        location.reload();'
                                                        alt='Добавить в корзину'
@@ -250,12 +250,12 @@
                                                     </svg>
                                                     </a>
                                                     <a id="removecart_{$itemProd['product_id']}" href="#"
-                                                       onClick='addToCart({$itemProd['product_id']},
-                                                                 "{$itemProd['link']}",1,
+                                                       onClick='addToCart({$itemProd['product_id']}, 1,
                                                                  "{$itemProd['image']}",
                                                                  "{$itemProd['name']}",
                                                                  "{$itemProd['price']|string_format:"%.2f"}",
-                                                                 "{$itemProd['link']}") ;
+                                                                 "{$itemProd['link']}",
+                                                                 "{$itemProd['date_available']}") ;
                                                                  location.reload();
                                                                  return false;'
                                                        alt='Добавить в корзину'

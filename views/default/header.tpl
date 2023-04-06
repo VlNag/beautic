@@ -738,7 +738,7 @@
                                     {/if}
                                 </table>
                                 {*<p class="text-right">*}
-                                    <a href="/faq/" class="nav-link">
+                                    <a href="/user/makingorder/" class="nav-link">
                                         <div class='d-inline-flex nv-hover'>
                                             <span class='col-nav nv-hover'>
                                                 <h5>Оформление заказа</h5>

@@ -146,8 +146,9 @@ function loginAction()
     $pass = isset($_POST['pass']) ? $_POST['pass'] : null; 
     $res = checkUser($login, $pass);
     if ($res['success']) {
-        $_SESSION['user'] = $res['data']; 
- 
+        $_SESSION['user'] = $res['data'];
+        $_SESSION['discount'] = max(floatval($res['data']['discount']) ?? 0,
+            floatval($_SESSION['discount']) ?? 0);
         //$_SESSION['cart'] = array();
         $_SESSION['userGroup'] = $res['data']['user_group'];
 
@@ -797,6 +798,7 @@ function addcartAction(): void
                 $newCart['name'] = $_POST['name'] ?? '';
                 $newCart['price'] =  $_POST['price'] ?? 0;
                 $newCart['link'] = $_POST['link'] ?? '';
+                $newCart['date_available'] = $_POST['date_available'] ?? '';
 
                 $_SESSION['user']['user_cart'][] = $newCart;
                 $t = time();
@@ -860,4 +862,111 @@ function updcartAction(): void
         }
     }
     die;
+}
+
+function checkUserPost(): array
+{
+    $resData = array();
+    $user_id = 0;
+    $user_group = 0;
+    if (isset($_POST['key'])) {
+        if ($_POST['key'] == REST_KEY) {
+            $user_id = $_POST['user_id'] ?? 0;
+            $user_group = getUserGroupById($user_id);
+            $resData['pass'] = true;
+            $resData['verify'] = true;
+        } else {
+            $resData['pass'] = false;
+        }
+    } elseif (isset($_POST['session_id'])) {
+        if ($_POST['session_id'] == session_id()) {
+            $resData['session'] = true;
+            $resData['verify'] = true;
+            $user = $_SESSION['user'] ?? null;
+            if ($user) {
+                $user_id = $user['user_id'] ?? 0;
+                $user_id = intval($user_id);
+                if ($user_id > 0) {
+                    $user_group = $user['user_group'] ?? 0;
+                    $user_group = intval($user_group);
+                }
+            }
+        } else {
+            $resData['session'] = false;
+        }
+    }
+    $res['error'] = $resData;
+    $res['user_id'] = $user_id;
+    $res['user_group'] = $user_group;
+    return $res;
+}
+
+function addorderAction(): void
+{
+    $res = checkUserPost();
+    $resData = $res['error'];
+    $user_id = $res['user_id'];
+    $user_group = $res['user_group'];
+    if ($user_id > 0) {
+        //$fieldsData = array();
+        $fieldsData['user_id'] = $user_id;
+        $fieldsData['user_group'] = $user_group;
+        if (isset($_POST['discount'])) $fieldsData['discount'] = $_POST['discount'];
+        $fieldsOrderInt = array('invoice_id', 'xml_id', 'status', 'shipping_method', 'payment_method');
+        $fieldsOrderStr = array('name', 'email', 'phone', 'address', 'comment');
+        foreach ($fieldsOrderInt as $field) {
+            $fieldsData[$field] = $_POST[$field] ?? 0;
+        }
+        foreach ($fieldsOrderStr as $field) {
+            $fieldsData[$field] = $_POST[$field] ?? '';
+        }
+        $resOrder = addOrder($fieldsData);
+        $resData['success'] = $resOrder['success'];
+        if ($resOrder['success']) {
+            $order_id = $resOrder['order_id'];
+            $resData['order_id'] = $order_id;
+            $productsJson = $_POST['products'] ?? '';
+            $products = json_decode($productsJson, true);
+            $resData['products'] = addOrderProducts($order_id, $products, true);
+        }
+    } else {
+        $resData['user_id'] = false;
+    }
+    echo json_encode($resData);
+    die;
+}
+
+function delorderAction(): void
+{
+    $res = checkUserPost();
+    $resData = $res['error'];
+    if ($resData['verify']) {
+        $order_id = $_POST['order_id'] ?? 0;
+        $order_id = intval($order_id);
+        if ($order_id > 0) {
+            $resData['success'] = delOrder($order_id);
+        } else {
+            $resData['order_id'] = false;
+        }
+        echo json_encode($resData);
+        die;
+    }
+}
+
+function getorderAction(): void
+{
+    $res = checkUserPost();
+    $resData = $res['error'];
+    if ($resData['verify']) {
+        $order_id = $_POST['order_id'] ?? 0;
+        $order_id = intval($order_id);
+        if ($order_id > 0) {
+            $resData['data'] = getOrder($order_id);
+            $resData['product'] = getOrderProducts($order_id);
+        } else {
+            $resData['order_id'] = false;
+        }
+        echo json_encode($resData);
+        die;
+    }
 }

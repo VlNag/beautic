@@ -609,7 +609,8 @@ function deactiveSupport(support_id) {
  * @param {int} productId Id продукта
  * @param {int} add   Добавить/удалить 1/0 в избранное
  */
-function addToCart(productId, add, image = "", name = "", price = 0.0, link = '') {
+function addToCart(productId, add, image = "", name = "", price = 0.0,
+				                                      link = '', date_available = '') {
 
 	var objNameAdd = "#addcart_" + productId;
 	var objNameRem = "#removecart_" + productId;
@@ -624,7 +625,8 @@ function addToCart(productId, add, image = "", name = "", price = 0.0, link = ''
 			image: image,
 			name: name,
 			price: price,
-			link: link
+			link: link,
+			date_available: date_available
 			};
 
 		$(objNameRem).hide();
@@ -756,7 +758,9 @@ function updCart(productId, quantity, increase, ar = '') {
 	});
 	$('#sumCartId').text(number_format(sum, 2, '.', '') );
 	let discount = Number($('#cartDiscountId').text());
-	$('#sumCartDiscountId').text(number_format((sum/100*(100-discount)), 2, '.', '') );
+	if (discount > 0) {
+		$('#sumCartDiscountId').text(number_format((sum / 100 * (100 - discount)), 2, '.', ''));
+	}
 }
 
 /***
@@ -792,6 +796,119 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 	return s.join(dec);
 }
 
+
+function updCartOrd(productId, quantity, increase, price, ar = '') {
+	let arr = ar.split(' ,');
+	let quantityNew = 0;
+	let wishlistCount = Number(($("#userCart").text()));
+
+	if (increase == 0) {
+		if (quantity > 0) {
+			quantityNew = quantity;
+		} else {
+			quantityNew = 0;
+			$('#quantityId_' + productId).val(0);
+			$('#trCart_' + productId).hide();
+
+			$('#quantityIdOrd_' + productId).val(0);
+			$('#trCartOrd_' + productId).hide();
+		}
+	} else {
+		if (increase == 1) {
+			quantityNew = Number($('#quantityIdOrd_' + productId).val())+1;
+			$('#quantityId_' + productId).val(quantityNew);
+
+			$('#quantityIdOrd_' + productId).val(quantityNew);
+		} else {
+			quantityNew = Number($('#quantityIdOrd_' + productId).val())-1;
+			if (quantityNew > 0) {
+				$('#quantityId_' + productId).val(quantityNew);
+
+				$('#quantityIdOrd_' + productId).val(quantityNew);
+			} else {
+				quantityNew = 0;
+				$('#quantityId_' + productId).val(0);
+				$('#trCart_' + productId).hide();
+
+				$('#quantityIdOrd_' + productId).val(0);
+				$('#trCartOrd_' + productId).hide();
+			}
+		}
+	}
+    let sumNew = Number(price)*quantityNew;
+	$('#sumIdOrd_' + productId).text(number_format(sumNew, 2, '.', ''));
+
+	if (quantityNew > 0) {
+		let postData = {
+			product_id: productId,
+			quantity: quantityNew
+		};
+		$.ajax({
+			type: 'POST',
+			async: false,
+			url: "/restuser/updcart/",
+			data: postData,
+			dataType: 'json',
+			success: function (data) {
+			}
+		});
+	} else {
+		// удалить из корзины
+		if (wishlistCount <= 1) {
+			$("#userCartFull").hide();
+			$("#userCartEmpty").show();
+			$("#userCart").hide();
+		}
+		$("#userCart").text(wishlistCount-1);
+		let objNameAdd = "#addcart_" + productId;
+		let objNameRem = "#removecart_" + productId;
+		$(objNameAdd).hide();
+		$(objNameRem).show();
+
+		let postDataDel = {
+			product_id: productId
+		};
+		$.ajax({
+			type: 'POST',
+			async: false,
+			url: "/restuser/delcart/",
+			data: postDataDel,
+			dataType: 'json',
+			success: function (data) {
+			}
+		});
+	}
+	// обновить сумму
+	let sum = 0;
+	let shippingDateNew = new Date();
+	alert(shippingDateNew);
+	$.each(arr, function(key, value){
+		quan = Number($('#quantityIdOrd_' + value).val());
+		pric = Number($('#priceIdOrd_' + value).text());
+		if (quan > 0) {
+			let shippingDateStr = $('#dateIdOrd_' + value).text();
+			let year = shippingDateStr.substring(6, 10);
+			let manth = Number(shippingDateStr.substring(3, 5));
+			let day = shippingDateStr.substring(0, 2);
+			let shippingDate = new Date(year, manth - 1, day);
+
+			alert(shippingDate);
+			if (shippingDate > shippingDateNew) shippingDateNew = shippingDate;
+		}
+		sum = sum + quan * pric;
+	});
+	$('#sumCartId').text(number_format(sum, 2, '.', '') );
+
+	$('#sumCartIdOrd').text(number_format(sum, 2, '.', '') );
+	let discount = Number($('#cartDiscountIdOrd').text());
+	if (discount > 0) {
+		$('#sumCartDiscountId').text(number_format((sum / 100 * (100 - discount)), 2, '.', ''));
+
+		$('#sumCartDiscountIdOrd').text(number_format((sum / 100 * (100 - discount)), 2, '.', ''));
+	}
+	$('#dateCartIdOrd').text(shippingDateNew.toLocaleDateString());
+
+}
 
 
 

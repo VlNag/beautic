@@ -166,7 +166,8 @@
                                             "{$itemProd['image']}",
                                             "{$itemProd['name']}",
                                             "{$itemProd['price']|string_format:"%.2f"}",
-                                            "{$itemProd['link']}"
+                                            "{$itemProd['link']}",
+                                            "{$itemProd['date_available']}"
                                             );
                                                 location.reload(); return false;'
                                        alt='Добавить в корзину'
@@ -277,7 +278,8 @@
                                                         "{$itemProd['image']}",
                                                         "{$itemProd['name']}",
                                                         "{$itemProd['price']|string_format:"%.2f"}",
-                                                        "{$itemProd['link']}"
+                                                        "{$itemProd['link']}",
+                                                        "{$itemProd['date_available']}"
                                                         );
                                                         location.reload(); return false;'
                                                    alt='Добавить в корзину'

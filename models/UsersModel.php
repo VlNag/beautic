@@ -532,6 +532,20 @@ function getUser($fieldRequest)
     return $resData;
 }
 
+function getUserGroupById($user_id) : int
+{
+    $user_group = 0;
+    $sql = "SELECT `user_group` FROM `bt_user` WHERE `user_id` = $user_id";
+    $res = requestUser($sql);
+    if ($res) {
+        $rs = createSmartyRsArray($res);
+        if ($rs) {
+            $user_group = $rs[0]['user_group'];
+        }
+    }
+    return $user_group;
+}
+
 function updateUser($fieldRequest, $source = 'user_id')
 {
     global $db;
@@ -988,7 +1002,8 @@ function checkUser($login, $pass)
             $res1 = requestUser($sql);
 
             $data = array();
-            $fields = array('user_id', 'login', 'user_group', 'user_name', 'role', 'settings', 'conditions', 'mailing');
+            $fields = array('user_id', 'login', 'user_group', 'user_name', 'role', 'settings', 'conditions',
+                            'discount', 'mailing');
             foreach ($fields as $field) {
                 $data[$field] = ($res[$field]==NULL) ? '' : $res[$field];
             }
@@ -1089,7 +1104,8 @@ function getUserForUpdateSession($userId)
        $res = createSmartyRsArray($res);
        if ($res) {
             $res = $res[0];
-            $fields = array('user_id', 'login', 'user_group', 'user_name', 'role', 'settings', 'conditions', 'mailing');
+            $fields = array('user_id', 'login', 'user_group', 'user_name', 'role', 'settings', 'conditions',
+                           'mailing', 'discount');
             foreach ($fields as $field) {
                 $data[$field] = ($res[$field]==NULL) ? '' : $res[$field];
             }
@@ -1157,15 +1173,15 @@ function getCartUser($userId, $userGroup): array
     $userGroupDescription = getCheckUserGroup(3, $userGroup);
     $sql = 'SELECT cart.product_id, cart.quantity, cart.date_added, cart.date_modified, ' .
            "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
-           'des.name, pri.price, cat.category_id ' .
+           'des.name, pri.price, cat.category_id, dat.date_available ' .
            'FROM `bt_user_cart` AS cart ' .
            'JOIN `bt_product` AS pro ON pro.product_id = cart.product_id ' .
            'JOIN `bt_product_description` AS des ON des.product_id = cart.product_id '.
            'JOIN `bt_product_price` AS pri ON cart.product_id = pri.product_id ' .
-           'JOIN `bt_product_to_category` AS cat ON des.product_id = cat.product_id '.
+           'JOIN `bt_product_to_category` AS cat ON cart.product_id = cat.product_id '.
+           'JOIN `bt_product_date_available` AS dat ON cart.product_id = dat.product_id ' .
            "WHERE cart.user_id = $userId AND des.user_group = $userGroupDescription " .
-           "AND pri.user_group = $userGroup ";
-
+           "AND pri.user_group = $userGroup  AND dat.user_group = $userGroupDescription ";
     $rs = requestUser($sql);
     $res = createSmartyRsArray($rs);
     if ($res) {
@@ -1433,7 +1449,7 @@ function clearUsersForExternalUpdate($ids)
 function updateSession($user_id, $session_id, $user_agent, $date_update, $active = 1, $ip = '0.0.0.0')
 {
     //d($date_update);
-
+ 
     $sql = 'INSERT INTO `bt_user_session_update`(`user_id`, `session_id`, `date_update`, `user_agent`, `active`, `ip`) VALUES ' .
            "('$user_id','$session_id','$date_update','$user_agent','$active','$ip')" . 
            ' ON DUPLICATE KEY UPDATE `date_update`=VALUES(`date_update`), ' .
@@ -1877,4 +1893,237 @@ function getLinkProduct($product_id, $category_id = 0): string
     }
 
     return $link;
+}
+
+function checkFieldOrder($fieldsData, $fieldName, $table, $columnNane): int
+{
+    $res = 0;
+    $field = $fieldsData[$fieldName] ?? 0;
+    $field = intval($field);
+    if (checkExist($table, "$columnNane = $field")) $res = $field;
+    return $res;
+}
+
+function addOrder($fieldsData): array
+{
+    global $db;
+    //$fieldsOrder = array('user_id', 'user_group', 'invoice_id', 'xml_id', 'name', 'email', 'phone', 'address',
+    //             'comment', 'discount', 'status', 'shipping_method', 'payment_method');
+
+    //INSERT INTO `bt_order`(`user_id`, `user_group`, `invoice_id`, `xml_id`, `name`, `email`, `phone`,
+    // `address`, `comment`, `date_added`, `date_modified`, `discount`, `status`, `shipping_method`, `payment_method`)
+    // VALUES ('[value-2]','[value-3]','[value-4]','[value-5]','[value-6]','[value-7]','[value-8]','[value-9]',
+    //[value-10]','[value-11]','[value-12]','[value-13]','[value-14]','[value-15]','[value-16]')
+
+    $result['success'] = false;
+    $user_id = checkFieldOrder($fieldsData, 'user_id', 'bt_user', '`user_id`');
+    if ($user_id > 0) {
+        $user_group = checkFieldOrder($fieldsData, 'user_group', 'bt_user_group',
+            '`user_group_id`');
+        if ($user_group > 0) {
+            $name = $fieldsData['name'] ?? null;
+            if ($name) {
+                $phone = $fieldsData['phone'] ?? null;
+                if ($phone) {
+                    $address = $fieldsData['address'] ?? null;
+                    if ($address) {
+                        $status = checkFieldOrder($fieldsData, 'status', 'bt_order_status',
+                            '`order_status_id`');
+                        if ($status > 0) {
+                            $shipping_method = checkFieldOrder($fieldsData, 'shipping_method',
+                                'bt_order_shipping_method', '`shipping_method_id`');
+                            if ($shipping_method > 0) {
+                                $payment_method = checkFieldOrder($fieldsData, 'payment_method',
+                                    'bt_order_payment_method', '`payment_method_id`');
+                                if ($payment_method > 0) {
+                                    $invoice_id = $fieldsData['invoice_id'] ?? null;
+                                    $invoice_id = intval($invoice_id);
+                                    $xml_id = $fieldsData['xml_id'] ?? null;
+                                    $xml_id = intval($xml_id);
+                                    $email = $fieldsData['email'] ?? null;
+                                    $comment = $fieldsData['comment'] ?? null;
+                                    $discount = $fieldsData['discount'] ?? 0;
+                                    $discount = floatval($discount);
+
+                                    $sql = 'INSERT INTO `bt_order`(`user_id`, `user_group`, `invoice_id`, `xml_id`, ' .
+                                        '`name`, `email`, `phone`, `address`, `comment`, `date_added`, ' .
+                                        '`discount`, `status`, `shipping_method`, `payment_method`)' .
+                                        "VALUES ('$user_id','$user_group','$invoice_id','$xml_id',?,?,?,?,?," .
+                                        "NOW(),'$discount','$status','$shipping_method','$payment_method')";
+
+                                    $stmt = mysqli_prepare($db, $sql);
+                                    mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $phone,
+                                        $address, $comment);
+                                    $rs = mysqli_stmt_execute($stmt);
+                                    if ($rs) {
+                                        $order_id = mysqli_insert_id($db);
+                                        $result['success'] = true;
+                                        $result['order_id'] = $order_id;
+                                    }
+                                } $result['error'] = 'payment_method not exist';
+                            } $result['error'] = 'shipping_method not exist';
+                        } $result['error'] = 'status not exist';
+                    } $result['error'] = 'address not exist';
+                } $result['error'] = 'phone not exist';
+            } $result['error'] = 'name not exist';
+        } $result['error'] = 'user_group not exist';
+    } $result['error'] = 'user_id not exist';
+
+    return $result;
+}
+
+function delOrder($order_id): bool
+{
+    $order_id = intval($order_id);
+    $sql = "UPDATE `bt_order` SET `status`='" . (ORDER_CANCELLED) . "'," .
+        "`date_modified`=NOW() WHERE `order_id`='$order_id'";
+    return requestUser($sql);
+}
+
+function getOrder($order_id): array|bool
+{
+    $order_id = intval($order_id);
+    $sql = "SELECT * FROM `bt_order` WHERE `order_id`='$order_id'";
+    $res = requestUser($sql);
+    if ($res) {
+        $rs = createSmartyRsArray($res);
+        $rs = $rs['0'];
+    } else {
+        $rs = false;
+    }
+    return $rs;
+}
+
+function updOrder($fieldsData): bool
+{
+    global $db;
+    $result = false;
+    $order_id = checkFieldOrder($fieldsData, 'order_id', 'bt_order', '`order_id`');
+    if ($order_id > 0) {
+        $sql = 'UPDATE `bt_order` SET';
+        $params = '';
+        $param = array(&$params);
+        $user_id = checkFieldOrder($fieldsData, 'user_id', 'bt_user', '`user_id`');
+        if ($user_id > 0) {
+            $sql .= " `user_id`='$user_id',";
+        }
+        $user_group = checkFieldOrder($fieldsData, 'user_group','bt_user_group',
+               '`user_group_id`');
+        if ($user_group > 0) {
+            $sql .= "`user_group`='$user_group',";
+        }
+        $name = $fieldsData['name'] ?? null;
+        if ($name) {
+            $sql .= "`name`=?,";
+            $params .= 's';
+            $param[] = &$name;
+        }
+        $phone = $fieldsData['phone'] ?? null;
+        if ($phone) {
+            $sql .= "`phone`=?,";
+            $params .= 's';
+            $param[] = &$phone;
+        }
+        $address = $fieldsData['address'] ?? null;
+        if ($address) {
+            $sql .= "`address`=?,";
+            $params .= 's';
+            $param[] = &$address;
+        }
+        $status = checkFieldOrder($fieldsData, 'status', 'bt_order_status',
+                                '`order_status_id`');
+        if ($status > 0) {
+            $sql .= "`status`='$status',";
+        }
+        $shipping_method = checkFieldOrder($fieldsData, 'shipping_method',
+                            'bt_order_shipping_method', '`shipping_method_id`');
+        if ($shipping_method > 0) {
+            $sql .= "`shipping_method`='$shipping_method',";
+        }
+        $payment_method = checkFieldOrder($fieldsData, 'payment_method',
+                           'bt_order_payment_method', '`payment_method_id`');
+        if ($payment_method > 0) {
+            $sql .= "`payment_method`='$payment_method',";
+        }
+        $invoice_id = $fieldsData['invoice_id'] ?? null;
+        $invoice_id = intval($invoice_id);
+        if ($invoice_id > 0) {
+            $sql .= "`invoice_id`='$invoice_id',";
+        }
+        $xml_id = $fieldsData['xml_id'] ?? null;
+        $xml_id = intval($xml_id);
+        if ($xml_id > 0) {
+            $sql .= "`xml_id`='$xml_id',";
+        }
+        $email = $fieldsData['email'] ?? null;
+        if (!is_null($email)) {
+            $sql .= "`email`=?,";
+            $params .= 's';
+            $param[] = &$email;
+        }
+        $comment = $fieldsData['comment'] ?? null;
+        if (!is_null($comment)) {
+            $sql .= "`comment`=?,";
+            $params .= 's';
+            $param[] = &$comment;
+        }
+        $discount = $fieldsData['discount'] ?? null;
+        if (!is_null($discount)) {
+            $discount = floatval($discount);
+            if (($discount >= 0) && ($discount <= 100)) {
+                $sql .= "`discount`='$discount',";
+            }
+        }
+        if ($sql <> 'UPDATE `bt_order` SET') {
+            $sql .= "`date_modified`= NOW() WHERE `order_id`='$order_id'";
+            $stmt = mysqli_prepare($db, $sql);
+            if ($params <> '') {
+                call_user_func_array(array($stmt, 'bind_param'), $param);
+            }
+            $result = mysqli_stmt_execute($stmt);
+
+        }
+    } // order_id not exist
+    return $result;
+}
+
+function addOrderProducts($order_id, $products, $add): bool
+{
+    $sql = '';
+    $res = false;
+    if (checkExist('bt_order', "`order_id` = $order_id")) {
+        $mode = $add ? '`date_added`' : '`date_modified`';
+        $sql = "INSERT INTO `bt_order_product`(`order_id`, `product_id`, `quantity`, `price`, 
+                               `date_available`, $mode) VALUES ";
+        foreach ($products as $product) {
+            $sql .= "('$order_id','{$product['product_id']}','{$product['quantity']}','{$product['price']}',
+                         '{$product['date_available']}',NOW()),";
+        }
+    }
+    if ($sql) $res = requestUser($sql);
+    return $res;
+}
+
+function delOrderProducts($order_id): bool
+{
+    $sql = "DELETE FROM `bt_order_product` WHERE `order_id` = $order_id";
+    return requestUser($sql);
+}
+
+function getOrderProducts($order_id): bool|array
+{
+    $sql = "SELECT * FROM `bt_order_product` WHERE `order_id` = $order_id";
+    $res = requestUser($sql);
+    if ($res) {
+        $rs = createSmartyRsArray($res);
+    } else {
+        $rs = false;
+    }
+    return $rs;
+}
+
+function updOrderProducts($order_id, $products): bool
+{
+    delOrderProducts($order_id);
+    return addOrderProducts($order_id, $products, false);
 }
