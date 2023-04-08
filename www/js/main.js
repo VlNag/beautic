@@ -796,7 +796,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 	return s.join(dec);
 }
 
-
 function updCartOrd(productId, quantity, increase, price, ar = '') {
 	let arr = ar.split(' ,');
 	let quantityNew = 0;
@@ -906,6 +905,19 @@ function updCartOrd(productId, quantity, increase, price, ar = '') {
 	$('#dateCartIdOrd').text(shippingDateNew.toLocaleDateString());
 
 }
+
+function selectСontact(val, name)
+{
+	$('#' + name + 'OrdId').val(val);
+}
+
+
+
+
+
+
+
+
 
 
 

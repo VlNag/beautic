@@ -1143,6 +1143,8 @@ function getUserForUpdateSession($userId)
     return $data;
 }
 
+//< Wishlist
+
 function delwishlistUser($userId,$productId)
 {
     $sql = 'DELETE FROM `bt_user_wishlist` WHERE ' .
@@ -1167,33 +1169,7 @@ function getwishlistUser($userId): array
     return $res;
 }
 
-function getCartUser($userId, $userGroup): array
-{
-    global $imageDefProd;
-    $userGroupDescription = getCheckUserGroup(3, $userGroup);
-    $sql = 'SELECT cart.product_id, cart.quantity, cart.date_added, cart.date_modified, ' .
-           "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
-           'des.name, pri.price, cat.category_id, dat.date_available ' .
-           'FROM `bt_user_cart` AS cart ' .
-           'JOIN `bt_product` AS pro ON pro.product_id = cart.product_id ' .
-           'JOIN `bt_product_description` AS des ON des.product_id = cart.product_id '.
-           'JOIN `bt_product_price` AS pri ON cart.product_id = pri.product_id ' .
-           'JOIN `bt_product_to_category` AS cat ON cart.product_id = cat.product_id '.
-           'JOIN `bt_product_date_available` AS dat ON cart.product_id = dat.product_id ' .
-           "WHERE cart.user_id = $userId AND des.user_group = $userGroupDescription " .
-           "AND pri.user_group = $userGroup  AND dat.user_group = $userGroupDescription ";
-    $rs = requestUser($sql);
-    $res = createSmartyRsArray($rs);
-    if ($res) {
-        foreach ($res as &$productCart) {
-            $productCart['link'] = getLinkProduct($productCart['product_id'], $productCart['category_id']);
-        }
-        unset($productCart);
-    } else {
-        $res = array();
-    }
-    return $res;
-}
+//> Wishlist
 
 function getUsersByEmail($email)
 {
@@ -1438,6 +1414,8 @@ function clearUsersForExternalUpdate($ids)
     return $rs;
 }
 
+//< Session
+
 /**
  * 
  * @param integer $user_id
@@ -1537,6 +1515,10 @@ function getTimeSessionModification($user_id, $session_id = NULL)
            return $date_update;
 }
 
+//> Session
+
+//< Support
+
 function getDialog($token){
     global $db;
     $result['user_id'] = 0;
@@ -1580,7 +1562,7 @@ function getDialog($token){
 
 function getContact($user_id, $type = null) {
     //global $db;
-    $sql = "SELECT `content` FROM `bt_user_contact` WHERE `user_id` = '$user_id'";
+    $sql = "SELECT * FROM `bt_user_contact` WHERE `user_id` = '$user_id'"; //`content`
     if ($type) $sql .= " AND `type_contact` = '$type'";
     $rs = requestUser($sql);
     if ($rs) {
@@ -1829,6 +1811,38 @@ function addQuestionAdm($support_id, $user_id, $question, $token, $email, $answe
     return $rs;
 }
 
+//> Support
+
+//< Cart
+
+function getCartUser($userId, $userGroup): array
+{
+    global $imageDefProd;
+    $userGroupDescription = getCheckUserGroup(3, $userGroup);
+    $sql = 'SELECT cart.product_id, cart.quantity, cart.date_added, cart.date_modified, ' .
+        "CASE WHEN pro.image='' THEN '$imageDefProd' ELSE pro.image END as `image`, " .
+        'des.name, pri.price, cat.category_id, dat.date_available ' .
+        'FROM `bt_user_cart` AS cart ' .
+        'JOIN `bt_product` AS pro ON pro.product_id = cart.product_id ' .
+        'JOIN `bt_product_description` AS des ON des.product_id = cart.product_id '.
+        'JOIN `bt_product_price` AS pri ON cart.product_id = pri.product_id ' .
+        'JOIN `bt_product_to_category` AS cat ON cart.product_id = cat.product_id '.
+        'JOIN `bt_product_date_available` AS dat ON cart.product_id = dat.product_id ' .
+        "WHERE cart.user_id = $userId AND des.user_group = $userGroupDescription " .
+        "AND pri.user_group = $userGroup  AND dat.user_group = $userGroupDescription ";
+    $rs = requestUser($sql);
+    $res = createSmartyRsArray($rs);
+    if ($res) {
+        foreach ($res as &$productCart) {
+            $productCart['link'] = getLinkProduct($productCart['product_id'], $productCart['category_id']);
+        }
+        unset($productCart);
+    } else {
+        $res = array();
+    }
+    return $res;
+}
+
 function delCartUser($userId,$productId): void
 {
     $sql = 'DELETE FROM `bt_user_cart` WHERE ' .
@@ -1891,9 +1905,12 @@ function getLinkProduct($product_id, $category_id = 0): string
             $link .= '/'.$product_id.'/';
         }
     }
-
     return $link;
 }
+
+//> Cart
+
+//< Order
 
 function checkFieldOrder($fieldsData, $fieldName, $table, $columnNane): int
 {
@@ -1903,8 +1920,6 @@ function checkFieldOrder($fieldsData, $fieldName, $table, $columnNane): int
     if (checkExist($table, "$columnNane = $field")) $res = $field;
     return $res;
 }
-
-//< Order
 
 function addOrder($fieldsData): array
 {

@@ -336,6 +336,45 @@ function makingorderAction($smarty): void
     $user  = $_SESSION['user'] ?? null;
     if ($user == null) header('Location: /');
 
+    $viewContacts = array('mobil'   => 'Мобильный',
+                          'home'  => 'Домашний',
+                          'work' => 'Рабочий',
+                          'trcom'   => 'Транспортная компания',
+                          );
+    $user_id = $user['user_id'] ?? 0;
+    $contacts = getContact($user_id);
+    $email = array();
+    $phone = array();
+    $address = array();
+
+    if ($contacts) {
+        foreach ($contacts as $contact) {
+
+            $type_contact = $contact['type_contact'] ?? '';
+            $view_contact = $viewContacts[$contact['view_contact']] ?? '';
+            $comment = $contact['comment'] ?? '';
+            $contNew = $contact['content'];
+            if ($view_contact) $contNew .= ', ' . $view_contact;
+            if ($comment) $contNew .= ', ' . $comment;
+            switch ($type_contact) {
+                case "email":
+                    $email[] = $contNew;
+                    break;
+                case "phone":
+                    $phone[] = $contNew;
+                    break;
+                case "address":
+                    $address[] = $contNew;
+                    break;
+            }
+
+        }
+    }
+
+    $smarty->assign('email', $email);
+    $smarty->assign('phone', $phone);
+    $smarty->assign('address', $address);
+
     $smarty->assign('arInfo', getInfoHeadByUserGroup());
     $smarty->assign('pageTitle','Оформление заказа');
 

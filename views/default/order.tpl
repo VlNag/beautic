@@ -30,10 +30,11 @@
 
         <div class="px-0 px-sm-2 col-12 col-xl-10">
             {if $arUser['user_cart']}
-                <ul class="ps-0 {*pull-right*}">
+                <ul class="ps-0 mb-0{*pull-right*}">
                     <li>
                         {assign var="idsProductCart" value=""}
                         {assign var="shippingDate" value="`$smarty.now|date_format`"}
+                        {assign var="shippingDateNow" value="`$smarty.now|date_format`"}
                         {*foreach $arUser['user_cart'] as $productCart name=idProductCart*}
                         {foreach from=$arUser['user_cart'] item=$productCart name=idProductCart}
                             {if $smarty.foreach.idProductCart.first}
@@ -45,7 +46,7 @@
                              {assign var="shippingDate" value="`$productCart['date_available']`"}
                          {/if}
                         {/foreach}
-                        <table class="table table-striped">
+                        <table class="table table-striped mb-0 mb-sm-1 mb-md-2">
                             {assign var="sum" value="`0`"}
                             {$sum = $sum|floatval}
                             <tr>
@@ -146,7 +147,13 @@
                                           {$productCart['date_available']|date_format|substr:0:5}
                                         </span>
                                          <span class="d-none d-lg-block">*}
-                                        <span id="dateIdOrd_{$productCart['product_id']}" class=" d-none d-sm-block">{$productCart['date_available']|date_format}</span>
+                                        {if $productCart['date_available']|strtotime > $shippingDateNow|strtotime}
+                                        <span id="dateIdOrd_{$productCart['product_id']}"
+                                          class="d-none d-sm-block">{$productCart['date_available']|date_format}</span>
+                                        {else}
+                                            <span id="dateIdOrd_{$productCart['product_id']}"
+                                            class="d-none">{$shippingDateNow|date_format}</span>
+                                        {/if}
                                         {*</span>*}
                                     </td>
 
@@ -171,7 +178,7 @@
                     </li>
                     <li>
                         <div>
-                            <table class="table table-bordered table-striped">
+                            <table class="table table-bordered table-striped mb-0 mb-sm-1 mb-md-2">
                                 <tr>
                                     <td class="text-right"><strong>Итого:</strong></td>
                                     <td class="text-right">
@@ -222,10 +229,14 @@
             {else}
                 Ваша корзина пуста!
             {/if}
+            <h5 class="heading col-nav ps-0 mb-1 mb-sm-2 mb-lg-2 d-flex">
+                <span class="pe-2"></span>
+                <div class=" flex-fill me-2  mb-1 mb-sm-2 mb-lg-3" id="vn-line"></div>
+            </h5>
         </div>
 
         <div class="px-0 px-sm-2 col-12 col-xl-2 d-none d-xl-block">
-
+             {*banners*}
         </div>
     </div>
 
@@ -246,47 +257,86 @@
 
                 <div class="input-group  mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
                     <div class="btn-group">
-                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Выберите/добавьте телефон
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-telephone-fill d-block d-md-none" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                            </svg>
+                            <span class=" d-none d-md-block">Выберите/добавьте телефон</span>
+
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#" onclick="chouse();">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            {assign var="phoneDef" value=""}
+                            {foreach from=$phone item=$phon name=phonArr}
+                                {if $smarty.foreach.phonArr.first} {assign var="phoneDef" value="`$phon`"} {/if}
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick='selectСontact("{$phon}", "phone");return false;'>
+                                        {$phon|@htmlspecialchars}
+                                    </a>
+                                </li>
+                            {/foreach}
                         </ul>
                     </div>
-                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="Телефон" aria-label="Телефон"
-                           aria-describedby="basic-addon2" name="phone" value="">
+                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="Телефон"
+                           aria-label="Телефон" aria-describedby="basic-addon2"
+                           name="phoneOrd" id="phoneOrdId" value="{$phoneDef|@htmlspecialchars}">
                 </div>
 
                 <div class="input-group mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
                     <div class="btn-group">
-                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Выберите/добавьте E-mail
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button"
+                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-envelope-fill d-block d-md-none" viewBox="0 0 16 16">
+                                <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+                            </svg>
+                            <span class=" d-none d-md-block">Выберите/добавьте E-mail</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            {assign var="emailDef" value=""}
+                            {foreach from=$email item=$mail name=mailArr}
+                                {if $smarty.foreach.mailArr.first} {assign var="emailDef" value="`$mail`"} {/if}
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick='selectСontact("{$mail}", "email");return false;'>
+                                        {$mail|@htmlspecialchars}
+                                    </a>
+                                </li>
+                            {/foreach}
                         </ul>
                     </div>
-                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="E-mail" aria-label="E-mail"
-                           aria-describedby="basic-addon2" name="email" value="">
+                    <input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="E-mail"
+                           aria-label="E-mail" aria-describedby="basic-addon2"
+                           name="emailOrd" id="emailOrdId" value="{$emailDef|@htmlspecialchars}">
                 </div>
 
                 <div class="input-group mb-1 mb-sm-1 mb-lg-2  me-1 ms-1 me-sm-2 ms-sm-2 me-lg-5 ms-lg-2">
                     <div class="btn-group dropup">
-                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Выберите/добавьте адрес доставки
+                        <button class="btn bg-nav-btn col-nav nv-navbar dropdown-toggle" type="button"
+                                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-geo-alt-fill d-block d-md-none" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                            </svg>
+                            <span class=" d-none d-md-block">Выберите/добавьте адрес доставки</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
-                            <li><a class="dropdown-item" href="#">Элемент меню</a></li>
+                            {assign var="addressDef" value=""}
+                            {foreach from=$address item=$addr name=addrArr}
+                                {if $smarty.foreach.addrArr.first} {assign var="addressDef" value="`$addr`"} {/if}
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick='selectСontact("{$addr}", "address");return false;'>
+                                        {$addr|@htmlspecialchars}
+                                    </a>
+                                </li>
+                            {/foreach}
                         </ul>
                     </div>
                     <textarea class="form-control me-2 me-sm-3 me-lg-5" aria-label="Дополнительные условия"
-                              name="condition">{$arUser['conditions']}</textarea>
+                              name="addressOrd" id="addressOrdId" >{$addressDef|@htmlspecialchars}</textarea>
                     {*<input type="text" class="form-control  me-2 me-sm-3 me-lg-5" placeholder="Адрес" aria-label="Адрес"
                            aria-describedby="basic-addon2" name="address" value="">*}
                 </div>
@@ -316,10 +366,7 @@
                                 </option>
                             {/foreach}
                         </select>
-                    </div>
-                </div>
-                <div class="row px-0">
-                    <div class="col-12 col-lg-8 pe-1 ps-2">
+
                         <h5 class="heading col-nav ps-0 mb-1 mb-sm-1 mb-lg-2 d-flex">
                             <span class="pe-2">Способ доставки</span>
                             <div class=" flex-fill me-2" id="vn-line"></div>
@@ -337,15 +384,19 @@
                                 </option>
                             {/foreach}
                         </select>
-                    </div>
-                </div>
-                <div class="row px-0">
-                    <div class="col-12 col-lg-8 pe-1 ps-2">
+
+                        <h5 class="heading col-nav ps-0 mb-1 mb-sm-1 mb-lg-2 d-flex">
+                            <span class="pe-2">Комментарий</span>
+                            <div class=" flex-fill me-2" id="vn-line"></div>
+                        </h5>
                         <div class="input-group ps-0 mb-1 mb-sm-1 mb-lg-2">
-                            <span class="input-group-text">Дополнительные </br> условия</span>
+                            {*<span class="input-group-text">Коммен-</br>тарий</span>*}
                             <textarea class="form-control me-0" aria-label="Дополнительные условия"
                                       name="condition">{$arUser['conditions']}</textarea>
                         </div>
+                    </div>
+                    <div class="col-12 col-lg-4 pe-1 ps-2 d-none d-xl-block">
+                        {*banners*}
                     </div>
                 </div>
 
@@ -353,7 +404,7 @@
         </div>
         <div class=" d-flex justify-content-center">
             <button type="submit" class="btn bg-nav-btn col-nav nv-navbar col-11 col-lg-4 mb-1">
-                Сохранить
+                Все данные верны, оформить заказ
             </button>
         </div>
     </div>
